@@ -1,0 +1,9 @@
+<form nz-form [formGroup]="formEdit">
+  <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>
+  <nz-modal [(nzVisible)]="isEdit" nzTitle="The first Modal" (nzOnCancel)="handleCancel(false)" (nzOnOk)="handleOk()">
+    <p>Content one</p>
+    <p>Content two</p>
+    <p>Content three</p>
+    <p>Content three</p>
+  </nz-modal>
+</form>

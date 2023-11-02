@@ -1,0 +1,84 @@
+<form nz-form [formGroup]="formEdit">
+    <!--  <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>-->
+    <nz-modal [(nzVisible)]="isEdit" nzTitle="The first Modal" (nzOnCancel)="handleCancel(false)" (nzOnOk)="handleOk()" [nzFooter]="null">
+        <div class="d-flex justify-content-between">
+            <div class="col-6">
+                Username
+                <input formControlName="userName" nz-input placeholder="Username"/>
+            </div>
+<!--            <div class="col-4">-->
+<!--                Password-->
+<!--                <input formControlName="passWord" nz-input placeholder="Password"/>-->
+<!--            </div>-->
+
+            <div class="col-6">
+                Email
+                <input formControlName="email" nz-input placeholder="Email"/>
+            </div>
+        </div>
+
+        <div class="d-flex justify-content-between">
+            <div class="col-4">
+                First name
+                <input formControlName="firstName" nz-input placeholder="First name"/>
+            </div>
+
+            <div class="col-4">
+                Last name
+                <input formControlName="lastName" nz-input placeholder="Last name"/>
+            </div>
+
+            <div class="col-4">
+                Address
+                <input formControlName="address" nz-input placeholder="Address"/>
+            </div>
+        </div>
+
+            <div class="d-flex justify-content-between">
+              <div class="col-4">
+                Age
+                <input formControlName="age" nz-input placeholder="Age"/>
+              </div>
+
+              <div class="col-4">
+                Role
+                <input formControlName="role" nz-input placeholder="Role"/>
+              </div>
+
+              <div class="col-4">
+                Phone number
+                <input formControlName="phoneNumber" nz-input placeholder="Phone number"/>
+              </div>
+            </div>
+
+        <!--    <div class="d-flex justify-content-between">-->
+        <!--      <div class="col-4">-->
+        <!--        Date of birth-->
+        <!--        <nz-form-item>-->
+        <!--          <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>MonthPicker</nz-form-label>-->
+        <!--          <nz-form-control [nzSm]="16" [nzXs]="24">-->
+        <!--            <nz-month-picker formControlName="dateOfBirth"></nz-month-picker>-->
+        <!--          </nz-form-control>-->
+        <!--        </nz-form-item>-->
+        <!--      </div>-->
+        <!--      <div class="col-4">-->
+        <!--        Sex-->
+        <!--        <input formControlName="sex" nz-input placeholder="Sex"/>-->
+        <!--      </div>-->
+
+        <!--      <div class="col-4">-->
+        <!--        Create date-->
+        <!--        <nz-form-item>-->
+        <!--          <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>MonthPicker</nz-form-label>-->
+        <!--          <nz-form-control [nzSm]="16" [nzXs]="24">-->
+        <!--            <nz-month-picker formControlName="createDate"></nz-month-picker>-->
+        <!--          </nz-form-control>-->
+        <!--        </nz-form-item>-->
+        <!--      </div>-->
+        <!--    </div>-->
+      <div class="d-flex justify-content-end mt-5">
+        <button class="mr-4" (click)="handleOk()" nz-button nzType="primary">Ok</button>
+        <button (click)="handleCancel(false)" nz-button nzType="primary">Cancel</button>
+      </div>
+    </nz-modal>
+</form>

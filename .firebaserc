@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "coffee2-c0521": {
+      "hosting": {
+        "test": [
+          "coffee2-c0521"
+        ]
+      }
+    }
+  }
+}

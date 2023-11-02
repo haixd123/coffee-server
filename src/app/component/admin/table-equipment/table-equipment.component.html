@@ -1,0 +1,36 @@
+<form nz-form [formGroup]="formSearch">
+</form>
+
+  <div class="d-flex align-items-center mb-4">
+      <button style="border-radius: 5px" class="d-flex align-items-center ml-3" nz-button nzType="primary">
+        <i nz-icon nzType="search" nzTheme="outline"></i> Tìm kiếm
+      </button>
+      <button style="border-radius: 5px" class="d-flex align-items-center ml-3" nz-button nzType="primary" (click)="handleAdd()">
+        <i nz-icon nzType="plus" nzTheme="outline"></i> Thêm mới
+      </button>
+
+  </div>
+  <nz-table style="" #basicTable [nzData]="listOfData" [nzBordered]="true">
+    <thead>
+    <tr>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Address</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{ data.name }}</td>
+      <td>{{ data.age }}</td>
+      <td>{{ data.address }}</td>
+      <td>
+        <a style="font-size: 21px" class="mr-3" (click)="handleEdit(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></a>
+        <a style="font-size: 21px" ><i nz-icon nzType="delete" nzTheme="outline"></i></a>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+
+<app-add-equipment [isAdd]="isAdd" (closePopup)=handleClosePopup($event)></app-add-equipment>
+<app-edit-equipment [isEdit]="isEdit" (closePopup)=handleClosePopup($event)></app-edit-equipment>

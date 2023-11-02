@@ -1,0 +1,74 @@
+<form nz-form [formGroup]="formSearch">
+</form>
+
+<div class="d-flex align-items-center mb-4">
+  <button style="border-radius: 5px" class="d-flex align-items-center ml-3" nz-button nzType="primary"
+          (click)="handleSearch()">
+    <i nz-icon nzType="search" nzTheme="outline"></i> Tìm kiếm
+  </button>
+  <button style="border-radius: 5px" class="d-flex align-items-center ml-3" nz-button nzType="primary"
+          (click)="handleAdd()">
+    <i nz-icon nzType="plus" nzTheme="outline"></i> Thêm mới
+  </button>
+
+</div>
+<nz-table style="" #basicTable
+          [nzData]="data"
+          [nzFrontPagination]="false"
+          nzBordered
+          nzShowSizeChanger
+>
+  <thead>
+  <tr>
+    <th>id</th>
+    <th>Username</th>
+    <!--        <th>Password</th>-->
+    <th>Email</th>
+    <th>Firstname</th>
+    <th>Lastname</th>
+    <th>Address</th>
+    <th>Age</th>
+    <th>Role</th>
+    <th>Phone Number</th>
+    <th>Date Of Birth</th>
+    <th>Sex</th>
+    <th>Create Date</th>
+    <th>Image</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of data, let i = index">
+    <td class="text-nowrap">{{validateService.getRowIndex(i, basicTable.nzPageIndex, basicTable.nzPageSize)}}</td>
+    <td>{{ item.userName }}</td>
+    <!--        <td>{{ item.passWord }}</td>-->
+    <!--      <td style=" white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{ item.passWord }}</td>-->
+
+    <td>{{ item.email }}</td>
+    <td>{{ item.firstName }}</td>
+    <td>{{ item.lastName }}</td>
+    <td>{{ item.address }}</td>
+    <td>{{ item.age }}</td>
+    <td>{{ item.role }}</td>
+    <td>{{ item.phoneNumber }}</td>
+    <td>{{ item.dateOfBirth }}</td>
+    <td>{{ item.sex }}</td>
+    <td>{{ item.createDate }}</td>
+    <!--    <td>{{ item.image }}</td>-->
+    <td><img [src]="item.data"  /></td>
+
+    <td style="min-width: 100px">
+      <a style="font-size: 21px" class="mr-3" (click)="handleEdit(item)">
+        <i nz-icon nzType="edit" nzTheme="outline"></i></a>
+      <a style="font-size: 21px" (click)="handleDelete(item)">
+        <i nz-icon nzType="delete" nzTheme="outline"></i></a>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
+<div class="d-flex justify-content-end">
+  <nz-pagination class="pb-4" (click)="changePage()" [(nzPageIndex)]="curPage" [nzTotal]="total"></nz-pagination>
+</div>
+
+<app-add-user [isAdd]="isAdd" (closePopup)=handleClosePopup($event)></app-add-user>
+<app-edit-user [isEdit]="isEdit" [dataEdit]="dataEdit" (closePopup)=handleClosePopup($event)></app-edit-user>

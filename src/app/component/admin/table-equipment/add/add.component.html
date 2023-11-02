@@ -1,0 +1,13 @@
+<form nz-form [formGroup]="formAdd">
+  <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>
+  <nz-modal nzWidth="1300px" [(nzVisible)]="isAdd" nzTitle="The first Modal" (nzOnCancel)="handleCancel(false)" (nzOnOk)="handleOk()">
+
+    <input formControlName="name" style="width: 100%;" nz-input name="required" required
+           placeholder="Tiêu đề"/>
+    <input formControlName="title" style="width: 100%;" nz-input name="required" required
+           placeholder="Tiêu đề"/>
+    <ckeditor style="min-height: 300px" formControlName="contentEquipment" [editor]="Editor"></ckeditor>
+
+
+  </nz-modal>
+</form>

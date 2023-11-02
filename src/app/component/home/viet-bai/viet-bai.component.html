@@ -1,0 +1,42 @@
+<form nz-form [formGroup]="formAdd">
+
+  <div style="width: 100%;" class="py-3 px-3">
+    <!--    <nz-form-item style="width: 100%;">-->
+    <!--      <nz-form-label [nzSpan]="5">Tiêu đề</nz-form-label>-->
+    <!--      <nz-form-control style="width: 100%;" nzHasFeedback [nzSpan]="12" nzErrorTip="Input is required">-->
+    <input formControlName="title" style="width: 100%;" nz-input [ngModel]="'Required Input'" name="required" required
+           placeholder="Tiêu đề"/>
+    <!--      </nz-form-control>-->
+    <!--    </nz-form-item>-->
+  </div>
+
+  <!--  <nz-form-item>-->
+  <!--    <nz-form-label [nzSpan]="5">Giới thiệu</nz-form-label>-->
+  <!--    <nz-form-control nzHasFeedback [nzSpan]="12" nzErrorTip="Input is required">-->
+  <div class="py-3 px-3">
+    <input formControlName="" style="width: 100%;" nz-input [ngModel]="'Required Input'" name="required" required
+           placeholder="Giới thiệu"/>
+  </div>
+  <!--    </nz-form-control>-->
+  <!--  </nz-form-item>-->
+  <div class="clearfix my-3 ml-3">
+    <nz-upload
+      class="upload-list-inline"
+      nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+      nzListType="picture"
+    >
+<!--      [(nzFileList)]="fileList2"-->
+
+      <button nz-button>
+        <span><i nz-icon nzType="upload"></i> Upload</span>
+      </button>
+    </nz-upload>
+  </div>
+  <div class="py-3 px-3">
+    <ckeditor style="min-height: 300px" formControlName="contentDetail" [editor]="Editor"></ckeditor>
+<!--    <ckeditor style="min-height: 300px" formControlName="content1" [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>-->
+  </div>
+  <div class="d-flex justify-content-end my-3 mx-3">
+    <button (click)="Submit()" style="border-radius: 4px" nz-button nzType="primary">Đăng bài</button>
+  </div>
+</form>

@@ -1,0 +1,103 @@
+<nz-layout class="app-layout">
+  <nz-sider class="menu-sidebar"
+            nzCollapsible
+            nzWidth="256px"
+            nzBreakpoint="md"
+            [(nzCollapsed)]="isCollapsed"
+            [nzTrigger]="null">
+    <div style="display: flex; align-items: center; margin-top: 15px"
+         class="mn-header-top {{isCollapsed? 'mn-header-top-small':'header-large-icon'}}">
+      <div class="mn-hd-tLeft d-flex">
+        <a href="https://ng.ant.design/" target="_blank">
+          <img style="width: 25px" src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
+        </a>
+        <span *ngIf="!isCollapsed" class="ml-2" style="color: #fff; font-size: 16px">Diễn đàn cafe</span>
+      </div>
+      <div class="mn-hd-tRight"><i style="font-size: 18px; background-color: #001529; color: #c3c3c3; cursor: pointer"
+                                   class="trigger trigger-white ml-3" nz-icon
+                                   [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
+                                   (click)="isCollapsed = !isCollapsed"></i></div>
+    </div>
+    <ul nz-menu nzTheme="dark" nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+      <li nz-submenu nzOpen nzTitle="Dashboard" nzIcon="dashboard">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/admin/coffee-bean">Coffee</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/admin/equipment">equipment</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/admin/posts">posts</a>
+          </li>
+          <li nz-menu-item nzMatchRouter>
+            <a routerLink="/admin/user">user</a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzOpen nzTitle="Form" nzIcon="form">
+        <ul>
+          <li nz-menu-item nzMatchRouter>
+            <a>user</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header class="d-flex justify-content-end">
+      <div class="user-link col-1" style="margin-right: 55px">
+        <a class="d-flex align-items-center px-3" style="color: #fff">
+          <i nz-icon nzType="user" nzTheme="outline" class="mr-1"></i>User</a>
+        <div class="user" style="width: 240px; color: #000">
+          <div class="ml-3">
+            <div style="height: 64px" class="d-flex flex-wrap">
+              <div class="col-4 d-flex align-items-center">
+                avatar1
+              </div>
+              <div class="d-flex flex-wrap mb-5">
+                <div class="col-8 mb-2" style="height: 20px">
+                  Xin chào
+                </div>
+                <div class="col-8" style="height: 20px">
+                  {{infoUser.firstName}} {{infoUser.lastName}}
+                </div>
+              </div>
+
+            </div>
+            <!--            <div class="col-3 d-flex align-items-center>">-->
+            <!--                <span>Xin chào</span>-->
+            <!--                {{infoUser.firstName}} {{infoUser.lastName}}-->
+            <!--            </div>-->
+            <a style="font-size: 17px; height: 32px" class="d-flex align-items-center mt-3"><i class="mr-3" nz-icon
+                                                                                               nzType="audit"
+                                                                                               nzTheme="outline"></i><span>Thông tin tài khoản</span></a>
+            <a style="font-size: 17px; height: 32px" class="d-flex align-items-center"><i class="mr-3" nz-icon
+                                                                                          nzType="user"
+                                                                                          nzTheme="outline"></i><span>Trang cá nhân</span></a>
+            <a style="font-size: 17px; height: 32px" class="d-flex align-items-center"><i class="mr-3" nz-icon
+                                                                                          nzType="book"
+                                                                                          nzTheme="outline"></i><span>Tin đã lưu</span></a>
+            <a style="font-size: 17px; height: 32px" class="d-flex align-items-center"><i class="mr-3" nz-icon
+                                                                                          nzType="logout"
+                                                                                          nzTheme="outline"></i><span>Đăng xuất</span></a>
+          </div>
+        </div>
+      </div>
+      <!--      <div class="app-header">-->
+      <!--        <span class="header-trigger" (click)="isCollapsed = !isCollapsed">-->
+      <!--            <i class="trigger"-->
+      <!--               nz-icon-->
+      <!--               [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"-->
+      <!--            ></i>-->
+      <!--        </span>-->
+      <!--      </div>-->
+    </nz-header>
+    <nz-content>
+      <router-outlet></router-outlet>
+
+      <!--      <div style="height: 100vh" class="inner-content">-->
+      <!--      </div>-->
+    </nz-content>
+  </nz-layout>
+</nz-layout>

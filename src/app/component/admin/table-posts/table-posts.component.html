@@ -1,0 +1,70 @@
+<form nz-form [formGroup]="formSearch">
+
+  <div class="d-flex align-items-center mb-4">
+    <button style="border-radius: 5px" class="d-flex align-items-center ml-3" nz-button nzType="primary"
+            (click)="handleSearch()">
+      <i nz-icon nzType="search" nzTheme="outline"></i> Tìm kiếm
+    </button>
+    <button style="border-radius: 5px" class="d-flex align-items-center ml-3" nz-button nzType="primary"
+            (click)="handleAdd()">
+      <i nz-icon nzType="plus" nzTheme="outline"></i> Thêm mới
+    </button>
+
+  </div>
+  <nz-table
+    #basicTable
+    [nzData]="data"
+    [nzFrontPagination]="false"
+    nzBordered
+    nzShowSizeChanger
+    [nzScroll]="{ x: '1300px'}"
+  >
+    <!--    [(nzPageSize)]="total"-->
+    <!--    [(nzPageIndex)]="searchModel.pageIndex"-->
+    <!--    [nzPageSizeOptions]="pageSize"-->
+    <thead>
+    <tr>
+      <th>STT</th>
+      <th>Id</th>
+      <th>Like</th>
+      <th>Share</th>
+      <th>Comment</th>
+      <th>title</th>
+      <th>Content Post</th>
+      <th>Content Detail</th>
+      <!--        <th>Status</th>-->
+      <th>imagePath</th>
+      <th>createdAt</th>
+      <th>updatedAt</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let item of data, let i = index">
+      <td class="text-nowrap">{{validateService.getRowIndex(i, basicTable.nzPageIndex, basicTable.nzPageSize)}}</td>
+      <td>{{ item.id }}</td>
+      <td>{{ item.like1 }}</td>
+      <td>{{ item.share }}</td>
+      <td>{{ item.comment }}</td>
+      <td>{{ item.title }}</td>
+      <td style=" white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{ item.contentPost }}</td>
+      <td style=" white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{ item.contentDetail }}</td>
+      <!--        <td>{{ item.status }}</td>-->
+      <td>{{ item.imagePath }}</td>
+      <td>{{ item.createdAt }}</td>
+      <td>{{ item.updatedAt }}</td>
+      <td>
+        <a style="font-size: 21px" class="mr-3" (click)="handleEdit(item)"><i nz-icon nzType="edit"
+                                                                              nzTheme="outline"></i></a>
+        <a style="font-size: 21px" (click)="handleDelete(item)"><i nz-icon nzType="delete" nzTheme="outline"></i></a>
+      </td>
+    </tr>
+    </tbody>
+  </nz-table>
+  <div class="d-flex justify-content-end">
+    <nz-pagination class="pb-4" (click)="changePage()" [(nzPageIndex)]="curPage" [nzTotal]="total"></nz-pagination>
+  </div>
+</form>
+
+<app-add-posts [isAdd]="isAdd" (closePopup)=handleClosePopup($event)></app-add-posts>
+<app-edit-posts [isEdit]="isEdit" [dataEdit]="dataEdit" (closePopup)=handleClosePopup($event)></app-edit-posts>
