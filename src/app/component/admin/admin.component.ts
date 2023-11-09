@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Menu} from '../../menu.class';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
 
 @Component({
@@ -45,7 +44,6 @@ export class AdminComponent implements OnInit {
   infoUser: any;
 
   name: string;
-  menus: Menu[] = [];
   status: string;
   width: number = window.innerWidth;
 
@@ -53,7 +51,6 @@ export class AdminComponent implements OnInit {
 
   constructor() {
     this.infoUser = JSON.parse(localStorage.getItem('user'));
-    console.log('this.infoUser | home component: ', this.infoUser.name);
 
   }
 

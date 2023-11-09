@@ -4,12 +4,31 @@ import {HttpClient} from '@angular/common/http';
 import {ValidateService} from '../../../services/validate-service';
 import {SearchModelEntity} from '../search-model-entiry';
 import {NotificationService} from '../../../services/notification.service';
+import {NzTableFilterFn, NzTableFilterList, NzTableQueryParams, NzTableSortFn, NzTableSortOrder} from 'ng-zorro-antd';
 
-interface Person {
-  key: string;
+interface DataItem {
+  STT: number;
+  Id: number;
+  like1: number;
+  share: number;
+  comment: number;
+  title: string;
+  contentPost: string;
+  contentDetail: string;
+  imagePath: string;
+  createdAt: string;
+  updatedAt: string;
+  Action: any;
+}
+
+interface ColumnItem {
   name: string;
-  age: number;
-  address: string;
+  sortOrder?: NzTableSortOrder;
+  sortFn?: NzTableSortFn;
+  listOfFilter?: NzTableFilterList;
+  filterFn?: NzTableFilterFn;
+  filterMultiple?: boolean;
+  sortDirections?: NzTableSortOrder[];
 }
 
 @Component({
@@ -19,6 +38,46 @@ interface Person {
 })
 
 export class TablePostsComponent implements OnInit {
+
+  // listOfColumns: ColumnItem[] = [
+  //   {name: 'STT'},
+  //   {name: 'Id'},
+  //   {
+  //     name: 'Like',
+  //     sortFn: (a: DataItem, b: DataItem) => a.like1 - b.like1
+  //       // => {
+  //       // for (const item of this.data) {
+  //       //   item.share - item.like;
+  //       // }}
+  //   },
+  //   {name: 'Share'},
+  //   {name: 'Comment'},
+  //   {name: 'title'},
+  //   {name: 'Content Post'},
+  //   {name: 'Content Detail'},
+  //   {name: 'imagePath'},
+  //   {name: 'createdAt'},
+  //   {name: 'updatedAt'},
+  //   {name: 'Action'}];
+
+  // listOfData: DataItem[] = [
+  //   {
+  //     STT: number;
+  //     Id: number;
+  //     Like: number;
+  //     Share: number;
+  //     Comment: number;
+  //     title: string;
+  //     contentPost: string;
+  //     contentDetail: string;
+  //     imagePath: string;
+  //     createdAt: string;
+  //     updatedAt: string;
+  //     Action: any;
+  //   }
+  // ]
+
+
   formSearch: FormGroup;
   isAdd = false;
   isEdit = false;
@@ -27,6 +86,9 @@ export class TablePostsComponent implements OnInit {
   total: number;
   searchModel: SearchModelEntity = new SearchModelEntity();
   curPage: number;
+  testSort: any[];
+
+  orderHeader = '';
 
   constructor(
     private fb: FormBuilder,
@@ -39,15 +101,18 @@ export class TablePostsComponent implements OnInit {
       pageSize: 10,
     });
     this.handleSearch();
+    // this.changePage();
+
   }
 
   ngOnInit(): void {
   }
 
+  sort() {
+  }
 
   handleUpdate(searchModel: SearchModelEntity, reset = false) {
     this.http.post('http://localhost:8080/api/posts/search', this.searchModel).toPromise().then((data: any) => {
-      console.log('1: ', data);
       this.data = data.data;
       this.total = data.optional;
     });
@@ -56,7 +121,6 @@ export class TablePostsComponent implements OnInit {
   handleSearch() {
     this.searchModel.pageIndex = 1;
     this.searchModel.pageSize = 10;
-    console.log('this.searchModel: ', this.searchModel);
     this.handleUpdate(this.searchModel, true);
   }
 
@@ -74,22 +138,18 @@ export class TablePostsComponent implements OnInit {
   handleEdit(item: any) {
     this.isEdit = true;
     this.dataEdit = item;
-    console.log('item: ', item);
   }
 
   handleClosePopup(value: any) {
     this.isAdd = false;
     this.isEdit = false;
-    console.log('handle ok from handleClosePopup to update');
     if (value) {
-      console.log('value popup');
       this.changePage();
     }
   }
 
   handleDelete(item: any) {
     this.http.post('http://localhost:8080/api/posts/delete', item).subscribe((data: any) => {
-      console.log('data delete: ', data);
       if (data.errorCode == '00') {
         this.notificationService.showMessage('success', 'Xóa bài đăng thành công');
         this.isEdit = false;

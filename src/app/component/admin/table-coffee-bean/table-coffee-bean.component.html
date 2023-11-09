@@ -15,6 +15,7 @@
     #basicTable
     [nzData]="data"
     [nzFrontPagination]="false"
+    [(nzPageIndex)]="searchModel.pageIndex"
     nzBordered
     nzShowSizeChanger
     [nzScroll]="{ x: '1200px'}"
@@ -26,6 +27,7 @@
       <th>Name</th>
       <th>Title</th>
       <th>Content</th>
+      <th>Image</th>
       <th>Action</th>
     </tr>
     </thead>
@@ -34,9 +36,11 @@
       <td class="text-nowrap">{{validateService.getRowIndex(i, basicTable.nzPageIndex, basicTable.nzPageSize)}}</td>
       <td>{{ item.id }}</td>
       <td>{{ item.name }}</td>
-      <td>{{ item.title }}</td>
+      <td style=" white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{ item.title }}</td>
+      <!--      <td>{{ item.title }}</td>-->
       <!--    <td>{{ item.contentCoffee }}</td>-->
       <td style=" white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{ item.contentCoffee }}</td>
+      <td><img style="width: 100%;" [src]="item.image"/></td>
       <td style="min-width: 120px; text-align: center">
         <a style="font-size: 21px" class="mr-3" (click)="handleEdit(item)"><i nz-icon nzType="edit"
                                                                               nzTheme="outline"></i></a>
@@ -52,4 +56,5 @@
 
 
 <app-add-coffee-bean [isAdd]="isAdd" (closePopup)=handleClosePopup($event)></app-add-coffee-bean>
-<app-edit-coffee-bean [isEdit]="isEdit" [dataEdit]="dataEdit" (closePopup)=handleClosePopup($event)></app-edit-coffee-bean>
+<app-edit-coffee-bean [isEdit]="isEdit" [dataEdit]="dataEdit"
+                      (closePopup)=handleClosePopup($event)></app-edit-coffee-bean>

@@ -11,8 +11,7 @@ import {NotificationService} from '../../../services/notification.service';
 })
 export class RegisterComponent implements OnInit {
   userName = '';
-  firstName = '';
-  lastName = '';
+  name = '';
   email = '';
   password = '';
   confirmPassword = '';
@@ -20,9 +19,9 @@ export class RegisterComponent implements OnInit {
   loading = false;
 
   constructor(
-    private _api: ApiService,
-    private _auth: AuthService,
-    private _router: Router,
+    private api: ApiService,
+    private auth: AuthService,
+    private router: Router,
     private notificationService: NotificationService,
   ) {
   }
@@ -32,25 +31,24 @@ export class RegisterComponent implements OnInit {
 
   onSubmit(): void {
     this.errorMessage = '';
-    if (this.password && this.email && this.confirmPassword && this.userName && this.firstName && this.lastName) {
+    if (this.password && this.email && this.confirmPassword && this.userName && this.name) {
       if (this.password !== this.confirmPassword) {
         this.errorMessage = 'Passwords need to match';
       } else {
         this.loading = true;
-        this._auth
+        this.auth
           .register({
             email: this.email,
             password: this.password,
             userName: this.userName,
-            firstName: this.firstName,
-            lastName: this.lastName
+            name: this.name
           })
           .subscribe(
             (res) => {
               if (res.errorCode == '00') {
                 this.notificationService.showMessage('success', 'Tạo tài khoản thành công');
                 this.loading = false;
-                this._router.navigate(['/auth/login']);
+                this.router.navigate(['/auth/login']);
               } else {
                 this.notificationService.showMessage('error', 'Tài khoản đã tồn tại');
                 this.loading = false;
@@ -73,8 +71,7 @@ export class RegisterComponent implements OnInit {
       this.password &&
       this.confirmPassword &&
       this.userName &&
-      this.firstName &&
-      this.lastName
+      this.name
     )
       ? true
       : false;

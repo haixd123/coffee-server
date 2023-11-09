@@ -14,6 +14,7 @@
   <nz-table
     #basicTable
     [nzData]="data"
+    [(nzPageIndex)]="searchModel.pageIndex"
     [nzFrontPagination]="false"
     nzBordered
     nzShowSizeChanger
@@ -24,10 +25,18 @@
     <!--    [nzPageSizeOptions]="pageSize"-->
     <thead>
     <tr>
+      <!--      <th *ngFor="let column of listOfColumns"-->
+      <!--          [nzSortOrder]="column.sortOrder"-->
+      <!--          [nzSortFn]="column.sortFn"-->
+      <!--          [nzSortDirections]="column.sortDirections"-->
+      <!--          [nzFilterMultiple]="column.filterMultiple"-->
+      <!--          [nzFilters]="column.listOfFilter"-->
+      <!--          [nzFilterFn]="column.filterFn"-->
+      <!--      >{{column.name}}</th>-->
       <th>STT</th>
       <th>Id</th>
-      <th>Like</th>
-      <th>Share</th>
+      <th>Like <i nz-icon nzType="scissor" nzTheme="outline"></i></th>
+      <th (click)="sort()">Share</th>
       <th>Comment</th>
       <th>title</th>
       <th>Content Post</th>
@@ -43,16 +52,16 @@
     <tr *ngFor="let item of data, let i = index">
       <td class="text-nowrap">{{validateService.getRowIndex(i, basicTable.nzPageIndex, basicTable.nzPageSize)}}</td>
       <td>{{ item.id }}</td>
-      <td>{{ item.like1 }}</td>
+      <td>{{ item.like1 }} </td>
       <td>{{ item.share }}</td>
       <td>{{ item.comment }}</td>
       <td>{{ item.title }}</td>
       <td style=" white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{ item.contentPost }}</td>
       <td style=" white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{ item.contentDetail }}</td>
       <!--        <td>{{ item.status }}</td>-->
-      <td>{{ item.imagePath }}</td>
-      <td>{{ item.createdAt }}</td>
-      <td>{{ item.updatedAt }}</td>
+      <td><img style="width: 100%" [src]="item.imagePath"></td>
+      <td>{{ item.createdAt | dateFormat: 'dd/MM/yyyy' }}</td>
+      <td>{{ item.updatedAt | dateFormat: 'dd/MM/yyyy' }}</td>
       <td>
         <a style="font-size: 21px" class="mr-3" (click)="handleEdit(item)"><i nz-icon nzType="edit"
                                                                               nzTheme="outline"></i></a>

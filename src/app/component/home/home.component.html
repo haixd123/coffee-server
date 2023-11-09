@@ -1,5 +1,5 @@
 <nz-layout xmlns="http://www.w3.org/1999/html">
-  <nz-header style="background-color: #dddddd">
+  <nz-header style="background-color: #dddddd; position: relative">
     <div style="display: flex; justify-content: space-between" class="row">
       <div style="color: #000" class="d-flex">
         <!--        content1-->
@@ -11,7 +11,7 @@
           <a style="padding: 22px 10px; color: #000" [routerLink]="['/home/coffee-bean']">Sản phẩm</a>
         </div>
         <div>
-          <a style="padding: 22px 10px" [routerLink]="['/home/equipment']">Công cụ, máy móc</a>
+          <a style="padding: 22px 10px; color: #000" [routerLink]="['/home/equipment']">Công cụ, máy móc</a>
         </div>
         <!--        content3-->
         <div>
@@ -22,80 +22,98 @@
       <div>
       </div>
       <div>
-        <div class="d-flex align-items-center input-group" style="width: 380px; height: 100%">
-          <input type="text" class="form-control" placeholder="Tìm kiếm theo hashtag" aria-label="Recipient's username"
-                 aria-describedby="basic-addon2">
-          <div class="input-group-append d-flex align-items-center">
-            <button style="padding: 3px 12px 9px" class="btn btn-outline-secondary" type="button"><i
-              style="font-size: 18px" nz-icon nzType="search" nzTheme="outline"></i></button>
+        <form nz-form [formGroup]="formSearch">
+          <div class="d-flex align-items-center input-group" style="width: 380px; height: 100%">
+            <input formControlName="name" nz-input>
+            <!--                   type="text" class="form-control" placeholder="Tìm kiếm theo hashtag"-->
+            <!--                   aria-label="Recipient's username"-->
+            <!--                   aria-describedby="basic-addon2">-->
+            <div class="input-group-append d-flex align-items-center">
+              <button style="padding: 3px 12px 9px" class="btn btn-outline-secondary" type="button"
+                      (click)="handleSearchInput()"><i
+                style="font-size: 18px" nz-icon nzType="search" nzTheme="outline"></i></button>
+            </div>
           </div>
-        </div>
+        </form>
       </div>
 
       <div class="d-flex align-items-center" style="color: #000">
         <a class="d-flex align-items-center px-3" style="color: #000" [routerLink]="['/home/posts/write']">
           <i nz-icon nzType="edit" nzTheme="outline" class="mr-1"></i> Viết bài</a>
+
+
         <div class="notify-link">
           <a class="d-flex align-items-center px-3 " style="color: #000">
             <i nz-icon nzType="bell" nzTheme="outline" class="mr-1"></i>Thông báo
           </a>
-          <div class="notify" style="color: #000">
-            <div class="mx-3">
-              <div>
-                <span style="font-size: 15px">Thông báo mới nhận</span></div>
-              <div class="row">
-                <a class="col-2">avatar</a>
-                <div style="font-size: 15px" class="col-10 d-flex flex-column">
-                  <a style="height: 25px">Đã nhắc đến bạn</a>
-                  <a>19 giờ trước</a>
-                </div>
-              </div>
-              <div style="font-size: 15px" class="d-flex justify-content-center">
-                <a>Xem tất cả</a>
-              </div>
-            </div>
-          </div>
+          <app-notification class="notify"></app-notification>
+          <!--          <div class="notify" style="color: #000">-->
+          <!--            <div class="mx-3">-->
+          <!--              <div>-->
+          <!--                <span style="font-size: 15px">Thông báo mới nhận</span></div>-->
+          <!--              <div class="row">-->
+          <!--                <a class="col-2">avatar</a>-->
+          <!--                <div style="font-size: 15px" class="col-10 d-flex flex-column">-->
+          <!--                  <a style="height: 25px">Đã nhắc đến bạn</a>-->
+          <!--                  <a>19 giờ trước</a>-->
+          <!--                </div>-->
+          <!--              </div>-->
+          <!--              <div style="font-size: 15px" class="d-flex justify-content-center">-->
+          <!--                <a>Xem tất cả</a>-->
+          <!--              </div>-->
+          <!--            </div>-->
+          <!--          </div>-->
         </div>
 
         <div class="user-link">
           <a class="d-flex align-items-center px-3" style="color: #000">
-            <i nz-icon nzType="user" nzTheme="outline" class="mr-1"></i>User</a>
+            <img
+              style="width: 100%; border-radius: 50%; min-width: 35px; max-width: 35px; height: 35px; margin-right: 5px"
+              [src]="infoUser.image"/>
+          </a>
           <div class="user" style="width: 240px; color: #000">
             <div class="ml-3">
               <div style="height: 64px" class="d-flex flex-wrap">
-                <div class="col-4 d-flex align-items-center">
-                  avatar1
+                <div style="width: 50px; height: 50px" class="align-items-center p-0 mr-1">
+                  <img style="width: 100%; border-radius: 50%; min-width: 50px; max-width: 50px; height: 50px"
+                       [src]="infoUser.image"/>
                 </div>
-                <div class="d-flex flex-wrap mb-5">
-                  <div class="col-8 mb-2" style="height: 20px">
+                <div style="margin-top: -11px" class="d-flex flex-wrap">
+                  <div class="col-8" style="height: 20px">
                     Xin chào
                   </div>
-                  <div class="col-8" style="height: 20px">
-                    {{infoUser.firstName}} {{infoUser.lastName}}
+                  <div class="col-8" style="height: 20px; margin-top: -24px">
+                    {{infoUser.name}}
                   </div>
                 </div>
 
               </div>
-<!--              <a style="font-size: 17px" class="d-flex align-items-center mt-3"><i class="mr-3" nz-icon nzType="audit"-->
-<!--                                                                                   nzTheme="outline"></i><span>Thông tin tài khoản</span></a>-->
-<!--              <a style="font-size: 17px" class="d-flex align-items-center"><i class="mr-3" nz-icon nzType="user"-->
-<!--                                                                              nzTheme="outline"></i><span>Trang cá nhân</span></a>-->
-<!--              <a style="font-size: 17px" class="d-flex align-items-center"><i class="mr-3" nz-icon nzType="book"-->
-<!--                                                                              nzTheme="outline"></i><span>Tin đã lưu</span></a>-->
-<!--              <a style="font-size: 17px" class="d-flex align-items-center"><i class="mr-3" nz-icon nzType="logout"-->
-<!--                                                                              nzTheme="outline"></i><span>Đăng xuất</span></a>-->
-              <a style="font-size: 17px; height: 32px" class="d-flex align-items-center mt-3"><i class="mr-3" nz-icon
-                                                                                                 nzType="audit"
-                                                                                                 nzTheme="outline"></i><span>Thông tin tài khoản</span></a>
-              <a style="font-size: 17px; height: 32px" class="d-flex align-items-center"><i class="mr-3" nz-icon
-                                                                                            nzType="user"
-                                                                                            nzTheme="outline"></i><span>Trang cá nhân</span></a>
-              <a style="font-size: 17px; height: 32px" class="d-flex align-items-center"><i class="mr-3" nz-icon
-                                                                                            nzType="book"
-                                                                                            nzTheme="outline"></i><span>Tin đã lưu</span></a>
-              <a style="font-size: 17px; height: 32px" class="d-flex align-items-center pb-2"><i class="mr-3" nz-icon
-                                                                                            nzType="logout"
-                                                                                            nzTheme="outline"></i><span>Đăng xuất</span></a>
+              <!--              <a style="font-size: 17px" class="d-flex align-items-center mt-3"><i class="mr-3" nz-icon nzType="audit"-->
+              <!--                                                                                   nzTheme="outline"></i><span>Thông tin tài khoản</span></a>-->
+              <!--              <a style="font-size: 17px" class="d-flex align-items-center"><i class="mr-3" nz-icon nzType="user"-->
+              <!--                                                                              nzTheme="outline"></i><span>Trang cá nhân</span></a>-->
+              <!--              <a style="font-size: 17px" class="d-flex align-items-center"><i class="mr-3" nz-icon nzType="book"-->
+              <!--                                                                              nzTheme="outline"></i><span>Tin đã lưu</span></a>-->
+              <!--              <a style="font-size: 17px" class="d-flex align-items-center"><i class="mr-3" nz-icon nzType="logout"-->
+              <!--                                                                              nzTheme="outline"></i><span>Đăng xuất</span></a>-->
+              <a style="font-size: 17px; height: 32px" class="d-flex align-items-center my-3 mt-3"
+                 [routerLink]="['/home/user/info']">
+                <i class="mr-3" nz-icon nzType="audit" nzTheme="outline"></i>
+                Thông tin tài khoản</a>
+              <a style="font-size: 17px; height: 32px" class="d-flex align-items-center my-3"
+                 [routerLink]="['/home/user/myPosts']">
+                <i class="mr-3" nz-icon nzType="user" nzTheme="outline"></i>
+                Trang cá nhân</a>
+              <a style="font-size: 17px; height: 32px" class="d-flex align-items-center my-3"
+                 [routerLink]="['/home/user/myPosts']">
+                <i class="mr-3" nz-icon nzType="star" nzTheme="outline"></i>
+                Bài viết yêu thích</a>
+              <a style="font-size: 17px; height: 32px" class="d-flex align-items-center my-3">
+                <i class="mr-3" nz-icon nzType="info-circle" nzTheme="outline"></i>
+                Đóng góp ý kiến</a>
+              <a style="font-size: 17px; height: 32px" class="d-flex align-items-center  my-3 mt-1 pb-2">
+                <i class="mr-3" nz-icon nzType="logout" nzTheme="outline"></i>
+                Đăng xuất</a>
 
             </div>
           </div>
@@ -148,3 +166,5 @@
     </div>
   </nz-footer>
 </nz-layout>
+
+<app-home-coffee-bean style="display: none" [searchValue]="searchCoffee"></app-home-coffee-bean>

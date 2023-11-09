@@ -9,24 +9,24 @@ import { map } from 'rxjs/operators';
 export class ApiService {
   private baseUrl = environment.apiUrl;
 
-  constructor(private _http: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   getTypeRequest(url: string) {
-    return this._http.get(`${this.baseUrl}${url}`).pipe(
+    return this.http.get(`${this.baseUrl}${url}`).pipe(
       map((res) => {
         return res;
       })
     );
   }
   postTypeRequest(url: string, payload: any) {
-    return this._http.post(`${this.baseUrl}${url}`, payload).pipe(
+    return this.http.post(`${this.baseUrl}${url}`, payload).pipe(
       map((res) => {
         return res;
       })
     );
   }
   putTypeRequest(url: string, payload: any) {
-    return this._http.put(`${this.baseUrl}${url}`, payload).pipe(
+    return this.http.put(`${this.baseUrl}${url}`, payload).pipe(
       map((res) => {
         return res;
       })

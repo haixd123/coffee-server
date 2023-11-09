@@ -1,0 +1,23 @@
+<div class="notify" style="color: #000">
+  <div class="mx-3">
+    <div>
+      <span style="font-size: 15px">Thông báo mới nhận</span></div>
+    <div class="row" *ngFor="let item of dataUser">
+      <div *ngIf="dataInfoUserNotification.id == item.id">
+        <a class="col-2">avatar</a>
+        <div style="font-size: 15px" class="col-10 d-flex">
+          <div>
+            <div style="margin-top: -17px; height: 33px;">
+              <a class="mr-2">{{infoUserIsActive.name}}</a>
+              <a style="height: 25px">Đã nhắc đến bạn</a>
+            </div>
+            <a>19 giờ trước</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="font-size: 15px" class="d-flex justify-content-center">
+      <a>Xem tất cả</a>
+    </div>
+  </div>
+</div>

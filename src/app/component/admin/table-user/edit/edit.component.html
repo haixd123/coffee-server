@@ -20,13 +20,10 @@
         <div class="d-flex justify-content-between">
             <div class="col-4">
                 First name
-                <input formControlName="firstName" nz-input placeholder="First name"/>
+                <input formControlName="name" nz-input placeholder="First name"/>
             </div>
 
-            <div class="col-4">
-                Last name
-                <input formControlName="lastName" nz-input placeholder="Last name"/>
-            </div>
+
 
             <div class="col-4">
                 Address
@@ -76,6 +73,14 @@
         <!--        </nz-form-item>-->
         <!--      </div>-->
         <!--    </div>-->
+      <div class="mb-4">
+        <nz-upload
+          [nzHeaders]="{ authorization: 'authorization-text' }"
+          (nzChange)="onUpload($event)"
+        >
+          <button nz-button><i nz-icon nzType="upload"></i>Click to Upload</button>
+        </nz-upload>
+      </div>
       <div class="d-flex justify-content-end mt-5">
         <button class="mr-4" (click)="handleOk()" nz-button nzType="primary">Ok</button>
         <button (click)="handleCancel(false)" nz-button nzType="primary">Cancel</button>

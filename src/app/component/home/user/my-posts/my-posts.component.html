@@ -1,0 +1,29 @@
+<div style="max-width: 1200px; margin: auto" class="mt-4">
+  <div *ngFor="let item of data, let i = index"
+       style="cursor: pointer" (click)="PostsDetail(item)">
+    <div *ngIf=" item.userId == myPostsUserId" style="display: flex; background-color: #fff" class="mb-5 mt-5 col-8">
+
+      <div style="cursor: pointer">
+        <a>
+          <img *ngIf="item.imagePath" style="max-width: 200px" [src]="item.imagePath"/>
+
+          <img *ngIf="!item.imagePath" style="max-width: 200px"
+               src="https://cdnphoto.dantri.com.vn/7Ay2bMHqImHAgbQN5gvn_3JJp-Q=/zoom/378_252/2023/10/23/rocketphongtugazaveisraelreuters-crop-1698024802873.jpeg"/>
+        </a>
+      </div>
+      <div class="ml-3">
+        <div class="mb-1">
+
+          <a style="font-size: 19px; font-weight: 600">{{item.title}}</a>
+        </div>
+        <div class="mb-3">Ngày giờ</div>
+        <div>
+          <a
+            style="text-overflow: ellipsis; display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3">{{item.contentPost}}</a>
+          <!--        <a>{{item.contentPost}}</a>-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnChanges, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {ValidateService} from '../../../services/validate-service';
@@ -41,6 +41,7 @@ export class TableCoffeeBeanComponent implements OnInit {
       pageSize: 10,
     });
     this.handleSearch();
+    // this.changePage();
   }
 
   ngOnInit(): void {
@@ -48,7 +49,6 @@ export class TableCoffeeBeanComponent implements OnInit {
 
   handleUpdate(searchModel: SearchModelEntity, reset = false) {
     this.http.post('http://localhost:8080/api/coffee/search', this.searchModel).toPromise().then((data: any) => {
-      console.log('1: ', data);
       this.data = data.data;
       this.total = data.optional;
     });
@@ -57,14 +57,13 @@ export class TableCoffeeBeanComponent implements OnInit {
   handleSearch() {
     this.searchModel.pageIndex = 1;
     this.searchModel.pageSize = 10;
-    console.log('this.searchModel: ', this.searchModel);
     this.handleUpdate(this.searchModel, true);
   }
 
   changePage() {
     this.searchModel.pageIndex = this.curPage;
     this.searchModel.pageSize = 10;
-    // this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
+
     this.handleUpdate(this.searchModel, false);
   }
 
@@ -81,14 +80,12 @@ export class TableCoffeeBeanComponent implements OnInit {
     this.isAdd = false;
     this.isEdit = false;
     if (value) {
-      console.log('value popup');
       this.changePage();
     }
   }
 
   handleDelete(item: any) {
     this.http.post('http://localhost:8080/api/coffee/delete', item).subscribe((data: any) => {
-      console.log('data delete: ', data);
       if (data.errorCode == '00') {
         this.notificationService.showMessage('success', 'Xóa loại cafe thành công');
         this.isEdit = false;

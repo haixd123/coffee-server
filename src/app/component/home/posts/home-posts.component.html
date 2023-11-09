@@ -1,93 +1,90 @@
 <div style="max-width: 1200px; margin: auto; background-color: #fff; color: #000" class="row">
-  <div style="display: flex; background-color: #fff" class="mb-5 mt-5 col-8">
-    <div>
+  <div *ngFor="let item of data, let i = index" style="display: flex; background-color: #fff" class="mb-5 mt-5 col-8"
+       (click)="PostsDetail(item)">
+    <div style="cursor: pointer">
       <a>
-        <img style="max-width: 252px"
+        <img *ngIf="item.imagePath" style="max-width: 252px" [src]="item.imagePath"/>
+
+        <img *ngIf="!item.imagePath" style="max-width: 252px"
              src="https://cdnphoto.dantri.com.vn/7Ay2bMHqImHAgbQN5gvn_3JJp-Q=/zoom/378_252/2023/10/23/rocketphongtugazaveisraelreuters-crop-1698024802873.jpeg"/>
       </a>
     </div>
     <div class="ml-3">
       <div class="mb-1">
-        <a style="font-size: 21px; font-weight: 600">Ông Thaksin tiếp tục nằm viện, chưa phải ở nhà giam</a>
+
+        <a style="font-size: 21px; font-weight: 600">{{item.title}}</a>
       </div>
       <div class="mb-3">Ngày giờ</div>
       <div>
-        <a>Cựu Thủ tướng Thái Lan Thaksin Shinawatra được gia hạn thời gian ở bên ngoài nhà tù do tiếp tục phải điều trị
-          tại bệnh viện.</a>
+        <a style="text-overflow: ellipsis; display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3">{{item.contentPost}}</a>
+        <!--        <a>{{item.contentPost}}</a>-->
       </div>
     </div>
   </div>
-  <div class="col-4">
-    <div class="mt-5">
-      <div class="mb-5">
-        <span style="font-size: 23px; font-weight: 600"> Tin hot</span>
-      </div>
-      <div class="mt-2 d-flex" style=";border-bottom: 1px solid #ccc">
-        <div class="mb-3">
-          <a><img style="max-width: 90px"
-                  src="https://media.loveitopcdn.com/2360/hinh-dang-va-cau-tao-hat-ca-phe-nhan-robusta.jpg"/></a>
-        </div>
-        <div class="ml-2 mb-3" style="font-weight: 500; font-size: 14px">
-          <span style="text-overflow: ellipsis; display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3;">Testtttttttt Testttttttt Testtttttt Testttttt Testtttttt Testttttttt vvTesttttttttt Testtttttttt Testtttttttt Testtttttttt Testtttttttt</span>
-        </div>
-      </div>
-    </div>
+  <!--  <div class="col-4">-->
+  <!--    <div class="mt-5">-->
+  <!--      <div class="mb-5">-->
+  <!--        <span style="font-size: 23px; font-weight: 600"> Tin hot</span>-->
+  <!--      </div>-->
+  <!--      <div class="mt-2 d-flex" style=";border-bottom: 1px solid #ccc">-->
+  <!--        <div class="mb-3">-->
+  <!--          <a><img style="max-width: 90px"-->
+  <!--                  src="https://media.loveitopcdn.com/2360/hinh-dang-va-cau-tao-hat-ca-phe-nhan-robusta.jpg"/></a>-->
+  <!--        </div>-->
+  <!--        <div class="ml-2 mb-3" style="font-weight: 500; font-size: 14px">-->
+  <!--          <span style="text-overflow: ellipsis; display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3;">Testtttttttt Testttttttt Testtttttt Testttttt Testtttttt Testttttttt vvTesttttttttt Testtttttttt Testtttttttt Testtttttttt Testtttttttt</span>-->
+  <!--        </div>-->
+  <!--      </div>-->
+  <!--    </div>-->
 
-      <div class="mt-5" >
-        <div class="mb-5">
-          <span style="font-size: 23px; font-weight: 600">Thăm dò ý kiến</span>
-        </div>
+  <!--      <div class="mt-5" >-->
+  <!--        <div class="mb-5">-->
+  <!--          <span style="font-size: 23px; font-weight: 600">Thăm dò ý kiến</span>-->
+  <!--        </div>-->
 
-        <div class="pl-4" style="background-color: #ccc; width: 90%">
-          <div class="mb-3 mt-2 pt-2">
-            <span style="font-size: 19px; font-weight: 500">Loại cafe bạn yêu thích nhất</span>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-            <label class="form-check-label" for="flexRadioDefault1">
-              robusta
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-            <label class="form-check-label" for="flexRadioDefault2">
-              Arabica
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" checked>
-            <label class="form-check-label" for="flexRadioDefault3">
-              Cherry
-            </label>
-          </div>
-          <div class="d-flex mt-4">
-            <div class="mr-4">
-              <button type="button" class="btn btn-success">Gửi ý kiến</button>
-            </div>
-            <div>
-              <button type="button" class="btn btn-primary">Xem kết quả</button>
-            </div>
-          </div>
-          <div style="width: 100%" class="py-2">
-              <span>
-                Đã có 2000 người than gia
-              </span>
-          </div>
-        </div>
-      </div>
-
-  </div>
+  <!--        <div class="pl-4" style="background-color: #ccc; width: 90%">-->
+  <!--          <div class="mb-3 mt-2 pt-2">-->
+  <!--            <span style="font-size: 19px; font-weight: 500">Loại cafe bạn yêu thích nhất</span>-->
+  <!--          </div>-->
+  <!--          <div class="form-check">-->
+  <!--            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">-->
+  <!--            <label class="form-check-label" for="flexRadioDefault1">-->
+  <!--              robusta-->
+  <!--            </label>-->
+  <!--          </div>-->
+  <!--          <div class="form-check">-->
+  <!--            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>-->
+  <!--            <label class="form-check-label" for="flexRadioDefault2">-->
+  <!--              Arabica-->
+  <!--            </label>-->
+  <!--          </div>-->
+  <!--          <div class="form-check">-->
+  <!--            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3" checked>-->
+  <!--            <label class="form-check-label" for="flexRadioDefault3">-->
+  <!--              Cherry-->
+  <!--            </label>-->
+  <!--          </div>-->
+  <!--          <div class="d-flex mt-4">-->
+  <!--            <div class="mr-4">-->
+  <!--              <button type="button" class="btn btn-success">Gửi ý kiến</button>-->
+  <!--            </div>-->
+  <!--            <div>-->
+  <!--              <button type="button" class="btn btn-primary">Xem kết quả</button>-->
+  <!--            </div>-->
+  <!--          </div>-->
+  <!--          <div style="width: 100%" class="py-2">-->
+  <!--              <span>-->
+  <!--                Đã có 2000 người than gia-->
+  <!--              </span>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      </div>-->
+  <!--  </div>-->
   <div style="width: 100%;" class="d-flex justify-content-end col-8">
-    <nav style="text-align: end" aria-label="Page navigation example">
-      <ul class="pagination">
-        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item"><a class="page-link" href="#">Next</a></li>
-      </ul>
-    </nav>
+    <nz-pagination class="pb-4 mt-3" (click)="changePage()" [(nzPageIndex)]="curPage" [nzTotal]="total" [nzPageSize]="15"></nz-pagination>
   </div>
 
 </div>
+
+<!--<app-posts-detail [PostsId]="PostsId"></app-posts-detail>-->
 

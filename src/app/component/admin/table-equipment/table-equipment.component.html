@@ -1,36 +1,59 @@
 <form nz-form [formGroup]="formSearch">
-</form>
 
   <div class="d-flex align-items-center mb-4">
-      <button style="border-radius: 5px" class="d-flex align-items-center ml-3" nz-button nzType="primary">
-        <i nz-icon nzType="search" nzTheme="outline"></i> Tìm kiếm
-      </button>
-      <button style="border-radius: 5px" class="d-flex align-items-center ml-3" nz-button nzType="primary" (click)="handleAdd()">
-        <i nz-icon nzType="plus" nzTheme="outline"></i> Thêm mới
-      </button>
+    <button style="border-radius: 5px" class="d-flex align-items-center ml-3" nz-button nzType="primary">
+      <i nz-icon nzType="search" nzTheme="outline"></i> Tìm kiếm
+    </button>
+    <button style="border-radius: 5px" class="d-flex align-items-center ml-3" nz-button nzType="primary"
+            (click)="handleAdd()">
+      <i nz-icon nzType="plus" nzTheme="outline"></i> Thêm mới
+    </button>
 
   </div>
-  <nz-table style="" #basicTable [nzData]="listOfData" [nzBordered]="true">
+  <nz-table
+    #basicTable
+    [nzData]="data"
+    [(nzPageIndex)]="searchModel.pageIndex"
+    [nzFrontPagination]="false"
+    nzBordered
+    nzShowSizeChanger
+    [nzScroll]="{ x: '1200px'}"
+  >
     <thead>
     <tr>
+      <th>STT</th>
+      <th>Id</th>
       <th>Name</th>
-      <th>Age</th>
-      <th>Address</th>
+      <th>Title</th>
+      <th>Content</th>
+      <th>Image</th>
       <th>Action</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let data of basicTable.data">
-      <td>{{ data.name }}</td>
-      <td>{{ data.age }}</td>
-      <td>{{ data.address }}</td>
-      <td>
-        <a style="font-size: 21px" class="mr-3" (click)="handleEdit(data)"><i nz-icon nzType="edit" nzTheme="outline"></i></a>
-        <a style="font-size: 21px" ><i nz-icon nzType="delete" nzTheme="outline"></i></a>
+    <tr *ngFor="let item of data, let i = index">
+      <td class="text-nowrap">{{validateService.getRowIndex(i, basicTable.nzPageIndex, basicTable.nzPageSize)}}</td>
+      <td>{{ item.id }}</td>
+      <td>{{ item.name }}</td>
+      <td style=" white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+        {{ item.title }}</td>
+      <!--      <td>{{ item.title }}</td>-->
+      <!--    <td>{{ item.contentCoffee }}</td>-->
+      <td style=" white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+        {{ item.contentEquipment }}</td>
+      <td><img style="width: 100%;" [src]="item.image"/></td>
+      <td style="min-width: 120px; text-align: center">
+        <a style="font-size: 21px" class="mr-3" (click)="handleEdit(item)"><i nz-icon nzType="edit"
+                                                                              nzTheme="outline"></i></a>
+        <a style="font-size: 21px" (click)="handleDelete(item)"><i nz-icon nzType="delete" nzTheme="outline"></i></a>
       </td>
     </tr>
     </tbody>
   </nz-table>
+  <div class="d-flex justify-content-end">
+    <nz-pagination class="pb-4" (click)="changePage()" [(nzPageIndex)]="curPage" [nzTotal]="total"></nz-pagination>
+  </div>
+</form>
 
 <app-add-equipment [isAdd]="isAdd" (closePopup)=handleClosePopup($event)></app-add-equipment>
-<app-edit-equipment [isEdit]="isEdit" (closePopup)=handleClosePopup($event)></app-edit-equipment>
+<app-edit-equipment [isEdit]="isEdit" [dataEdit]="dataEdit" (closePopup)=handleClosePopup($event)></app-edit-equipment>

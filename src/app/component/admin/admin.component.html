@@ -1,4 +1,4 @@
-<nz-layout class="app-layout">
+<nz-layout style="width: 100vw" class="app-layout">
   <nz-sider class="menu-sidebar"
             nzCollapsible
             nzWidth="256px"
@@ -8,12 +8,12 @@
     <div style="display: flex; align-items: center; margin-top: 15px"
          class="mn-header-top {{isCollapsed? 'mn-header-top-small':'header-large-icon'}}">
       <div class="mn-hd-tLeft d-flex">
-        <a href="https://ng.ant.design/" target="_blank">
-          <img style="width: 25px" src="https://ng.ant.design/assets/img/logo.svg" alt="logo">
+        <a href="https://ng.ant.design/" target="_blank" style="color:#fff; background-color: #fff">
+          <img style="width: 22px; color: #fff" src="https://cdn-icons-png.flaticon.com/512/3054/3054889.png" alt="logo">
         </a>
         <span *ngIf="!isCollapsed" class="ml-2" style="color: #fff; font-size: 16px">Diễn đàn cafe</span>
       </div>
-      <div class="mn-hd-tRight"><i style="font-size: 18px; background-color: #001529; color: #c3c3c3; cursor: pointer"
+      <div class="mn-hd-tRight mb-1"><i style="font-size: 21px; background-color: #001529; color: #c3c3c3; cursor: pointer"
                                    class="trigger trigger-white ml-3" nz-icon
                                    [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"
                                    (click)="isCollapsed = !isCollapsed"></i></div>
@@ -45,21 +45,25 @@
     </ul>
   </nz-sider>
   <nz-layout>
-    <nz-header class="d-flex justify-content-end">
-      <div class="user-link col-1" style="margin-right: 55px">
-        <a class="d-flex align-items-center px-3" style="color: #fff">
-          <i nz-icon nzType="user" nzTheme="outline" class="mr-1"></i>User</a>
+    <nz-header class="d-flex justify-content-between pl-4 pl-3" style="background-color: #fff">
+      <div style="font-size: 21px; font-weight: 700; color: #000">Công cụ quản lý ngân hàng</div>
+      <div class="user-link" style="margin-right: 55px">
+        <a class="d-flex align-items-center px-3" style="color: #000">
+          <img style="width: 100%; border-radius: 50%; min-width: 35px; max-width: 35px; height: 35px; margin-right: 5px"
+               [src]="infoUser.image"/>
+          {{infoUser.firstName}} {{infoUser.lastName}}</a>
         <div class="user" style="width: 240px; color: #000">
           <div class="ml-3">
             <div style="height: 64px" class="d-flex flex-wrap">
-              <div class="col-4 d-flex align-items-center">
-                avatar1
+              <div class="align-items-center p-0 mr-1">
+                <img style="width: 100%; border-radius: 50%; min-width: 50px; max-width: 50px; height: 50px"
+                     [src]="infoUser.image"/>
               </div>
-              <div class="d-flex flex-wrap mb-5">
-                <div class="col-8 mb-2" style="height: 20px">
+              <div style="margin-top: -11px" class="d-flex flex-wrap">
+                <div class="col-8" style="height: 20px">
                   Xin chào
                 </div>
-                <div class="col-8" style="height: 20px">
+                <div class="col-8" style="height: 20px; margin-top: -24px">
                   {{infoUser.firstName}} {{infoUser.lastName}}
                 </div>
               </div>

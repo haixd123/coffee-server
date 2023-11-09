@@ -38,9 +38,7 @@ export class LoginComponent implements OnInit {
         .subscribe(
           (res) => {
             if (!!res) {
-              console.log('res login: ', res);
               this.notificationService.showMessage('success', 'Đăng nhập thành công');
-              console.log('login success');
               this.loading = false;
               if (res.role === 1) {
                 this.router.navigate(['/home/posts']);
@@ -48,9 +46,7 @@ export class LoginComponent implements OnInit {
                 this.router.navigate(['/admin']);
               }
             } else {
-              console.log('res login: ', res);
               this.loading = false;
-              console.log('login failed');
               this.notificationService.showMessage('error', 'Tài khoản hoặc mật khẩu không chính xác');
             }
           },

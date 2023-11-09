@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FormGroup} from '@angular/forms';
-import {SearchModelEntity} from '../../admin/search-model-entiry';
+import {SearchModelEntity} from '../../../../admin/search-model-entiry';
 
 @Component({
   selector: 'app-ckeditor-detail',
@@ -39,16 +39,11 @@ export class CkeditorDetailComponent implements OnInit, OnChanges {
 
   // myCode = '<div><div {{*ngFor="let item of dataCoffeeBean"}} >{{item.contentCoffee}}</div></div>';
   ngOnChanges() {
-    console.log('this.cofeeBeanId | onchange: ', this.cofeeBeanId);
     // this.slugCoffeeBeanDetail = this.cofeeBeanId;
-    console.log('this.slugCoffeeBeanDetail | onchange: ', this.slugCoffeeBeanDetail);
     this.test1 = 1;
   }
 
   ngOnInit() {
-    console.log('this.cofeeBeanId | ngOnInit: ', this.cofeeBeanId);
-    console.log('this.slugCoffeeBeanDetail | ngOnInit: ', this.slugCoffeeBeanDetail);
-    console.log('this.test1 | ngOnInit: ', this.test1);
   }
 
   // myCode1() {

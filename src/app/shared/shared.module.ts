@@ -26,6 +26,8 @@ import {NzDatePickerModule} from 'ng-zorro-antd/date-picker';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import {NzBackTopModule} from 'ng-zorro-antd/back-top';
 import {NzRadioModule} from 'ng-zorro-antd/radio';
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import {FormatDatePipe} from './pipe/format-date.pipe';
 
 @NgModule({
   imports: [
@@ -83,10 +85,12 @@ import {NzRadioModule} from 'ng-zorro-antd/radio';
     DragDropModule,
     NzBackTopModule,
     NzRadioModule,
+    BsDatepickerModule,
+    FormatDatePipe
     // CKEditorModule,
     // EditorModule
   ],
-  declarations: [],
+  declarations: [FormatDatePipe],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

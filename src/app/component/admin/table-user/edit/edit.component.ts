@@ -3,6 +3,10 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {AddUserComponent} from '../add/add.component';
 import {HttpClient} from '@angular/common/http';
 import {NotificationService} from '../../../../services/notification.service';
+import {NzUploadChangeParam} from 'ng-zorro-antd';
+import {finalize} from 'rxjs/operators';
+import {AngularFireStorage} from '@angular/fire/storage';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-edit-user',
@@ -17,29 +21,33 @@ export class EditUserComponent implements OnInit, OnChanges {
 
 
   formEdit: FormGroup;
-  isVisible = false;
+
+  selectedFile: File;
+  urlImage: string;
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     private notificationService: NotificationService,
-
+    private storage: AngularFireStorage,
+    public datePipe: DatePipe,
   ) {
     this.formEdit = this.fb.group({
       id: null,
       userName: null,
       passWord: null,
       email: null,
-      firstName: null,
-      lastName: null,
+      name: null,
       address: null,
       age: null,
       role: null,
       phoneNumber: null,
       dateOfBirth: null,
+      dateOfBirthCur: null,
       sex: null,
-      createDate: null,
-      status: null
+      // createDate: null,
+      status: null,
+      image: null
     });
   }
 
@@ -49,8 +57,7 @@ export class EditUserComponent implements OnInit, OnChanges {
       userName: this.dataEdit.userName,
       passWord: this.dataEdit.passWord,
       email: this.dataEdit.email,
-      firstName: this.dataEdit.firstName,
-      lastName: this.dataEdit.lastName,
+      name: this.dataEdit.name,
       address: this.dataEdit.address,
       age: this.dataEdit.age,
       role: this.dataEdit.role,
@@ -59,6 +66,7 @@ export class EditUserComponent implements OnInit, OnChanges {
       sex: this.dataEdit.sex,
       createDate: this.dataEdit.createDate,
       status: this.dataEdit.status,
+      image: this.dataEdit.image
     });
   }
 
@@ -69,9 +77,33 @@ export class EditUserComponent implements OnInit, OnChanges {
     this.isEdit = true;
   }
 
+  onUpload(info: NzUploadChangeParam) {
+    this.selectedFile = info.file.originFileObj;
+    const uploadImageData = new FormData();
+    uploadImageData.append('files', this.selectedFile, this.selectedFile.name);
+    const filePath = `'/image' + '/' + ${Math.random()} + '/' + ${this.selectedFile.name}`;
+    const fileRef = this.storage.ref(filePath);
+    this.storage.upload(filePath, this.selectedFile).snapshotChanges().pipe(
+      finalize(() => {
+        fileRef.getDownloadURL().subscribe((url) => {
+          this.urlImage = url;
+        });
+      })
+    ).subscribe();
+    // .subscribe((res) => {
+    //     if (res.status === 200) {
+    //       console.log('success | res : ', res);
+    //     } else {
+    //       console.log('failed');
+    //     }
+    //   }
+    // );
+  }
+
   handleOk(): void {
+    this.formEdit.get('image').setValue(this.urlImage);
+    this.formEdit.get('dateOfBirth').setValue(this.datePipe.transform(this.formEdit.get('dateOfBirthCur').value, 'dd/MM/yyyy'));
     this.http.post('http://localhost:8080/api/user/update', this.formEdit.value).toPromise().then((data: any) => {
-      console.log('data: ', data);
       if (data.errorCode == '00') {
         this.notificationService.showMessage('success', 'Sửa bài đăng thành công');
         this.isEdit = false;
@@ -88,7 +120,6 @@ export class EditUserComponent implements OnInit, OnChanges {
   }
 
   handleCancel(value: any): void {
-    console.log('Button cancel clicked!');
     this.isEdit = false;
     this.closePopup.emit(value);
   }

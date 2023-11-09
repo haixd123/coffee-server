@@ -5,13 +5,15 @@
 
 export const environment = {
   production: false,
+  apiUrl: 'http://localhost:8080/api/',
   firebaseConfig: {
     apiKey: 'AIzaSyBLnNomPuo9kTdFMtSoArR0QUAFPEwA-9I',
     authDomain: 'coffee2-c0521.firebaseapp.com',
     projectId: 'coffee2-c0521',
     storageBucket: 'coffee2-c0521.appspot.com',
     messagingSenderId: '716579486971',
-    appId: '1:716579486971:web:c637fd5c9ba7dc8e32845e'
+    appId: '1:716579486971:web:c637fd5c9ba7dc8e32845e',
+    measurementId: 'G-MEASUREMENT_ID',
   }
 };
 /*

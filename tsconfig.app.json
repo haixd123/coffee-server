@@ -2,7 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": ["firebase"],
+    "moduleResolution": "node",
+    "esModuleInterop": true
   },
   "files": [
     "src/main.ts",

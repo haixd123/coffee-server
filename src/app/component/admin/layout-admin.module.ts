@@ -5,7 +5,7 @@ import {AdminComponent} from './admin.component';
 import {RouterModule} from '@angular/router';
 import {NzDropDownModule} from 'ng-zorro-antd/dropdown';
 import {NzBreadCrumbModule} from 'ng-zorro-antd/breadcrumb';
-import {SharedModule} from '../../shared.module';
+import {SharedModule} from '../../shared/shared.module';
 import {AdminLayoutRoutingModule} from './admin-layout-routing.module';
 import { TableCoffeeBeanComponent } from './table-coffee-bean/table-coffee-bean.component';
 import { TableEquipmentComponent } from './table-equipment/table-equipment.component';
@@ -21,14 +21,23 @@ import {EditUserComponent} from './table-user/edit/edit.component';
 import {AddPostsComponent} from './table-posts/add/add.component';
 import {EditPostsComponent} from './table-posts/edit/edit.component';
 import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
+import {BsDatepickerModule, BsLocaleService} from 'ngx-bootstrap/datepicker';
+import {BsDatepickerActions} from 'ngx-bootstrap/datepicker/reducer/bs-datepicker.actions';
+import {DatePipe} from '@angular/common';
 // import {Api} from './api.service';
 @NgModule({
   declarations: [AdminComponent, TableCoffeeBeanComponent, TableEquipmentComponent, TableUserComponent, AddComponent, EditComponent, TablePostsComponent, AddComponent, EditComponent, EditCoffeeBeanComponent, AddCoffeeBeanComponent, AddUserComponent, EditUserComponent, AddPostsComponent, EditPostsComponent],
-  imports: [NzFormModule, NgZorroAntdModule, SharedModule,
+  imports: [
+    NzFormModule,
+    NgZorroAntdModule,
+    SharedModule,
+    CKEditorModule,
     RouterModule.forChild([]),
-    AdminLayoutRoutingModule,
-    NzDropDownModule,
-    NzBreadCrumbModule, CKEditorModule],
+    // BsDatepickerModule.forRoot(),
+    // AdminLayoutRoutingModule,
+    // NzDropDownModule,
+    // NzBreadCrumbModule,
+  ],
   providers: []
 })
 export class LayoutAdminModule {

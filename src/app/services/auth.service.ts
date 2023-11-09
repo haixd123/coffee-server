@@ -17,8 +17,6 @@ export class AuthService {
   }
 
   getUser() {
-    console.log(this.userSubject);
-    console.log(this.userSubject.value);
     return this.userSubject.value;
   }
 
@@ -31,8 +29,7 @@ export class AuthService {
       .pipe(
         map((res: any) => {
 
-          console.log(res);
-         
+
           this._token.setToken(res.token);
           this._token.setUser(res.user);
           localStorage.setItem("user", JSON.stringify(res.user));
@@ -49,9 +46,8 @@ export class AuthService {
     return this._api.postTypeRequest('authors/register', {
       email: user.email,
       passWord: user.password,
-      userName: user.userName,  
-      firstName: user.firstName, 
-      lastName: user.lastName  
+      userName: user.userName,
+      name: user.name,
     });
   }
 

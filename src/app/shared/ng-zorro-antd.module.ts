@@ -67,6 +67,7 @@ import { NzTypographyModule } from 'ng-zorro-antd/typography';
 import { NzUploadModule } from 'ng-zorro-antd/upload';
 import { NzResizableModule } from 'ng-zorro-antd/resizable';
 import {NzConfigService, NzNotificationService} from 'ng-zorro-antd';
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 
 @NgModule({
   exports: [
@@ -135,6 +136,7 @@ import {NzConfigService, NzNotificationService} from 'ng-zorro-antd';
     NzUploadModule,
     NzWaveModule,
     NzResizableModule,
+    BsDatepickerModule
   ]
 })
 export class NgZorroAntdModule {

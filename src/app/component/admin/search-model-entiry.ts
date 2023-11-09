@@ -3,6 +3,7 @@ export class SearchModelEntity {
   pageIndex: number;
   pageSize: number;
   // name: string;
+  hashtag: string;
   // code: string;
   // type: number;
   // status: number;

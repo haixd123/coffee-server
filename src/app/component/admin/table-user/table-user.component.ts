@@ -40,6 +40,7 @@ export class TableUserComponent implements OnInit {
       pageSize: 10,
     });
     this.handleSearch();
+    // this.changePage();
   }
 
   ngOnInit(): void {
@@ -47,7 +48,6 @@ export class TableUserComponent implements OnInit {
 
   handleUpdate(searchModel: SearchModelEntity, reset = false) {
     this.http.post('http://localhost:8080/api/user/search', this.searchModel).toPromise().then((data: any) => {
-      console.log('1: ', data);
       this.data = data.data;
       this.total = data.optional;
     });
@@ -56,7 +56,6 @@ export class TableUserComponent implements OnInit {
   handleSearch() {
     this.searchModel.pageIndex = 1;
     this.searchModel.pageSize = 10;
-    console.log('this.searchModel | handleSearch: ', this.searchModel);
     this.handleUpdate(this.searchModel, true);
   }
 
@@ -64,8 +63,6 @@ export class TableUserComponent implements OnInit {
     this.searchModel.pageIndex = this.curPage;
     this.searchModel.pageSize = 10;
     // this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
-    console.log('this.searchModel | test ', this.searchModel);
-    console.log('this.curPage | test ', this.curPage);
     this.handleUpdate(this.searchModel, false);
   }
 
@@ -76,21 +73,18 @@ export class TableUserComponent implements OnInit {
   handleEdit(item: any) {
     this.isEdit = true;
     this.dataEdit = item;
-    console.log('item: ', item);
   }
 
   handleClosePopup(value: any) {
     this.isAdd = false;
     this.isEdit = false;
     if (value) {
-      console.log('value popup');
       this.changePage();
     }
   }
 
   handleDelete(item: any) {
     this.http.post('http://localhost:8080/api/user/delete', item).toPromise().then((data: any) => {
-      console.log('data delete: ', data);
       if (data.errorCode == '00') {
         this.notificationService.showMessage('success', 'Xóa bài đăng thành công');
         this.isEdit = false;
