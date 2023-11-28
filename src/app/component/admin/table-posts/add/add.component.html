@@ -6,12 +6,24 @@
     <div class="mt-2 mb-3">
       <input style="width: 100%;" formControlName="title">
     </div>
-    Content
+    Phân loại
+    <div class="mt-2 mb-3">
+      <nz-select style="width: 180px" nzPlaceHolder="Trang thiết bị" formControlName="category">
+        <nz-option nzValue="Cà phê" nzLabel="Cà phê"></nz-option>
+        <nz-option nzValue="Trang thiết bị" nzLabel="Trang thiết bị"></nz-option>
+        <nz-option nzValue="Giới thiệu" nzLabel="Giới thiệu"></nz-option>
+        <nz-option nzValue="Hẹn hò" nzLabel="Hẹn hò"></nz-option>
+        <nz-option nzValue="Du lịch" nzLabel="Du lịch"></nz-option>
+        <nz-option nzValue="Sự kiện" nzLabel="Sự kiện"></nz-option>
+
+      </nz-select>
+    </div>
+    Giới thiệu
     <div class="mt-2 mb-4">
       <input style="width: 100%;" formControlName="contentPost">
     </div>
     <div class="mb-3" *ngIf="urlImage">
-      <img style="width: 100%; max-width: 350px" [src]="urlImage" />
+      <img style="width: 100%; max-width: 350px" [src]="urlImage"/>
     </div>
     <div class="mb-4">
       <nz-upload
@@ -22,6 +34,7 @@
       </nz-upload>
     </div>
 
+    <div class="my-2">Nội dung</div>
     <ckeditor formControlName="contentDetail" [editor]="Editor"></ckeditor>
     <!--        <ckeditor formControlName="content1" [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>-->
     <div class="d-flex justify-content-end mt-5">

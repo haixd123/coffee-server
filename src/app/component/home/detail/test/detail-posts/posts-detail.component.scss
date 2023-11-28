@@ -1,3 +1,38 @@
 ::ng-deep .test img {
   width: 100% !important;
 }
+
+.itemPosts:hover .moreButton{
+  display: block;
+}
+
+.moreButton {
+  z-index: 5;
+  display: none;
+  cursor: pointer;
+}
+
+.moreButton:hover .editComment {
+  display: block;
+}
+
+.editComment {
+  display: none;
+  background-color: #c3c3c3;
+  z-index: 20;
+}
+
+.editComment::before {
+  position: absolute;
+  content: "";
+  background-color: transparent;
+  width: 30px;
+  height: 30px;
+  top: -17px;
+  right: 12px;
+}
+
+.hoverEditPosts:hover {
+  background-color: #f2f2f2;
+  cursor: pointer;
+}

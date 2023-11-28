@@ -12,8 +12,8 @@
     </div>
     <div class="mb-3">
       <div class="mb-2">
-        <img style="width: 100%; max-width: 300px" class="mb-3" [src]="urlImage" />
-<!--        <input style="width: 100%;" formControlName="image">-->
+        <img style="width: 100%; max-width: 300px" class="mb-3" [src]="urlImage"/>
+        <!--        <input style="width: 100%;" formControlName="image">-->
       </div>
       <div class="mb-3">
         <nz-upload
@@ -23,8 +23,9 @@
           <button nz-button><i nz-icon nzType="upload"></i>Click to Upload</button>
         </nz-upload>
       </div>
-
     </div>
+
+    <div class="my-2">Nội dung</div>
     <ckeditor formControlName="contentCoffee" [editor]="Editor"></ckeditor>
     <div class="d-flex justify-content-end mt-5">
       <button class="mr-4" (click)="handleOk()" nz-button nzType="primary">Ok</button>

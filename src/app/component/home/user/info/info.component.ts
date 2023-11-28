@@ -57,7 +57,6 @@ export class InfoComponent implements OnInit, OnChanges {
     });
     this.handleSearch();
     this.idUserLocalstorage = JSON.parse(localStorage.getItem('user')).id;
-    console.log('ssssssssss: ', JSON.parse(localStorage.getItem('user')).dateOfBirth);
   }
 
   ngOnChanges() {
@@ -72,14 +71,12 @@ export class InfoComponent implements OnInit, OnChanges {
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
     this.isVisible = false;
   }
 
   handleUpdate(searchModel: SearchModelEntity) {
     this.http.post('http://localhost:8080/api/user/search', this.searchModel).toPromise().then((data: any) => {
       this.data = data.data;
-      console.log('data.data:', data.data);
       this.total = data.optional;
     });
   }
@@ -178,7 +175,6 @@ export class InfoComponent implements OnInit, OnChanges {
     console.log(this.formAdd.value);
     this.http.post('http://localhost:8080/api/user/updateInfo', this.formAdd.value).toPromise().then((data: any) => {
       this.http.post(`http://localhost:8080/api/user/search/${data.data.id}`, data.data.id).subscribe((res: any) => {
-        console.log('res: ', res);
         localStorage.setItem('user', JSON.stringify(res.data));
         this.handleSearch();
         setTimeout(() => {

@@ -6,6 +6,7 @@ import {NotificationService} from '../../../../services/notification.service';
 import {NzUploadChangeParam} from 'ng-zorro-antd';
 import {finalize} from 'rxjs/operators';
 import {AngularFireStorage} from '@angular/fire/storage';
+import {Api} from '../../../../services/api';
 
 @Component({
   selector: 'app-edit-coffee-bean',
@@ -31,6 +32,7 @@ export class EditCoffeeBeanComponent implements OnInit, OnChanges {
     private http: HttpClient,
     private notificationService: NotificationService,
     private storage: AngularFireStorage,
+    private api: Api,
   ) {
     this.formEdit = this.fb.group({
       id: null,
@@ -55,7 +57,7 @@ export class EditCoffeeBeanComponent implements OnInit, OnChanges {
       image: this.dataEdit.image,
       contentCoffee: this.dataEdit.contentCoffee,
     });
-    console.log('this.dataEdit: ', this.dataEdit);
+    this.dataEdit.get('id').setValue(this.dataEdit.id);
     this.urlImage = this.dataEdit.image;
   }
 
@@ -95,7 +97,7 @@ export class EditCoffeeBeanComponent implements OnInit, OnChanges {
   handleOk(): void {
     this.formEdit.get('image').setValue(this.urlImage);
 
-    this.http.post('http://localhost:8080/api/coffee/update', this.formEdit.value).toPromise().then((data: any) => {
+    this.api.updateCoffeeBean(this.formEdit.value).toPromise().then((data: any) => {
       if (data.errorCode == '00') {
         this.notificationService.showMessage('success', 'Sửa bài đăng thành công');
         this.handleCancel(true);

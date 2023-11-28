@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {FormGroup} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {SearchModelEntity} from '../../../../admin/search-model-entiry';
+import {Api} from '../../../../../services/api';
 
 @Component({
   selector: 'app-detail-equipment',
@@ -19,12 +20,13 @@ export class DetailEquipmentComponent implements OnInit, OnChanges {
 
   slugEquipmentDetail: any;
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+  private api: Api,
 
   ) {
     this.searchModel.pageIndex = 1;
     this.searchModel.pageSize = 30;
-    this.http.post('http://localhost:8080/api/equipment/search', this.searchModel).toPromise().then((data: any) => {
+    this.api.getListEquipment(this.searchModel).toPromise().then((data: any) => {
       this.dataEquipment = data.data;
     });
     this.slugEquipmentDetail = localStorage.getItem('equipmentId');

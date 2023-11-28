@@ -6,6 +6,7 @@ import {NzUploadChangeParam} from 'ng-zorro-antd';
 import {finalize} from 'rxjs/operators';
 import {NotificationService} from '../../../../services/notification.service';
 import {AngularFireStorage} from '@angular/fire/storage';
+import {Api} from '../../../../services/api';
 
 
 @Component({
@@ -28,6 +29,8 @@ export class AddComponent implements OnInit {
     private http: HttpClient,
     private notificationService: NotificationService,
     private storage: AngularFireStorage,
+    private api: Api,
+
   ) {
     this.formAdd = this.fb.group({
       name: null,
@@ -71,7 +74,7 @@ export class AddComponent implements OnInit {
   handleOk(): void {
     setTimeout(() => {
       this.formAdd.get('image').setValue(this.urlImage);
-      this.http.post('http://localhost:8080/api/equipment/create', this.formAdd.value).toPromise().then((data: any) => {
+      this.api.createEquipment(this.formAdd.value).toPromise().then((data: any) => {
         if (data.errorCode == '00') {
           this.notificationService.showMessage('success', 'Thêm loại cafe mới thành công');
           this.handleCancel(true);

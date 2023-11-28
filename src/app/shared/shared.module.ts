@@ -28,6 +28,8 @@ import {NzBackTopModule} from 'ng-zorro-antd/back-top';
 import {NzRadioModule} from 'ng-zorro-antd/radio';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import {FormatDatePipe} from './pipe/format-date.pipe';
+import {SortPipe} from './pipe/sort.pipe';
+import {FilterPipe} from './pipe/filter.pipe';
 
 @NgModule({
   imports: [
@@ -86,11 +88,13 @@ import {FormatDatePipe} from './pipe/format-date.pipe';
     NzBackTopModule,
     NzRadioModule,
     BsDatepickerModule,
-    FormatDatePipe
+    FormatDatePipe,
+    SortPipe,
+    FilterPipe,
     // CKEditorModule,
     // EditorModule
   ],
-  declarations: [FormatDatePipe],
+  declarations: [FormatDatePipe, SortPipe, FilterPipe],
 
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

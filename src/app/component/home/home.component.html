@@ -1,89 +1,128 @@
-<nz-layout xmlns="http://www.w3.org/1999/html">
-  <nz-header style="background-color: #dddddd; position: relative">
-    <div style="display: flex; justify-content: space-between" class="row">
-      <div style="color: #000" class="d-flex">
+﻿<nz-layout style="height: 100vh;" xmlns="http://www.w3.org/1999/html">
+  <nz-header style="background-color: #545454">
+    <!--    class="{{isCoffee == 1 ? 'coffee' : isCoffee == 2 ? 'equipment' : isCoffee == 3 ? 'news' : isCoffee == 4 ? 'contact' : 'noBody' }}"-->
+    <div style="display: flex; justify-content: space-between; color: #fff;width: 100%" class="row">
+      <div style="color: #fff" class="d-flex">
         <!--        content1-->
-        <div>
-          <a style="padding: 22px 10px">Giới thiệu</a>
-        </div>
+        <!--        <div>-->
+        <!--          <a style="padding: 22px 10px">Giới thiệu</a>-->
+        <!--        </div>-->
         <!--        content2-->
         <div>
-          <a style="padding: 22px 10px; color: #000" [routerLink]="['/home/coffee-bean']">Sản phẩm</a>
+          <a style="padding: 22px 10px; color: #fff" (click)="linkToCoffee()">Sản phẩm</a>
         </div>
         <div>
-          <a style="padding: 22px 10px; color: #000" [routerLink]="['/home/equipment']">Công cụ, máy móc</a>
+          <a style="padding: 22px 10px; color: #fff" (click)="linkToEquipment()">Công cụ, máy móc</a>
         </div>
         <!--        content3-->
         <div>
-          <a style="padding: 22px 10px; color: #000" [routerLink]="['/home/posts']">Bài viết</a>
+          <a style="padding: 22px 10px; color: #fff" (click)="linkToPost()">Bài viết</a>
 
         </div>
       </div>
       <div>
       </div>
-      <div>
-        <form nz-form [formGroup]="formSearch">
-          <div class="d-flex align-items-center input-group" style="width: 380px; height: 100%">
-            <input formControlName="name" nz-input>
-            <!--                   type="text" class="form-control" placeholder="Tìm kiếm theo hashtag"-->
-            <!--                   aria-label="Recipient's username"-->
-            <!--                   aria-describedby="basic-addon2">-->
-            <div class="input-group-append d-flex align-items-center">
-              <button style="padding: 3px 12px 9px" class="btn btn-outline-secondary" type="button"
-                      (click)="handleSearchInput()"><i
-                style="font-size: 18px" nz-icon nzType="search" nzTheme="outline"></i></button>
-            </div>
-          </div>
-        </form>
-      </div>
+      <div style="color: #fff">
+        <!--        <form nz-form [formGroup]="formSearch">-->
 
-      <div class="d-flex align-items-center" style="color: #000">
-        <a class="d-flex align-items-center px-3" style="color: #000" [routerLink]="['/home/posts/write']">
-          <i nz-icon nzType="edit" nzTheme="outline" class="mr-1"></i> Viết bài</a>
-
-
-        <div class="notify-link">
-          <a class="d-flex align-items-center px-3 " style="color: #000">
-            <i nz-icon nzType="bell" nzTheme="outline" class="mr-1"></i>Thông báo
-          </a>
-          <app-notification class="notify"></app-notification>
-          <!--          <div class="notify" style="color: #000">-->
-          <!--            <div class="mx-3">-->
-          <!--              <div>-->
-          <!--                <span style="font-size: 15px">Thông báo mới nhận</span></div>-->
-          <!--              <div class="row">-->
-          <!--                <a class="col-2">avatar</a>-->
-          <!--                <div style="font-size: 15px" class="col-10 d-flex flex-column">-->
-          <!--                  <a style="height: 25px">Đã nhắc đến bạn</a>-->
-          <!--                  <a>19 giờ trước</a>-->
-          <!--                </div>-->
-          <!--              </div>-->
-          <!--              <div style="font-size: 15px" class="d-flex justify-content-center">-->
-          <!--                <a>Xem tất cả</a>-->
-          <!--              </div>-->
-          <!--            </div>-->
+        <div class="d-flex align-items-center" style="width: 380px; height: 100%">
+          <!--          <a href="https://www.freepnglogos.com/images/coffee-logo-png-7521.html"></a>-->
+          <img style="width: 40%"
+               src="assets/coffee-house.png">
+          <!--         //??? src k hiện ảnh?-->
+          <!--          &lt;!&ndash;          <input nz-input type="text" formControlName="name">&ndash;&gt;-->
+          <!--          <input nz-input type="text" [(ngModel)]="searchCoffee" (change)="sendData(searchCoffee)">-->
+          <!--          &lt;!&ndash;            <input formControlName="name" nz-input >&ndash;&gt;-->
+          <!--          &lt;!&ndash;                   type="text" class="form-control" placeholder="Tìm kiếm theo hashtag"&ndash;&gt;-->
+          <!--          &lt;!&ndash;                   aria-label="Recipient's username"&ndash;&gt;-->
+          <!--          &lt;!&ndash;                   aria-describedby="basic-addon2">&ndash;&gt;-->
+          <!--          <div class="d-flex align-items-center">-->
+          <!--            <button style="padding: 2px 12px 6px" class="btn btn-outline-secondary" type="button"-->
+          <!--                    (click)="sendData()"><i-->
+          <!--              style="font-size: 18px" nz-icon nzType="search" nzTheme="outline"></i></button>-->
           <!--          </div>-->
         </div>
+        <!--        </form>-->
+      </div>
 
-        <div class="user-link">
-          <a class="d-flex align-items-center px-3" style="color: #000">
+      <div class="d-flex align-items-center" style="color: #fff">
+        <a class="d-flex align-items-center px-3" style="color: #fff !important;" [routerLink]="['/home/write']"
+           (click)="noBody()">
+          <i nz-icon nzType="edit" nzTheme="outline" class="mr-1"></i> Viết bài</a>
+        <div class="notify-link">
+          <a class="d-flex align-items-center px-3" style="color: #fff" [routerLink]="['/home/contact']"
+             (click)="linkToContact()">
+            <i nz-icon nzType="bell" nzTheme="outline"></i>Thông báo</a>
+          <div class="notify" style="color: #000">
+            <div class="mx-3">
+              <div *ngFor="let item of dataNotify">
+<!--                <div *ngFor="let itemPost of dataPost">-->
+<!--                <div *ngIf="item.postId == itemPost.id" class="row"-->
+                <div class="row"
+                       style="border-top: 1px solid #fff; border-bottom: 1px solid #fff">
+                    <a class="col-3">
+<!--                      <img style="max-width: 120%; height: 70%; object-fit: cover; border-radius: 50%"-->
+<!--                           [src]="itemPost.imagePath"/>-->
+                    </a>
+                    <div style="font-size: 15px; margin-left: -10px;" class="col-9 d-flex">
+                      <div>
+                        <div style="margin-top: -17px; height: 33px;" class="ml-2">
+                          <a style="color: #000" class="mr-2">{{item.name}}</a>
+                          <a style="height: 25px">Đã nhắc đến bạn</a>
+                        </div>
+                        <div class="ml-2">
+                          <a>19 giờ trước</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+<!--                </div>-->
+              </div>
+              <div style="font-size: 15px" class="d-flex justify-content-center">
+                <a>Xem tất cả</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="category-link">
+          <a class="d-flex align-items-center px-3 " style="color: #fff">
+            <i nz-icon nzType="unordered-list" nzTheme="outline" class="mr-1"></i>Danh mục bài viết
+          </a>
+          <div class="category">
+            <div>
+              <div *ngFor="let item of dataCategory" class="item-category">
+                <!--                style="border-top: 1px solid #fff; border-bottom: 1px solid #fff">-->
+                <a class="d-flex align-items-center px-3 " style="color: #000" (click)="category(item)">
+                  {{item}}
+                </a>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div *ngIf="userLocalstorage" class="user-link" style="padding: 15px 0">
+          <a class="d-flex align-items-center px-3" style="color: #fff">
             <img
               style="width: 100%; border-radius: 50%; min-width: 35px; max-width: 35px; height: 35px; margin-right: 5px"
-              [src]="infoUser.image"/>
+              [src]="userLocalstorage.image"/>
           </a>
-          <div class="user" style="width: 240px; color: #000">
+          <div class="user" style="width: 240px; color: #000; background-color: #e6e6e6; margin-top: 12px">
+
             <div class="ml-3">
-              <div style="height: 64px" class="d-flex flex-wrap">
+              <div style="height: 64px" class="d-flex">
                 <div style="width: 50px; height: 50px" class="align-items-center p-0 mr-1">
                   <img style="width: 100%; border-radius: 50%; min-width: 50px; max-width: 50px; height: 50px"
-                       [src]="infoUser.image"/>
+                       [src]="userLocalstorage.image"/>
                 </div>
                 <div style="margin-top: -11px" class="d-flex flex-wrap">
-                  <div class="col-8" style="height: 20px">
+                  <div class="col-8" style="height: 20px; font-size: 17px">
                     Xin chào
                   </div>
-                  <div class="col-8" style="height: 20px; margin-top: -24px">
-                    {{infoUser.name}}
+                  <div class="col-8" style="height: 20px; margin-top: -24px; font-size: 17px">
+                    {{userLocalstorage.name}}
                   </div>
                 </div>
 
@@ -96,35 +135,101 @@
               <!--                                                                              nzTheme="outline"></i><span>Tin đã lưu</span></a>-->
               <!--              <a style="font-size: 17px" class="d-flex align-items-center"><i class="mr-3" nz-icon nzType="logout"-->
               <!--                                                                              nzTheme="outline"></i><span>Đăng xuất</span></a>-->
-              <a style="font-size: 17px; height: 32px" class="d-flex align-items-center my-3 mt-3"
-                 [routerLink]="['/home/user/info']">
+              <a style="font-size: 17px; height: 32px; color: #000"
+                 class="d-flex align-items-center my-3 mt-3 user-hover"
+                 [routerLink]="['/home/user/info']" (click)="noBody()">
                 <i class="mr-3" nz-icon nzType="audit" nzTheme="outline"></i>
                 Thông tin tài khoản</a>
-              <a style="font-size: 17px; height: 32px" class="d-flex align-items-center my-3"
-                 [routerLink]="['/home/user/myPosts']">
+              <a style="font-size: 17px; height: 32px; color: #000" class="d-flex align-items-center my-3 user-hover"
+                 [routerLink]="['/home/user/myPosts']" (click)="noBody()">
                 <i class="mr-3" nz-icon nzType="user" nzTheme="outline"></i>
                 Trang cá nhân</a>
-              <a style="font-size: 17px; height: 32px" class="d-flex align-items-center my-3"
-                 [routerLink]="['/home/user/myPosts']">
+              <a style="font-size: 17px; height: 32px; color: #000" class="d-flex align-items-center my-3 user-hover"
+                 [routerLink]="['/home/user/savePosts']" (click)="noBody()">
                 <i class="mr-3" nz-icon nzType="star" nzTheme="outline"></i>
                 Bài viết yêu thích</a>
-              <a style="font-size: 17px; height: 32px" class="d-flex align-items-center my-3">
-                <i class="mr-3" nz-icon nzType="info-circle" nzTheme="outline"></i>
-                Đóng góp ý kiến</a>
-              <a style="font-size: 17px; height: 32px" class="d-flex align-items-center  my-3 mt-1 pb-2">
+              <!--              <a style="font-size: 17px; height: 32px; color: #000" class="d-flex align-items-center my-3 user-hover"-->
+              <!--                 (click)="noBody()">-->
+              <!--                <i class="mr-3" nz-icon nzType="info-circle" nzTheme="outline"></i>-->
+              <!--                Đóng góp ý kiến</a>-->
+              <a style="font-size: 17px; height: 32px; color: #000"
+                 class="d-flex align-items-center  my-3 mt-1 pb-2 user-hover"
+                 (click)="logOut()">
                 <i class="mr-3" nz-icon nzType="logout" nzTheme="outline"></i>
                 Đăng xuất</a>
 
             </div>
+
           </div>
         </div>
+        <div class="ml-5" *ngIf="userLocalstorage == null" style="color: #fff">
+          <a style="color: #fff" class="mr-3" [routerLink]="['/auth/login']">Đăng nhập</a>
+          <a style="color: #fff" [routerLink]="['/auth/register']">Đăng ký</a>
+
+        </div>
       </div>
+    </div>
+    <div
+      style="color: #fff; font-size: 35px; font-weight: 700; margin-top: 50px">
+      <div *ngIf="isCoffee == 1">
+        <span class="d-flex align-items-center">"Thế giới cà phê</span><br/>
+        <span class="d-flex align-items-center"
+              style="margin-top: -55px"> Mỗi hạt cà phê là một câu chuyện về đam mê..."</span>
+      </div>
+      <div *ngIf="isCoffee == 2">
+        <span class="d-flex align-items-center">"Mỗi thiết bị</span><br/>
+        <span class="d-flex align-items-center" style="margin-top: -55px"> Mang một sứ mệnh riêng..."</span>
+      </div>
+      <div *ngIf="isCoffee == 3">
+        <span class="d-flex align-items-center">"News</span><br/>
+        <span class="d-flex align-items-center" style="margin-top: -55px"> Tin tức danh cho người yêu cà phê..."</span>
+      </div>
+      <div *ngIf="isCoffee == 4">
+        <span class="d-flex align-items-center justify-content-center" style="margin-top: 250px">CONTACT US</span><br/>
+        <span class="d-flex align-items-center" style="margin-top: -55px"> Luôn luôn lắng nghe, luôn luôn cố gắng</span>
+      </div>
+
     </div>
   </nz-header>
   <div style="background-color: #fff">
     <router-outlet></router-outlet>
+    <div style="position: relative">
+      <div
+        #chatBot
+        style="position: fixed; top: 120px; right: 4px; border: 1px solid #c3c3c3; width: 350px; height: 400px; background-color: #fff; overflow-y: auto">
+
+
+        <!--        <div style="background-color: #fff; position: relative">-->
+        <!--        <div style="position: fixed; bottom: 0; width: 100%; z-index: 2">-->
+
+        <!--        </div>-->
+        <div style="min-height: 351px">
+          <div *ngFor="let item of dataChat">
+            <div *ngIf="item.user" class="pt-2 pr-2 pl-4 d-flex justify-content-end" style="background-color: #fff">
+                <span
+                  style="background-color: #1890ff; color: #fff; border-radius: 30px; padding: 12px 12px 12px 12px">{{item.user}}</span>
+            </div>
+            <div *ngIf="item.bot" class="pt-2 pl-2 pr-4 d-flex justify-content-start">
+                <span
+                  style="background-color: #c3c3c3; color: #fff; border-radius: 30px; padding: 9px">{{item.bot}}</span>
+            </div>
+          </div>
+          <div *ngIf="isWaitingReply" class="pt-2 pl-2 pr-4 d-flex justify-content-start">
+                <span
+                  style="background-color: #c3c3c3; color: #fff; border-radius: 30px; padding: 9px">Đang trả lời...</span>
+          </div>
+        </div>
+        <input style="width: 100%" class="p-1 mt-3" nz-input type="text"
+               [(ngModel)]="inputChatAsk"
+               [disabled]="isDisabledInputChat"
+               placeholder="Chúng tôi có thể giúp gì cho bạn?"
+               (keyup.enter)="handleSubmitChat()">
+        <!--        </div>-->
+
+      </div>
+    </div>
   </div>
-  <nz-footer>
+  <nz-footer style="display: flex; align-items: end">
     <div style="max-width: 1200px; margin: auto">
       <div class="row">
         <div class="col-sm-4" style="font-size: 17px; font-weight: 700">
@@ -167,4 +272,3 @@
   </nz-footer>
 </nz-layout>
 
-<app-home-coffee-bean style="display: none" [searchValue]="searchCoffee"></app-home-coffee-bean>

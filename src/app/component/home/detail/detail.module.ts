@@ -14,11 +14,12 @@ import {DetailComponent} from './detail.component';
   imports: [NzFormModule, NgZorroAntdModule, SharedModule,
     RouterModule.forChild([]),
     CKEditorModule],
-  exports: [
-    DetailEquipmentComponent,
-    PostsDetailComponent,
-    CkeditorDetailComponent
-  ],
+    exports: [
+        DetailEquipmentComponent,
+        PostsDetailComponent,
+        CkeditorDetailComponent,
+        DetailComponent
+    ],
   providers: []
 })
 export class DetailModule {

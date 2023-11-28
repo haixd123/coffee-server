@@ -63,11 +63,14 @@ export class EditUserComponent implements OnInit, OnChanges {
       role: this.dataEdit.role,
       phoneNumber: this.dataEdit.phoneNumber,
       dateOfBirth: this.dataEdit.dateOfBirth,
-      sex: this.dataEdit.sex,
+      sex: this.dataEdit.sex == 'nam' ? '1' : this.dataEdit.sex == 'nữ' ? '2' : '3',
       createDate: this.dataEdit.createDate,
       status: this.dataEdit.status,
       image: this.dataEdit.image
     });
+    this.urlImage = this.dataEdit.image;
+    this.formEdit.get('id').setValue(this.dataEdit.id);
+    this.formEdit.get('passWord').setValue(this.dataEdit.passWord);
   }
 
   ngOnInit(): void {

@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {ValidateService} from '../../../services/validate-service';
 import {NotificationService} from '../../../services/notification.service';
 import {SearchModelEntity} from '../search-model-entiry';
+import {Api} from '../../../services/api';
 
 interface Person {
   key: string;
@@ -29,15 +30,21 @@ export class TableEquipmentComponent implements OnInit {
   searchModel: SearchModelEntity = new SearchModelEntity();
   curPage: number;
 
+  searchValue: string;
+  sortValue: string;
+  isSort = false;
+
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     public validateService: ValidateService,
     private notificationService: NotificationService,
+    private api: Api,
   ) {
     this.formSearch = this.fb.group({
-      pageIndex: this.searchModel.pageIndex,
+      pageIndex: 1,
       pageSize: 10,
+      name: null,
     });
     this.handleSearch();
     // this.changePage();
@@ -49,7 +56,7 @@ export class TableEquipmentComponent implements OnInit {
 
 
   handleUpdate(searchModel: SearchModelEntity, reset = false) {
-    this.http.post('http://localhost:8080/api/equipment/search', this.searchModel).toPromise().then((data: any) => {
+    this.api.getListEquipment(this.searchModel).toPromise().then((data: any) => {
       this.data = data.data;
       this.total = data.optional;
     });
@@ -58,6 +65,10 @@ export class TableEquipmentComponent implements OnInit {
   handleSearch() {
     this.searchModel.pageIndex = 1;
     this.searchModel.pageSize = 10;
+    this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
+    if (this.formSearch.get('name').value == '') {
+      this.formSearch.get('name').setValue(null);
+    }
     this.handleUpdate(this.searchModel, true);
   }
 
@@ -88,7 +99,7 @@ export class TableEquipmentComponent implements OnInit {
   }
 
   handleDelete(item: any) {
-    this.http.post('http://localhost:8080/api/equipment/delete', item).subscribe((data: any) => {
+    this.api.deleteEquipment(item).subscribe((data: any) => {
       if (data.errorCode == '00') {
         this.notificationService.showMessage('success', 'Xóa loại cafe thành công');
         this.isEdit = false;

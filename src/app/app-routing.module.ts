@@ -20,6 +20,10 @@ import {UserComponent} from './component/home/user/user.component';
 import {InfoComponent} from './component/home/user/info/info.component';
 import {MyPostsComponent} from './component/home/user/my-posts/my-posts.component';
 import {DetailComponent} from './component/home/detail/detail.component';
+import {SavePostsComponent} from './component/home/user/save-posts/save-posts.component';
+import {UnauthorizedComponent} from './unauthorized/unauthorized.component';
+import {RoleGuard} from './role.guard';
+import {ContactComponent} from './component/home/contact/contact.component';
 
 
 const routes: Routes = [
@@ -29,8 +33,13 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
+    path: 'unauthorized',
+    component: UnauthorizedComponent,
+  },
+  {
     path: 'admin',
     component: AdminComponent,
+    canActivate: [RoleGuard],
     children: [
       {
         path: 'admin',
@@ -55,6 +64,7 @@ const routes: Routes = [
     ],
     data: {
       breadcrumb: 'Home',
+      expectedRole: 'ADMIN',
     }
   },
   {
@@ -62,7 +72,9 @@ const routes: Routes = [
     component: HomeComponent,
     children: [
       {
-        path: 'home',
+        path: '',
+        // redirectTo: '/coffee-bean',
+        // pathMatch: 'full',
         loadChildren: () => import('./component/home/layout-home.module').then(m => m.LayoutHomeModule),
       },
       {
@@ -74,12 +86,20 @@ const routes: Routes = [
         component: HomePostsComponent,
       },
       {
-        path: 'posts/write',
+        path: 'posts/:category',
+        component: HomePostsComponent,
+      },
+      {
+        path: 'write',
         component: VietBaiComponent,
       },
       {
         path: 'equipment',
         component: EquipmentComponent,
+      },
+      {
+        path: 'contact',
+        component: ContactComponent,
       },
       {
         path: 'user',
@@ -96,27 +116,35 @@ const routes: Routes = [
           {
             path: 'myPosts',
             component: MyPostsComponent,
+          },
+          {
+            path: 'savePosts',
+            component: SavePostsComponent,
           }
-        ]
+        ],
+        data: {
+          breadcrumb: 'Home',
+        }
       },
       {
         path: 'detail',
         component: DetailComponent,
         children: [
+
           {
             path: '',
             loadChildren: () => import('./component/home/detail/detail.module').then(m => m.DetailModule),
           },
           {
-            path: 'coffee-bean',
+            path: 'coffee-bean/:name',
             component: CkeditorDetailComponent,
           },
           {
-            path: 'equipment',
+            path: 'equipment/:name',
             component: DetailEquipmentComponent,
           },
           {
-            path: 'posts',
+            path: 'posts/:category/:id',
             component: PostsDetailComponent,
           }
         ]
@@ -128,7 +156,6 @@ const routes: Routes = [
   },
   {
     path: 'auth',
-    // component: LoginComponent,
     children: [
       {
         path: 'auth',

@@ -15,9 +15,11 @@ import {HomeCoffeeBeanComponent} from './coffee-bean/home-coffee-bean.component'
 import {UserComponent} from './user/user.component';
 import {NotificationComponent} from './notification/notification.component';
 import {DetailModule} from './detail/detail.module';
+import { ContactComponent } from './contact/contact.component';
+import {Api} from '../../services/api';
 
 @NgModule({
-  declarations: [HomeComponent, HomePostsComponent, HomeCoffeeBeanComponent, VietBaiComponent, TestCkeditorComponent, EquipmentComponent, UserComponent, NotificationComponent],
+  declarations: [HomeComponent, HomePostsComponent, HomeCoffeeBeanComponent, VietBaiComponent, TestCkeditorComponent, EquipmentComponent, UserComponent, NotificationComponent, ContactComponent],
   imports: [NzFormModule, NgZorroAntdModule, SharedModule, DetailModule,
     RouterModule.forChild([]),
     // HomeLayoutRoutingModule,
@@ -26,7 +28,7 @@ import {DetailModule} from './detail/detail.module';
   exports: [
     NotificationComponent
   ],
-  providers: []
+  providers: [Api]
 })
 export class LayoutHomeModule {
 }

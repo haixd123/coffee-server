@@ -2,14 +2,12 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {NotificationService} from '../../../../services/notification.service';
-import { NzMessageService, NzUploadChangeParam, NzUploadFile} from 'ng-zorro-antd';
-import {ImgUploadService} from '../../../../services/img-upload.servive';
+import {NzMessageService, NzUploadChangeParam, NzUploadFile} from 'ng-zorro-antd';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {finalize} from 'rxjs/operators';
 import {DatePipe} from '@angular/common';
-
-
+import {AuthService} from '../../../../services/auth.service';
 
 
 @Component({
@@ -33,8 +31,6 @@ export class AddUserComponent implements OnInit {
     private fb: FormBuilder,
     private http: HttpClient,
     private notificationService: NotificationService,
-    private imgUploadService: ImgUploadService,
-    private msg: NzMessageService,
     private storage: AngularFireStorage,
     public datePipe: DatePipe,
   ) {
@@ -49,7 +45,7 @@ export class AddUserComponent implements OnInit {
       phoneNumber: null,
       dateOfBirthCur: null,
       dateOfBirth: null,
-      sex: null,
+      sex: '1',
       createDateCur: null,
       createDate: null,
       status: null,
@@ -113,7 +109,6 @@ export class AddUserComponent implements OnInit {
           this.formAdd.reset();
         } else {
           this.notificationService.showMessage('error', 'Thêm mới tài khoản thất bại');
-          console.log('data | add: ', data);
           this.isAdd = false;
           this.handleCancel(true);
           this.formAdd.reset();

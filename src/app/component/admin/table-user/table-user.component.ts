@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {SearchModelEntity} from '../search-model-entiry';
 import {HttpClient} from '@angular/common/http';
 import {ValidateService} from '../../../services/validate-service';
 import {NotificationService} from '../../../services/notification.service';
-
+import {FilterPipe} from '../../../shared/pipe/filter.pipe';
+import {faSort} from '@fortawesome/free-solid-svg-icons/faSort';
 
 interface Person {
   key: string;
@@ -19,6 +20,7 @@ interface Person {
   styleUrls: ['./table-user.component.scss']
 })
 export class TableUserComponent implements OnInit {
+  faSort = faSort;
 
   formSearch: FormGroup;
   isAdd = false;
@@ -28,6 +30,29 @@ export class TableUserComponent implements OnInit {
   dataEdit: any;
   searchModel: SearchModelEntity = new SearchModelEntity();
   curPage: number;
+  datafilter: any[];
+
+
+  searchValue: string;
+  sortValue: string;
+  isSort = false;
+
+  filterAddress: any[];
+
+  newArray =
+    [
+      // {
+      //   name: 'a',
+      //   age: 15,
+      // },
+      // {
+      //   name: 'b',
+      //   age: 15,
+      // },
+      {text: 'Joe', value: 'Joe'},
+      {text: 'John', value: 'John'}
+      // 'a', 'b', 'c'
+    ];
 
   constructor(
     private fb: FormBuilder,
@@ -36,8 +61,7 @@ export class TableUserComponent implements OnInit {
     private notificationService: NotificationService,
   ) {
     this.formSearch = this.fb.group({
-      pageIndex: this.searchModel.pageIndex,
-      pageSize: 10,
+      name: null,
     });
     this.handleSearch();
     // this.changePage();
@@ -46,16 +70,35 @@ export class TableUserComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
   handleUpdate(searchModel: SearchModelEntity, reset = false) {
     this.http.post('http://localhost:8080/api/user/search', this.searchModel).toPromise().then((data: any) => {
       this.data = data.data;
       this.total = data.optional;
+      // for (const item of data.data) {
+      //   this.datafilter = item.address;
+      //   console.log('this.datafilter : ', this.datafilter);
+      // }
+
+
+      // this.filterAddress = this.data.map((record) => {
+      //   return {
+      //     text: `${record.address}`,
+      //     value: `${record.address}`
+      //   };
+      // });
     });
   }
 
   handleSearch() {
     this.searchModel.pageIndex = 1;
     this.searchModel.pageSize = 10;
+    // this.formSearch.get('userName').setValue(this.formSearch.get('name').value);
+    // this.formSearch.get('address').setValue(this.formSearch.get('name').value);
+    this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
+    if (this.formSearch.get('name').value == '') {
+      this.formSearch.get('name').setValue(null);
+    }
     this.handleUpdate(this.searchModel, true);
   }
 
@@ -94,5 +137,10 @@ export class TableUserComponent implements OnInit {
       }
       this.changePage();
     });
+  }
+
+  handleSort(value: string) {
+    this.sortValue = value;
+    this.isSort = !this.isSort;
   }
 }

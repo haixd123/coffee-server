@@ -8,6 +8,7 @@ import {NzUploadChangeParam} from 'ng-zorro-antd';
 import {finalize} from 'rxjs/operators';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {DatePipe} from '@angular/common';
+import {Api} from '../../../../services/api';
 
 
 @Component({
@@ -31,12 +32,16 @@ export class AddPostsComponent implements OnInit {
     private notificationService: NotificationService,
     private storage: AngularFireStorage,
     public datePipe: DatePipe,
+    private api: Api,
+
   ) {
     this.formAdd = this.fb.group({
       title: null,
       contentPost: null,
       imagePath: null,
-      contentDetail: null
+      category: 'Trang thiết bị',
+      contentDetail: null,
+      createAt: null,
     });
   }
 
@@ -73,9 +78,11 @@ export class AddPostsComponent implements OnInit {
 
   handleOk(): void {
     setTimeout(() => {
+      // if (this.urlImage) {
       this.formAdd.get('imagePath').setValue(this.urlImage);
-      this.formAdd.get('createAt').setValue(this.datePipe.transform(new Date(), 'dd/mm/yyyy'));
-      this.http.post('http://localhost:8080/api/posts/create', this.formAdd.value).toPromise().then((data: any) => {
+      // }
+      this.formAdd.get('createAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy'));
+      this.api.createPosts(this.formAdd.value).toPromise().then((data: any) => {
         if (data.errorCode == '00') {
           this.notificationService.showMessage('success', 'Thêm mới bài đăng thành công');
           this.handleCancel(true);

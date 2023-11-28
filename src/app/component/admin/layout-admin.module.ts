@@ -24,21 +24,23 @@ import {CKEditorModule} from '@ckeditor/ckeditor5-angular';
 import {BsDatepickerModule, BsLocaleService} from 'ngx-bootstrap/datepicker';
 import {BsDatepickerActions} from 'ngx-bootstrap/datepicker/reducer/bs-datepicker.actions';
 import {DatePipe} from '@angular/common';
-// import {Api} from './api.service';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+import {Api} from '../../services/api';
 @NgModule({
   declarations: [AdminComponent, TableCoffeeBeanComponent, TableEquipmentComponent, TableUserComponent, AddComponent, EditComponent, TablePostsComponent, AddComponent, EditComponent, EditCoffeeBeanComponent, AddCoffeeBeanComponent, AddUserComponent, EditUserComponent, AddPostsComponent, EditPostsComponent],
-  imports: [
-    NzFormModule,
-    NgZorroAntdModule,
-    SharedModule,
-    CKEditorModule,
-    RouterModule.forChild([]),
-    // BsDatepickerModule.forRoot(),
-    // AdminLayoutRoutingModule,
-    // NzDropDownModule,
-    // NzBreadCrumbModule,
-  ],
-  providers: []
+    imports: [
+        NzFormModule,
+        NgZorroAntdModule,
+        SharedModule,
+        CKEditorModule,
+        RouterModule.forChild([]),
+        FontAwesomeModule,
+        // BsDatepickerModule.forRoot(),
+        // AdminLayoutRoutingModule,
+        // NzDropDownModule,
+        // NzBreadCrumbModule,
+    ],
+  providers: [Api]
 })
 export class LayoutAdminModule {
 }

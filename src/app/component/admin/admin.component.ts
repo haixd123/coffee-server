@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {NzLayoutModule} from 'ng-zorro-antd/layout';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -42,6 +43,7 @@ import {NzLayoutModule} from 'ng-zorro-antd/layout';
 
 export class AdminComponent implements OnInit {
   infoUser: any;
+  nameHeader: string;
 
   name: string;
   status: string;
@@ -49,12 +51,23 @@ export class AdminComponent implements OnInit {
 
   isCollapsed = false;
 
-  constructor() {
+  constructor(
+    private router: Router
+  ) {
     this.infoUser = JSON.parse(localStorage.getItem('user'));
 
   }
 
   ngOnInit(): void {
+  }
+
+  ChangeValueHeader(value) {
+    this.nameHeader = value;
+  }
+
+  logOut() {
+    localStorage.removeItem('user');
+    this.router.navigate(['/auth/login']);
   }
 
 }

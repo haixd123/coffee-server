@@ -1,82 +1,116 @@
-import {Component, DoCheck, Input, OnChanges, OnInit} from '@angular/core';
+import {
+  AfterViewChecked,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  DoCheck, EventEmitter,
+  Input,
+  OnChanges,
+  OnInit, Output,
+  SimpleChanges
+} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {SearchModelEntity} from '../../admin/search-model-entiry';
 import {Router} from '@angular/router';
 import {FormBuilder, FormGroup} from '@angular/forms';
+import {BehaviorSubject, Subscription} from 'rxjs';
+import {ShareDataService} from '../../../services/share-data.service';
+import {Api} from '../../../services/api';
 
 @Component({
   selector: 'app-home-coffee-bean',
   templateUrl: './home-coffee-bean.component.html',
-  styleUrls: ['./home-coffee-bean.component.scss']
+  styleUrls: ['./home-coffee-bean.component.scss'],
 })
-export class HomeCoffeeBeanComponent implements OnInit, OnChanges {
+export class HomeCoffeeBeanComponent implements OnInit {
   @Input() searchValue: any;
+
+  data: any[];
+  searchInput: string;
 
   formSearch: FormGroup;
   searchModel: SearchModelEntity = new SearchModelEntity();
   total: number;
 
   cofeeBeanId: any;
-  data: any[];
   curPage: number;
+
+
+  receivedData = '';
+  subscription: Subscription;
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private shareDataService: ShareDataService,
+    private api: Api,
+
   ) {
+    this.formSearch = this.fb.group({
+      name: null,
+    });
     this.search();
+    // this.subscription = this.shareDataService.dataSearch$.subscribe((data) => {
+    //   this.receivedData = data;
+    //   if (this.receivedData) {
+    //     this.search(this.receivedData);
+    //     console.log('2');
+    //   }
+    //   if (!this.receivedData) {
+    //     this.search(null);
+    //     console.log('1');
+    //   }
+    // });
   }
 
-  ngOnChanges() {
-    // this.formSearch = this.fb.group({
-    //   name: this.searchValue[0].name,
-    // }, {});
-    // this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
-    // console.log('this.searchModel | onChanges: ', this.searchModel);
-
-    // this.data = this.searchValue;
-    this.data = Object.assign([], this.searchModel, this.searchValue);
-    this.update(this.searchModel, true);
-
-  }
 
   ngOnInit(): void {
   }
 
   updatecofeeBeanId(item: any) {
-    this.cofeeBeanId = item.id;
     localStorage.setItem('cofeeBeanId', item.id);
-    // setTimeout(() => {
-    this.router.navigate([`/home/detail/coffee-bean`]);
-    // }, 100);
-    // this.router.navigate(['/home/test']);
+    console.log('item', item);
+    localStorage.setItem('postsCategory', 'Cà phê');
+
+    this.shareDataService.sendDataCategory('Cà phê');
+    this.router.navigate(['/home/detail/coffee-bean', item.name]);
   }
 
   update(searchModel: SearchModelEntity, reset: boolean) {
-    this.http.post('http://localhost:8080/api/coffee/search', this.searchModel).subscribe((data: any) => {
+    this.api.getListCoffee(this.searchModel).subscribe((data: any) => {
+      // this.data.next([...data.data]);
       this.data = data.data;
       this.total = data.optional;
-      console.log('data home-coffee-bean: ', data);
+      // this.cdr.detectChanges();
     });
   }
 
-  search() {
+  search(value?: any) {
     this.searchModel.pageIndex = 1;
     this.searchModel.pageSize = 12;
-    // this.formSearch.get('name').setValue(this.searchValue);
-    // this.searchModel = Object.assign({}, this.searchModel, this.formSearch);
-    console.log('this.searchModel: | coffee: ', this.searchModel);
     this.update(this.searchModel, true);
   }
 
   changePage() {
     this.searchModel.pageIndex = this.curPage;
     this.searchModel.pageSize = 12;
-    // this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
-    // console.log('this.searchModel: ', this.searchModel);
     this.update(this.searchModel, false);
-
   }
+
+  handleSearchInput() {
+    if (this.searchInput != null) {
+      this.formSearch.get('name').setValue(this.searchInput);
+      this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
+    }
+    if (this.searchInput == '') {
+      this.formSearch.get('name').setValue(null);
+      this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
+    }
+    this.api.getListCoffee(this.searchModel).toPromise().then((data: any) => {
+      this.data = data.data;
+    });
+  }
+
 
 }

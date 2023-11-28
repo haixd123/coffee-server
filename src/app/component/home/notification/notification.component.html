@@ -1,8 +1,6 @@
 <div class="notify" style="color: #000">
   <div class="mx-3">
-    <div>
-      <span style="font-size: 15px">Thông báo mới nhận</span></div>
-    <div class="row" *ngFor="let item of dataUser">
+    <div class="row" *ngFor="let item of dataUser" style="border-top: 1px solid #fff; border-bottom: 1px solid #fff">
       <div *ngIf="dataInfoUserNotification.id == item.id">
         <a class="col-2">avatar</a>
         <div style="font-size: 15px" class="col-10 d-flex">

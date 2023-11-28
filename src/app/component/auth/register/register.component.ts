@@ -34,6 +34,9 @@ export class RegisterComponent implements OnInit {
     if (this.password && this.email && this.confirmPassword && this.userName && this.name) {
       if (this.password !== this.confirmPassword) {
         this.errorMessage = 'Passwords need to match';
+      }
+      if (!this.password || !this.email || !this.confirmPassword || !this.userName || !this.name) {
+        alert('Hãy bổ sung thông tin còn thiếu!');
       } else {
         this.loading = true;
         this.auth

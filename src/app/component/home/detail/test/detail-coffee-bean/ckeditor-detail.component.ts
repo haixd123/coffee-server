@@ -2,6 +2,7 @@ import {Component, Input, OnChanges, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FormGroup} from '@angular/forms';
 import {SearchModelEntity} from '../../../../admin/search-model-entiry';
+import {Api} from '../../../../../services/api';
 
 @Component({
   selector: 'app-ckeditor-detail',
@@ -19,11 +20,12 @@ export class CkeditorDetailComponent implements OnInit, OnChanges {
 
   slugCoffeeBeanDetail: any;
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+  private api: Api,
   ) {
     this.searchModel.pageIndex = 1;
     this.searchModel.pageSize = 30;
-    this.http.post('http://localhost:8080/api/coffee/search', this.searchModel).toPromise().then((data: any) => {
+    this.api.getListCoffee(this.searchModel).toPromise().then((data: any) => {
       this.dataCoffeeBean = data.data;
     });
     this.slugCoffeeBeanDetail = localStorage.getItem('cofeeBeanId');

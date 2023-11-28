@@ -1,89 +1,88 @@
 <form nz-form [formGroup]="formEdit">
-    <!--  <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>-->
-    <nz-modal [(nzVisible)]="isEdit" nzTitle="The first Modal" (nzOnCancel)="handleCancel(false)" (nzOnOk)="handleOk()" [nzFooter]="null">
-        <div class="d-flex justify-content-between">
-            <div class="col-6">
-                Username
-                <input formControlName="userName" nz-input placeholder="Username"/>
-            </div>
-<!--            <div class="col-4">-->
-<!--                Password-->
-<!--                <input formControlName="passWord" nz-input placeholder="Password"/>-->
-<!--            </div>-->
-
-            <div class="col-6">
-                Email
-                <input formControlName="email" nz-input placeholder="Email"/>
-            </div>
-        </div>
-
-        <div class="d-flex justify-content-between">
-            <div class="col-4">
-                First name
-                <input formControlName="name" nz-input placeholder="First name"/>
-            </div>
-
-
-
-            <div class="col-4">
-                Address
-                <input formControlName="address" nz-input placeholder="Address"/>
-            </div>
-        </div>
-
-            <div class="d-flex justify-content-between">
-              <div class="col-4">
-                Age
-                <input formControlName="age" nz-input placeholder="Age"/>
-              </div>
-
-              <div class="col-4">
-                Role
-                <input formControlName="role" nz-input placeholder="Role"/>
-              </div>
-
-              <div class="col-4">
-                Phone number
-                <input formControlName="phoneNumber" nz-input placeholder="Phone number"/>
-              </div>
-            </div>
-
-        <!--    <div class="d-flex justify-content-between">-->
-        <!--      <div class="col-4">-->
-        <!--        Date of birth-->
-        <!--        <nz-form-item>-->
-        <!--          <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>MonthPicker</nz-form-label>-->
-        <!--          <nz-form-control [nzSm]="16" [nzXs]="24">-->
-        <!--            <nz-month-picker formControlName="dateOfBirth"></nz-month-picker>-->
-        <!--          </nz-form-control>-->
-        <!--        </nz-form-item>-->
-        <!--      </div>-->
-        <!--      <div class="col-4">-->
-        <!--        Sex-->
-        <!--        <input formControlName="sex" nz-input placeholder="Sex"/>-->
-        <!--      </div>-->
-
-        <!--      <div class="col-4">-->
-        <!--        Create date-->
-        <!--        <nz-form-item>-->
-        <!--          <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired>MonthPicker</nz-form-label>-->
-        <!--          <nz-form-control [nzSm]="16" [nzXs]="24">-->
-        <!--            <nz-month-picker formControlName="createDate"></nz-month-picker>-->
-        <!--          </nz-form-control>-->
-        <!--        </nz-form-item>-->
-        <!--      </div>-->
-        <!--    </div>-->
-      <div class="mb-4">
-        <nz-upload
-          [nzHeaders]="{ authorization: 'authorization-text' }"
-          (nzChange)="onUpload($event)"
-        >
-          <button nz-button><i nz-icon nzType="upload"></i>Click to Upload</button>
-        </nz-upload>
+  <!--  <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>-->
+  <nz-modal nzWidth="1000px" [(nzVisible)]="isEdit" nzTitle="Chỉnh sửa tài khoản" (nzOnCancel)="handleCancel(false)"
+            (nzOnOk)="handleOk()"
+            [nzFooter]="null">
+    <div class="d-flex justify-content-between mb-3 mb-3">
+      <div class="col-4">
+        Tên đăng nhập
+        <input class="mt-1" formControlName="userName" nz-input placeholder="Username"/>
       </div>
-      <div class="d-flex justify-content-end mt-5">
-        <button class="mr-4" (click)="handleOk()" nz-button nzType="primary">Ok</button>
-        <button (click)="handleCancel(false)" nz-button nzType="primary">Cancel</button>
+<!--      <div class="col-4">-->
+<!--        Mật khẩu-->
+<!--        <input class="mt-1" formControlName="passWord" nz-input placeholder="Password"/>-->
+<!--      </div>-->
+
+      <div class="col-4">
+        Email
+        <input class="mt-1" formControlName="email" nz-input placeholder="Email"/>
       </div>
-    </nz-modal>
+    </div>
+
+    <div class="d-flex justify-content-between mb-3">
+      <div class="col-4">
+        Tên
+        <input class="mt-1" formControlName="name" nz-input placeholder="First name"/>
+      </div>
+
+      <div class="col-4">
+        Ngày sinh
+        <!--        <nz-form-item>-->
+        <nz-form-control [nzSm]="16" [nzLg]="24">
+          <nz-date-picker style="width: 100%;" class="mt-1" formControlName="dateOfBirthCur"></nz-date-picker>
+        </nz-form-control>
+        <!--        </nz-form-item>-->
+      </div>
+
+<!--      <div class="col-4">-->
+<!--        Địa chỉ-->
+<!--        <input class="mt-1" formControlName="address" nz-input placeholder="Address"/>-->
+<!--      </div>-->
+    </div>
+
+    <div class="d-flex justify-content-between mb-3">
+      <div class="col-4">
+        <div class="mb-1">
+          Giới tính
+        </div>
+        <nz-select class="col-12" formControlName="sex">
+          <nz-option nzValue="1" nzLabel="nam"></nz-option>
+          <nz-option nzValue="2" nzLabel="nữ"></nz-option>
+          <nz-option nzValue="3" nzLabel="khác"></nz-option>
+        </nz-select>
+      </div>
+
+      <div class="col-4">
+        Cấp phân quyền
+        <input class="mt-1" formControlName="role" nz-input placeholder="Role"/>
+      </div>
+
+      <div class="col-4">
+        Số điện thoại
+        <input class="mt-1" formControlName="phoneNumber" nz-input placeholder="Phone number"/>
+      </div>
+    </div>
+
+    <!--    <div class="col-md-6">-->
+    <!--      <input type="file" (change)="onFileChanged($event)">-->
+    <!--      <div class="col-md-6">-->
+    <!--        <input type="button" (click)="onUpload()" value="upload">-->
+    <!--      </div>-->
+    <!--    </div>-->
+    <div class="mb-2 col-4">
+      <img style="width: 100%; max-width: 300px" class="mb-3" [src]="urlImage"/>
+      <!--        <input style="width: 100%;" formControlName="image">-->
+    </div>
+    <nz-upload
+      style="margin-left: 15px"
+      [nzHeaders]="{ authorization: 'authorization-text' }"
+      (nzChange)="onUpload($event)"
+    >
+      <button nz-button><i nz-icon nzType="upload"></i>Click to Upload</button>
+    </nz-upload>
+    <div class="d-flex justify-content-end mt-5">
+      <button class="mr-4" (click)="handleOk()" nz-button nzType="primary">Ok</button>
+      <button (click)="handleCancel(false)" nz-button nzType="primary">Cancel</button>
+    </div>
+  </nz-modal>
 </form>

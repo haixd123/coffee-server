@@ -5,8 +5,10 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {HttpClient} from '@angular/common/http';
 import {NotificationService} from '../../../../services/notification.service';
 import {NzUploadChangeParam} from 'ng-zorro-antd';
-import {finalize} from 'rxjs/operators';
+import {finalize, switchMap} from 'rxjs/operators';
 import {AngularFireStorage} from '@angular/fire/storage';
+import {Observable} from 'rxjs';
+import {Api} from '../../../../services/api';
 
 
 @Component({
@@ -23,12 +25,14 @@ export class AddCoffeeBeanComponent implements OnInit {
 
   selectedFile: File;
   urlImage: string;
+  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     private notificationService: NotificationService,
     private storage: AngularFireStorage,
+    private api: Api,
   ) {
     this.formAdd = this.fb.group({
       name: null,
@@ -52,13 +56,12 @@ export class AddCoffeeBeanComponent implements OnInit {
     uploadImageData.append('files', this.selectedFile, this.selectedFile.name);
     const filePath = `'/image' + '/' + ${Math.random()} + '/' + ${this.selectedFile.name}`;
     const fileRef = this.storage.ref(filePath);
-    this.storage.upload(filePath, this.selectedFile).snapshotChanges().pipe(
-      finalize(() => {
-        fileRef.getDownloadURL().subscribe((url) => {
-          this.urlImage = url;
-        });
-      })
-    ).subscribe();
+    this.storage.upload(filePath, this.selectedFile).snapshotChanges().pipe(finalize(() => {
+      fileRef.getDownloadURL().subscribe((url) => {
+        this.urlImage = url;
+      });
+    })).subscribe();
+
     // .subscribe((res) => {
     //     if (res.status === 200) {
     //       console.log('success | res : ', res);
@@ -69,21 +72,19 @@ export class AddCoffeeBeanComponent implements OnInit {
     // );
   }
 
-  handleOk(): void {
-    setTimeout(() => {
-      this.formAdd.get('image').setValue(this.urlImage);
-      this.http.post('http://localhost:8080/api/coffee/create', this.formAdd.value).toPromise().then((data: any) => {
-        console.log('data: ', data);
-        if (data.errorCode == '00') {
-          this.notificationService.showMessage('success', 'Thêm loại cafe mới thành công');
-        } else {
-          this.notificationService.showMessage('error', 'Thêm loại cafe mới thất bại');
-        }
-      });
-      this.handleCancel(true);
-      this.isAdd = false;
-      this.formAdd.reset();
-    }, 2000);
+  async handleOk() {
+
+    this.formAdd.get('image').setValue(this.urlImage);
+    await this.api.createCoffeeBean(this.formAdd.value).toPromise().then((data: any) => {
+      if (data.errorCode == '00') {
+        this.notificationService.showMessage('success', 'Thêm loại cafe mới thành công');
+      } else {
+        this.notificationService.showMessage('error', 'Thêm loại cafe mới thất bại');
+      }
+    });
+    this.handleCancel(true);
+    this.isAdd = false;
+    this.formAdd.reset();
   }
 
   handleCancel(value): void {

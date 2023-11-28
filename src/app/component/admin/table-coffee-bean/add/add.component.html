@@ -1,7 +1,7 @@
 <form nz-form [formGroup]="formAdd">
   <!--  <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>-->
   <nz-modal nzWidth="1300px" [(nzVisible)]="isAdd" nzTitle="The first Modal" (nzOnCancel)="handleCancel(false)"
-            (nzOnOk)="handleOk()">
+            (nzOnOk)="handleOk()" [nzOkLoading]="isLoading">
 
     <div class="mb-3">
       Tiêu đề
@@ -11,7 +11,7 @@
     <div class="mb-3">
       Giới thiệu
       <input formControlName="title" style="width: 100%;" nz-input name="required" required
-             placeholder="Tiêu đề"/>
+             placeholder="Giới thiệu"/>
     </div>
     <div class="mb-3" *ngIf="urlImage">
       <img style="width: 100%; max-width: 350px" [src]="urlImage" />
@@ -25,6 +25,7 @@
       </nz-upload>
     </div>
 
+    <div class="my-2">Nội dung</div>
     <ckeditor style="min-height: 300px" formControlName="contentCoffee" [editor]="Editor"></ckeditor>
 
 

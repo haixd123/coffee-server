@@ -1,3 +1,21 @@
+.category-link {
+  position: relative;
+}
+
+.category-link:hover .category {
+  display: block;
+}
+
+.category {
+  z-index: 2;
+  display: none;
+  position: absolute;
+  right: 11px;
+  width: 250px;
+  background-color: #e6e6e6;
+  margin-top: -3px;
+}
+
 .notify-link {
   position: relative;
 }
@@ -11,8 +29,9 @@
   display: none;
   position: absolute;
   right: 11px;
-  width: 400px;
-  background-color: #d3d3d3;
+  width: 300px;
+  background-color: #e6e6e6;
+  margin-top: -3px;
 }
 
 .user-link {
@@ -30,4 +49,62 @@
   right: 11px;
   width: 200px;
   background-color: #d3d3d3;
+}
+
+.coffee {
+  //background-image: url('https://davatonline.ir/Content/1397/02/30/IMG1726567987853.jpg');
+  background-image: url('src/assets/1076717.jpg');
+  width: 100%;
+  position: relative;
+  height: 700px;
+}
+
+.equipment {
+  background-image: url('src/assets/equpmentx.jpg');
+  background-repeat: no-repeat;
+  width: 100%;
+  position: relative;
+  height: 800px;
+}
+
+.news {
+  background-image: url('src/assets/coffee-news.png');
+  background-repeat: no-repeat;
+  height: 800px;
+}
+
+.noBody {
+  background-color: #545454;
+}
+
+.contact {
+  background-image: url('src/assets/contact3.jpg');
+  height: 700px;
+  width: 100%;
+}
+
+.user-hover:hover {
+  opacity: 0.6;
+}
+
+/* You can add global styles to this file, and also import other style files */
+@font-face {
+  font-family: 'OpenSans';
+  src: url('src/assets/Open_Sans/OpenSans-Italic-VariableFont_wdth,wght.ttf') format('wght.ttf'),
+  url('src/assets/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf') format('wght.ttf')
+}
+
+//src: url('/src/assets/Open_Sans/OpenSans-VariableFont_wdth,wght.ttf') format('truetype'),
+
+body {
+  font-family: 'OpenSans', sans-serif;
+}
+
+* {
+  font-family: 'OpenSans', sans-serif;
+}
+
+.item-category:hover {
+  opacity: 0.7;
+  box-shadow: inset 2px 2px 3px 2px rgba(0, 0, 0, 0.15);
 }

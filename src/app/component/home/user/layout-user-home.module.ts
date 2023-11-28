@@ -5,11 +5,13 @@ import {SharedModule} from '../../../shared/shared.module';
 import {RouterModule} from '@angular/router';
 import {InfoComponent} from './info/info.component';
 import { MyPostsComponent } from './my-posts/my-posts.component';
+import { SavePostsComponent } from './save-posts/save-posts.component';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
-  declarations: [InfoComponent, MyPostsComponent],
-  imports: [NzFormModule, NgZorroAntdModule, SharedModule,
-    RouterModule.forChild([])],
+  declarations: [InfoComponent, MyPostsComponent, SavePostsComponent],
+    imports: [NzFormModule, NgZorroAntdModule, SharedModule,
+        RouterModule.forChild([]), NgxPaginationModule],
   providers: []
 })
 export class LayoutUserHomeModule {

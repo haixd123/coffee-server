@@ -6,6 +6,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {HttpClient} from '@angular/common/http';
 import {NotificationService} from '../../../../services/notification.service';
 import {AngularFireStorage} from '@angular/fire/storage';
+import {Api} from '../../../../services/api';
 
 @Component({
   selector: 'app-edit-equipment',
@@ -30,6 +31,7 @@ export class EditComponent implements OnInit, OnChanges  {
     private http: HttpClient,
     private notificationService: NotificationService,
     private storage: AngularFireStorage,
+    private api: Api,
   ) {
     this.formEdit = this.fb.group({
       id: null,
@@ -59,6 +61,7 @@ export class EditComponent implements OnInit, OnChanges  {
   ngOnInit(): void {
   }
 
+  //??? Upload ảnh lâu nên hàm create,update phải đợi nhug k dùng asyns await đc
   onUpload(info: NzUploadChangeParam) {
     this.selectedFile = info.file.originFileObj;
     const uploadImageData = new FormData();
@@ -89,7 +92,7 @@ export class EditComponent implements OnInit, OnChanges  {
   handleOk(): void {
     this.formEdit.get('image').setValue(this.urlImage);
 
-    this.http.post('http://localhost:8080/api/equipment/update', this.formEdit.value).toPromise().then((data: any) => {
+    this.api.updateEquipment(this.formEdit.value).toPromise().then((data: any) => {
       if (data.errorCode == '00') {
         this.notificationService.showMessage('success', 'Sửa bài đăng thành công');
         this.handleCancel(true);

@@ -3,15 +3,28 @@
   <nz-modal nzWidth="1300px" [(nzVisible)]="isEdit" nzTitle="Chỉnh sửa bài viết" (nzOnCancel)="handleCancel(false)"
             (nzOnOk)="handleOk()" [nzFooter]="null">
     Tiêu đề
-    <div class="mt-2">
+    <div class="mt-2 mb-3">
       <input style="width: 100%;" formControlName="title">
     </div>
+    Phân loại
+    <div class="mt-2 mb-3">
+      <nz-select style="width: 180px" nzPlaceHolder="Trang thiết bị" formControlName="category">
+        <nz-option nzValue="Cà phê" nzLabel="Cà phê"></nz-option>
+        <nz-option nzValue="Trang thiết bị" nzLabel="Trang thiết bị"></nz-option>
+        <nz-option nzValue="Giới thiệu" nzLabel="Giới thiệu"></nz-option>
+        <nz-option nzValue="Hẹn hò" nzLabel="Hẹn hò"></nz-option>
+        <nz-option nzValue="Du lịch" nzLabel="Du lịch"></nz-option>
+        <nz-option nzValue="Sự kiện" nzLabel="Sự kiện"></nz-option>
+      </nz-select>
+    </div>
+
     <div class="mt-3 mb-2">
+      <div class="mb-2">Giới thiệu</div>
       <input style="width: 100%;" formControlName="contentPost">
     </div>
     <div class="mb-3">
       <div class="mb-2">
-        <img style="width: 100%; max-width: 300px" class="mb-3" [src]="urlImage" />
+        <img style="width: 100%; max-width: 300px" class="mb-3" [src]="urlImage"/>
         <!--        <input style="width: 100%;" formControlName="image">-->
       </div>
       <div class="mb-3">
@@ -24,7 +37,9 @@
       </div>
 
     </div>
-    <ckeditor  formControlName="contentDetail" [editor]="Editor"></ckeditor>
+
+    <div class="my-2">Nội dung</div>
+    <ckeditor formControlName="contentDetail" [editor]="Editor"></ckeditor>
     <!--        <ckeditor formControlName="content1" [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>-->
     <div class="d-flex justify-content-end mt-5">
       <button class="mr-4" (click)="handleOk()" nz-button nzType="primary">Ok</button>

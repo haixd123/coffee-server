@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnChanges, OnInit} from '@angular/core';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
@@ -6,6 +6,9 @@ import {NzUploadChangeParam} from 'ng-zorro-antd';
 import {finalize} from 'rxjs/operators';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {NotificationService} from '../../../services/notification.service';
+import {Api} from 'src/app/services/api';
+import {ShareDataService} from '../../../services/share-data.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-viet-bai',
@@ -19,6 +22,10 @@ export class VietBaiComponent implements OnInit {
   urlImage: string;
 
   formAdd: FormGroup;
+  dataEdit: any[];
+
+  subscription: Subscription;
+
 
   // @ts-ignore
 
@@ -27,16 +34,48 @@ export class VietBaiComponent implements OnInit {
     private http: HttpClient,
     private notificationService: NotificationService,
     private storage: AngularFireStorage,
+    private api: Api,
+    private shareDataService: ShareDataService,
   ) {
     this.formAdd = this.fb.group({
+      id: null,
       title: null,
       contentPost: null,
       contentDetail: null,
       imagePath: null,
       userId: null,
-      hashTag: null,
+      createdAt: null,
+      category: 'Trang thiết bị',
+      like1: null,
+      comment: null,
+      status: null,
+      // hashTag: null,
     });
+    this.subscription = this.shareDataService.dataEditPosts$.subscribe(data => {
+      this.dataEdit = data;
+      console.log('this.dataEdit: ', this.dataEdit);
+    });
+
+    if (this.dataEdit) {
+      this.formAdd.patchValue({
+        id: this.dataEdit.id,
+        title: this.dataEdit.title,
+        status: this.dataEdit.status,
+        contentPost: this.dataEdit.contentPost,
+        contentDetail: this.dataEdit.contentDetail,
+        imagePath: this.dataEdit.imagePath,
+        userId: this.dataEdit.userId,
+        createdAt: this.dataEdit.createdAt,
+        category: this.dataEdit.category,
+        like1: this.dataEdit.like1,
+        comment: this.dataEdit.comment,
+      });
+      this.formAdd.get('userId').setValue(this.dataEdit.userId);
+      this.formAdd.get('like1').setValue(this.dataEdit.like1);
+      this.formAdd.get('comment').setValue(this.dataEdit.comment);
+    }
   }
+
 
   ngOnInit(): void {
   }
@@ -65,17 +104,30 @@ export class VietBaiComponent implements OnInit {
   }
 
   Submit() {
-    setTimeout(() => {
-      this.formAdd.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
-      this.formAdd.get('imagePath').setValue(this.urlImage);
-      this.http.post('http://localhost:8080/api/posts/create', this.formAdd.value).toPromise().then((data: any) => {
+    if (!this.dataEdit) {
+      setTimeout(() => {
+        this.formAdd.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
+        this.formAdd.get('imagePath').setValue(this.urlImage);
+        this.api.createPosts(this.formAdd.value).toPromise().then((data: any) => {
+          if (data.errorCode == '00') {
+            this.notificationService.showMessage('success', 'Đăng bài thành công');
+            this.formAdd.reset();
+          } else {
+            this.notificationService.showMessage('error', 'Đăng bài thất bại');
+          }
+        });
+      });
+    }
+
+    if (this.dataEdit) {
+      this.api.updatePosts(this.formAdd.value).toPromise().then((data: any) => {
         if (data.errorCode == '00') {
-          this.notificationService.showMessage('success', 'Đăng bài thành công');
+          this.notificationService.showMessage('success', 'Sửa bài đăng thành công');
           this.formAdd.reset();
         } else {
-          this.notificationService.showMessage('error', 'Đăng bài thất bại');
+          this.notificationService.showMessage('error', 'Sửa bài đăng thất bại');
         }
       });
-    });
+    }
   }
 }

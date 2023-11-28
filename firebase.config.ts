@@ -1,5 +1,5 @@
-import firebase from 'firebase';
-import initializeApp = firebase.initializeApp;
+// import firebase from 'firebase';
+// import initializeApp = firebase.initializeApp;
 
 
 export const firebaseConfig = {
@@ -12,7 +12,7 @@ export const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// const app = initializeApp(firebaseConfig);
 
 // export const appConfig: ApplicationConfig = {
 //

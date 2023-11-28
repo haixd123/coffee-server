@@ -5,6 +5,7 @@ import {ValidateService} from '../../../services/validate-service';
 import {SearchModelEntity} from '../search-model-entiry';
 import {NotificationService} from '../../../services/notification.service';
 import {NzTableFilterFn, NzTableFilterList, NzTableQueryParams, NzTableSortFn, NzTableSortOrder} from 'ng-zorro-antd';
+import {Api} from '../../../services/api';
 
 interface DataItem {
   STT: number;
@@ -88,17 +89,21 @@ export class TablePostsComponent implements OnInit {
   curPage: number;
   testSort: any[];
 
-  orderHeader = '';
+  searchValue: string;
+  sortValue: string;
+  isSort = false;
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     public validateService: ValidateService,
     private notificationService: NotificationService,
+    private api: Api,
   ) {
     this.formSearch = this.fb.group({
-      pageIndex: this.searchModel.pageIndex,
+      pageIndex: 1,
       pageSize: 10,
+      title: null,
     });
     this.handleSearch();
     // this.changePage();
@@ -108,11 +113,9 @@ export class TablePostsComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  sort() {
-  }
 
   handleUpdate(searchModel: SearchModelEntity, reset = false) {
-    this.http.post('http://localhost:8080/api/posts/search', this.searchModel).toPromise().then((data: any) => {
+    this.api.getListPosts(this.searchModel).toPromise().then((data: any) => {
       this.data = data.data;
       this.total = data.optional;
     });
@@ -120,7 +123,12 @@ export class TablePostsComponent implements OnInit {
 
   handleSearch() {
     this.searchModel.pageIndex = 1;
-    this.searchModel.pageSize = 10;
+    this.searchModel.pageSize = 100;
+    // this.formSearch.get('title').setValue(this.formSearch.get('title').value);
+    this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
+    if (this.formSearch.get('title').value == '') {
+      this.formSearch.get('title').setValue(null);
+    }
     this.handleUpdate(this.searchModel, true);
   }
 
@@ -149,7 +157,7 @@ export class TablePostsComponent implements OnInit {
   }
 
   handleDelete(item: any) {
-    this.http.post('http://localhost:8080/api/posts/delete', item).subscribe((data: any) => {
+    this.api.deletePosts(item).subscribe((data: any) => {
       if (data.errorCode == '00') {
         this.notificationService.showMessage('success', 'Xóa bài đăng thành công');
         this.isEdit = false;
@@ -159,6 +167,11 @@ export class TablePostsComponent implements OnInit {
       }
       this.changePage();
     });
+  }
+
+  handleSort(value: string) {
+    this.sortValue = value;
+    this.isSort = !this.isSort;
   }
 
 }
