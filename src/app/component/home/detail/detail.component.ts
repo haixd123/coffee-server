@@ -6,6 +6,7 @@ import {ShareDataService} from '../../../services/share-data.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FormGroup} from '@angular/forms';
 import {Api} from '../../../services/api';
+import {WebsocketService} from '../../../services/Websocket.service';
 
 @Component({
   selector: 'app-detail',
@@ -27,6 +28,7 @@ export class DetailComponent implements OnInit {
 
   idPostsLocalstorage: string;
 
+
   // categoryPostsLocalstorage: string;
 
   constructor(
@@ -35,57 +37,25 @@ export class DetailComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private api: Api,
+    private websocketService: WebsocketService,
   ) {
 
     this.handleSearch();
-    // this.subscription = this.shareDataService.dataCategory$.subscribe((data) => {
-    //   this.category = data;
+    this.subscription = this.shareDataService.dataCategory$.subscribe((data) => {
+      this.category = data;
+    });
+    // this.websocketService.receiveComment().subscribe((comment: any) => {
+    //   this.handleSearch();
     // });
+
     this.idPostsLocalstorage = localStorage.getItem('postsId');
     this.category = localStorage.getItem('postsCategory');
+
   }
-
-  // findTop5LargestNumbers(arr: number[]): number[] {
-  //     arr.sort((a, b) => {
-  //         return b - a;
-  //     });
-  //     return arr;
-  // }
-
-  // isLikeTop5() {
-  //     // Replace 'data' with your actual data array
-  //     this.top5 = this.findTop5LargestNumbers(this.data.map(item => item.like1)).slice(0, 5);
-  //     return this.top5;
-  // }
-
-  // isSametop5(value) {
-  //     const test = this.data.filter(item => value == item.hashTag);
-  //     return test;
-  // }
-
 
   ngOnInit(): void {
     this.activatedRoute.url.subscribe(params => {
       console.log('params2: ', params);
-      // this.category = params.get('category');
-      // if (this.category) {
-      //   this.searchModel.pageIndex = 1;
-      //   this.searchModel.pageSize = 150;
-      //   this.formSearch.get('category').setValue(this.category);
-      //   this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
-      //   this.http.post('http://localhost:8080/api/posts/search', this.searchModel).toPromise().then((data: any) => {
-      //     this.data = data.data;
-      //     // this.total = data.optional;
-      //   });
-      // }
-      // if (!this.category) {
-      //   this.searchModel.pageIndex = 1;
-      //   this.searchModel.pageSize = 150;
-      //   this.http.post('http://localhost:8080/api/posts/search', this.searchModel).toPromise().then((data: any) => {
-      //     this.data = data.data;
-      //     // this.total = data.optional;
-      //   });
-      // }
     });
   }
 

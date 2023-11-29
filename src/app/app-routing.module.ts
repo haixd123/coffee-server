@@ -29,7 +29,7 @@ import {ContactComponent} from './component/home/contact/contact.component';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: '/admin',
+    redirectTo: '/home/coffee-bean',
     pathMatch: 'full'
   },
   {

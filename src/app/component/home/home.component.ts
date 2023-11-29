@@ -159,4 +159,11 @@ export class HomeComponent implements OnInit {
     });
     this.inputChatAsk = '';
   }
+
+  linkToPostDetail(item: any) {
+    console.log('linkToPostDetail | item: ', item);
+    localStorage.setItem('postsCategory', item.category);
+    this.shareDataService.sendDataCategory(item.category);
+    this.router.navigate([`/home/detail/posts/${item.category}/${item.postId}`]);
+  }
 }

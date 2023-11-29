@@ -124,6 +124,7 @@ export class HomePostsComponent implements OnInit, OnChanges {
       console.log('data: ', data);
       if (data.errorCode == '00') {
         this.notificationService.showMessage('success', 'Xóa đăng thành công');
+        this.changePage();
       } else {
         this.notificationService.showMessage('error', 'Xóa đăng thất bại');
       }

@@ -56,27 +56,28 @@
           <div class="notify" style="color: #000">
             <div class="mx-3">
               <div *ngFor="let item of dataNotify">
-<!--                <div *ngFor="let itemPost of dataPost">-->
-<!--                <div *ngIf="item.postId == itemPost.id" class="row"-->
+                <!--                <div *ngFor="let itemPost of dataPost">-->
+                <!--                  <div *ngIf="item.postId == itemPost.id" class="row"-->
                 <div class="row"
-                       style="border-top: 1px solid #fff; border-bottom: 1px solid #fff">
-                    <a class="col-3">
-<!--                      <img style="max-width: 120%; height: 70%; object-fit: cover; border-radius: 50%"-->
-<!--                           [src]="itemPost.imagePath"/>-->
-                    </a>
-                    <div style="font-size: 15px; margin-left: -10px;" class="col-9 d-flex">
-                      <div>
-                        <div style="margin-top: -17px; height: 33px;" class="ml-2">
-                          <a style="color: #000" class="mr-2">{{item.name}}</a>
-                          <a style="height: 25px">Đã nhắc đến bạn</a>
-                        </div>
-                        <div class="ml-2">
-                          <a>19 giờ trước</a>
-                        </div>
+                     style="border-top: 1px solid #fff; border-bottom: 1px solid #fff; cursor: pointer"
+                (click)="linkToPostDetail(item)">
+                  <a class="col-3">
+                    <img style="max-width: 120%; height: 70%; object-fit: cover; border-radius: 50%"
+                         [src]="item.image"/>
+                  </a>
+                  <div style="font-size: 15px; margin-left: -10px;" class="col-9 d-flex">
+                    <div>
+                      <div style="margin-top: -17px; height: 33px;" class="ml-2">
+                        <a style="color: #000" class="mr-2">{{item.name}}</a>
+                        <a style="height: 25px">Đã nhắc đến bạn</a>
+                      </div>
+                      <div class="ml-2">
+                        <a>{{item.createAt}}</a>
                       </div>
                     </div>
                   </div>
-<!--                </div>-->
+                  <!--                </div>-->
+                </div>
               </div>
               <div style="font-size: 15px" class="d-flex justify-content-center">
                 <a>Xem tất cả</a>
@@ -182,11 +183,14 @@
       </div>
       <div *ngIf="isCoffee == 3">
         <span class="d-flex align-items-center">"News</span><br/>
-        <span class="d-flex align-items-center" style="margin-top: -55px"> Tin tức danh cho người yêu cà phê..."</span>
+        <span class="d-flex align-items-center"
+              style="margin-top: -55px"> Tin tức danh cho người yêu cà phê..."</span>
       </div>
       <div *ngIf="isCoffee == 4">
-        <span class="d-flex align-items-center justify-content-center" style="margin-top: 250px">CONTACT US</span><br/>
-        <span class="d-flex align-items-center" style="margin-top: -55px"> Luôn luôn lắng nghe, luôn luôn cố gắng</span>
+          <span class="d-flex align-items-center justify-content-center"
+                style="margin-top: 250px">CONTACT US</span><br/>
+        <span class="d-flex align-items-center"
+              style="margin-top: -55px"> Luôn luôn lắng nghe, luôn luôn cố gắng</span>
       </div>
 
     </div>

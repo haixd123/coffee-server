@@ -16,7 +16,7 @@ import {NotificationService} from '../../../../../services/notification.service'
   styleUrls: ['./posts-detail.component.scss']
 })
 export class PostsDetailComponent implements OnInit {
-  @Input() PostsId: any;
+  // @Input() PostsId: any;
   @ViewChild('textareaComment') textareaComment: ElementRef;
   @ViewChild('textareaReply') textareaReply: ElementRef;
 
@@ -24,7 +24,7 @@ export class PostsDetailComponent implements OnInit {
   formAdd: FormGroup;
   formNotify: FormGroup;
   formReply: FormGroup;
-  formSearch: FormGroup;
+  // formSearch: FormGroup;
   formLikeComment: FormGroup;
 
   isReplyComment = false;
@@ -52,7 +52,8 @@ export class PostsDetailComponent implements OnInit {
   isEdit = false;
 
   dataEdit: any[];
-
+  imgPostDetail: string;
+  categoryDetail: string;
   subscription: Subscription;
 
   constructor(
@@ -65,15 +66,19 @@ export class PostsDetailComponent implements OnInit {
     private notificationService: NotificationService,
     private shareDataService: ShareDataService,
   ) {
-    this.formSearch = this.fb.group({
-      category: null,
-    });
+    // this.formSearch = this.fb.group({
+    //   category: null,
+    // });
     this.formLikeComment = this.fb.group({
       id: null,
       commentId: null,
       userId: null,
-      isLikeComment: null,
       postId: null,
+      commentText: null,
+      createAt: null,
+      updateAt: null,
+      likeComment: null,
+      status: null,
     });
 
     this.formAdd = this.fb.group({
@@ -99,6 +104,9 @@ export class PostsDetailComponent implements OnInit {
       name: null,
       postId: null,
       commentId: null,
+      createAt: null,
+      image: null,
+      category: null,
     });
 
     this.formReply = this.fb.group({
@@ -114,6 +122,10 @@ export class PostsDetailComponent implements OnInit {
       this.http.post('http://localhost:8080/api/comment/search', this.searchModel).toPromise().then((data: any) => {
         this.dataComment = data.data;
         console.log('data.data: ', data.data);
+      });
+
+      this.http.post('http://localhost:8080/api/comment/search', this.searchModel).toPromise().then((data: any) => {
+        this.dataComment = data.data;
       });
     });
   }
@@ -136,6 +148,12 @@ export class PostsDetailComponent implements OnInit {
 
     this.api.getListPosts(this.searchModel).toPromise().then((data: any) => {
       this.dataPosts = data.data;
+      for (const item of data.data) {
+        if (this.idPostsLocalstorage == item.id) {
+          this.imgPostDetail = item.imagePath;
+          this.categoryDetail = item.category;
+        }
+      }
     });
 
     this.http.post('http://localhost:8080/api/LikePosts/search', this.searchModel).toPromise().then((data: any) => {
@@ -158,8 +176,17 @@ export class PostsDetailComponent implements OnInit {
 
     this.http.post('http://localhost:8080/api/comment/search', this.searchModel).toPromise().then((data: any) => {
       this.dataComment = data.data;
-      console.log('data.data: ', data.data);
     });
+
+    // this.http.post('http://localhost:8080/api/like-comment/search', this.searchModel).toPromise().then((data: any) => {
+    //   // this.dataComment = data.data;
+    //   console.log('data.data: ', data.data);
+    //   for (const item of data.data) {
+    //     if (item.commentId && item.userId == this.idUserLocalstorage && item.postId == this.idPostsLocalstorage) {
+    //       this.isLikeComment = true;
+    //     }
+    //   }
+    // });
   }
 
   handleLike() {
@@ -212,10 +239,6 @@ export class PostsDetailComponent implements OnInit {
 
   handleSubmitComment(item?: any) {
     const commentId = Math.floor(Math.random() * 10000000);
-    console.log(commentId);
-    console.log(commentId);
-    console.log(commentId);
-    console.log(commentId);
     if (this.dataEdit) {
       this.formAdd.get('id').setValue(this.dataEdit.id);
       this.formAdd.get('commentId').setValue(this.dataEdit.commentId);
@@ -223,7 +246,8 @@ export class PostsDetailComponent implements OnInit {
       this.formAdd.get('postId').setValue(this.dataEdit.postId);
       this.formAdd.get('commentText').setValue(this.formAdd.get('commentReplyText').value ? this.formAdd.get('commentReplyText').value : this.formAdd.get('commentText').value);
       this.formAdd.get('status').setValue(1);
-      // this.formAdd.get('createAt').setValue(this.datePipe.transform(item.createAt, 'dd/MM/yyyy'));
+      this.formAdd.get('createAt').setValue(this.datePipe.transform(item.createAt, 'dd/MM/yyyy'));
+      this.formAdd.get('updateAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy'));
       this.http.post('http://localhost:8080/api/comment/update', this.formAdd.value).toPromise().then((res: any) => {
         console.log('res: ', res);
         if (res.errorCode == '00') {
@@ -238,6 +262,7 @@ export class PostsDetailComponent implements OnInit {
       this.formAdd.get('postId').setValue(localStorage.getItem('postsId'));
       this.formAdd.get('commentId').setValue(commentId);
       this.formAdd.get('commentText').setValue(this.formAdd.get('commentText').value ? this.formAdd.get('commentText').value : this.formAdd.get('commentReplyText').value);
+      this.formAdd.get('createAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy'));
       this.http.post('http://localhost:8080/api/comment/create', this.formAdd.value).toPromise().then((res: any) => {
         console.log('res: ', res);
         if (res.errorCode == '00') {
@@ -253,6 +278,9 @@ export class PostsDetailComponent implements OnInit {
     this.formNotify.get('name').setValue(this.dataInfoUserNotification ? this.dataInfoUserNotification.name : null);
     this.formNotify.get('postId').setValue(this.idPostsLocalstorage);
     this.formNotify.get('commentId').setValue(commentId);
+    this.formNotify.get('createAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy'));
+    this.formNotify.get('image').setValue(this.imgPostDetail);
+    this.formNotify.get('category').setValue(this.categoryDetail);
     this.http.post('http://localhost:8080/api/notify/create', this.formNotify.value).toPromise().then((res: any) => {
     });
     this.websocketService.sendComment('1', '2');
@@ -262,6 +290,7 @@ export class PostsDetailComponent implements OnInit {
       this.handleSearch();
     }, 300);
   }
+
 
   handleReplyComment(itemUser?: any) {
     console.log('itemUser: ', itemUser);
@@ -323,13 +352,37 @@ export class PostsDetailComponent implements OnInit {
 
   handleLikeComment(item: any) {
     console.log('item: ', item);
+    this.formLikeComment.get('id').setValue(item.id);
     this.formLikeComment.get('commentId').setValue(item.commentId);
-    this.formLikeComment.get('userId').setValue(this.idUserLocalstorage);
-    this.formLikeComment.get('isLikeComment').setValue(1);
-    this.formLikeComment.get('postId').setValue(this.idPostsLocalstorage);
-    this.http.post('http://localhost:8080/api/like-comment/create', this.formLikeComment.value).toPromise().then(data => {
+    this.formLikeComment.get('userId').setValue(item.userId);
+    this.formLikeComment.get('postId').setValue(item.postId);
+    this.formLikeComment.get('commentText').setValue(item.commentText);
+    // this.formLikeComment.get('createAt').setValue(item.createAt);
+    // this.formLikeComment.get('updateAt').setValue(item.updateAt);
+    this.formLikeComment.get('likeComment').setValue(1);
+    this.formLikeComment.get('status').setValue(1);
+    this.http.post('http://localhost:8080/api/comment/update', this.formLikeComment.value).toPromise().then(data => {
 
     });
+    this.websocketService.sendComment('1', '2');
+
+  }
+
+  handleDisLikeComment(item: any) {
+    this.formLikeComment.get('id').setValue(item.id);
+    this.formLikeComment.get('commentId').setValue(item.commentId);
+    this.formLikeComment.get('userId').setValue(item.userId);
+    this.formLikeComment.get('postId').setValue(item.postId);
+    this.formLikeComment.get('commentText').setValue(item.commentText);
+    // this.formLikeComment.get('createAt').setValue(item.createAt);
+    // this.formLikeComment.get('updateAt').setValue(item.updateAt);
+    this.formLikeComment.get('likeComment').setValue(0);
+    this.formLikeComment.get('status').setValue(1);
+    this.http.post('http://localhost:8080/api/comment/update', this.formLikeComment.value).toPromise().then(data => {
+
+    });
+    this.websocketService.sendComment('1', '2');
+
   }
 
 }
