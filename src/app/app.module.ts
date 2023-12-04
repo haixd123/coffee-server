@@ -30,6 +30,8 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {Api} from './services/api';
 import {AppConfigService} from '../app-config.service';
 import {PaginationService} from 'ngx-pagination';
+import { CarouselModule } from 'ngx-owl-carousel-o';
+import {TranslateModule} from '@ngx-translate/core';
 
 registerLocaleData(vi);
 
@@ -56,6 +58,8 @@ registerLocaleData(vi);
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireStorageModule,
     FontAwesomeModule,
+    CarouselModule,
+    TranslateModule.forRoot(),
   ],
   // tslint:disable-next-line:max-line-length
   providers: [AppConfigService, Api, NotificationService, NzConfigService, NzNotificationService, NzMessageService, DatePipe, FilterPipe, {

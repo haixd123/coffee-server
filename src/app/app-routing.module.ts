@@ -24,6 +24,9 @@ import {SavePostsComponent} from './component/home/user/save-posts/save-posts.co
 import {UnauthorizedComponent} from './unauthorized/unauthorized.component';
 import {RoleGuard} from './role.guard';
 import {ContactComponent} from './component/home/contact/contact.component';
+import {TableProductComponent} from './component/admin/table-product/table-product.component';
+import {ProductComponent} from './component/home/product/product.component';
+import {CheckoutComponent} from './component/home/checkout/checkout.component';
 
 
 const routes: Routes = [
@@ -58,6 +61,10 @@ const routes: Routes = [
         component: TableCoffeeBeanComponent,
       },
       {
+        path: 'product',
+        component: TableProductComponent,
+      },
+      {
         path: 'user',
         component: TableUserComponent,
       }
@@ -86,6 +93,10 @@ const routes: Routes = [
         component: HomePostsComponent,
       },
       {
+        path: 'product',
+        component: ProductComponent,
+      },
+      {
         path: 'posts/:category',
         component: HomePostsComponent,
       },
@@ -100,6 +111,10 @@ const routes: Routes = [
       {
         path: 'contact',
         component: ContactComponent,
+      },
+      {
+        path: 'checkout',
+        component: CheckoutComponent,
       },
       {
         path: 'user',

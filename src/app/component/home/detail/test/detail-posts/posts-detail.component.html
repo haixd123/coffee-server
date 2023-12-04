@@ -158,17 +158,17 @@
                         </a>
                         <!--                        <span style="font-size: 13px; font-weight: 400">13:49 ngày 24/10/2023</span>-->
                         <span
-                          style="font-size: 14px; font-weight: 400">{{itemComment.createAt}}</span>
+                          style="font-size: 14px; font-weight: 400;color: #000000a6">{{itemComment.createAt}}</span>
                       </div>
                       <div>
-                        <div style="font-size: 14px"
+                        <div style="font-size: 14px;color: #000000a6"
                              class="my-2">{{itemComment.commentText}}</div>
                       </div>
                       <div class="d-flex mb-3">
                         <div *ngIf="itemComment.likeComment == 0 || itemComment.likeComment == null" class="mr-2 "
                              (click)="handleLikeComment(itemComment)">
-                          <a style="color: #000" class="d-flex align-items-center">
-                            <i style="color: #000" nz-icon nzType="like" nzTheme="outline" class="mr-2"></i>
+                          <a style="color: #000000a6" class="d-flex align-items-center">
+                            <i style="color: #000000a6" nz-icon nzType="like" nzTheme="outline" class="mr-2"></i>
                             thích
                           </a>
                         </div>
@@ -179,8 +179,8 @@
                             thích
                           </a>
                         </div>
-                        <div style="border-left: 1px solid #c3c3c3" class="pl-2"
-                             (click)="handleReplyComment(itemUser) ">
+                        <div style="border-left: 1px solid #c3c3c3; color: #000000a6" class="pl-2"
+                             (click)="handleReplyComment(itemComment) ">
                           <a>Trả lời</a>
                         </div>
                       </div>

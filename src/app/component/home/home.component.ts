@@ -37,6 +37,7 @@ export class HomeComponent implements OnInit {
   autoFocus: boolean;
   isDisabledInputChat: boolean;
   isWaitingReply: boolean;
+  isOpenChatBot = false;
 
   constructor(
     private fb: FormBuilder,
@@ -76,14 +77,14 @@ export class HomeComponent implements OnInit {
     });
 
     this.formSearchNotify.get('toUser').setValue(JSON.parse(localStorage.getItem('user')).id);
-    await this.http.post('http://localhost:8080/api/notify/search-all-notify', this.formSearchNotify.value).toPromise().then((data: any) => {
+    await this.api.getListNotify(this.formSearchNotify.value).toPromise().then((data: any) => {
       this.dataNotify = data.data;
       console.log('this.dataNotify: ', this.dataNotify);
     });
 
     this.searchModel.pageIndex = 1;
     this.searchModel.pageSize = 150;
-    await this.http.post('http://localhost:8080/api/posts/search', this.searchModel).toPromise().then((data: any) => {
+    await this.api.getListPosts(this.searchModel).toPromise().then((data: any) => {
       // for (const item of data.data) {
       //   for (const item2 of this.dataNotify) {
       //     if (item.id == item2.postId) {
@@ -128,6 +129,10 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/home/posts']);
   }
 
+  linkToProduct() {
+    this.router.navigate(['/home/product']);
+  }
+
   linkToContact() {
     this.isCoffee = 4;
   }
@@ -165,5 +170,9 @@ export class HomeComponent implements OnInit {
     localStorage.setItem('postsCategory', item.category);
     this.shareDataService.sendDataCategory(item.category);
     this.router.navigate([`/home/detail/posts/${item.category}/${item.postId}`]);
+  }
+
+  openChatBot() {
+    this.isOpenChatBot = !this.isOpenChatBot;
   }
 }

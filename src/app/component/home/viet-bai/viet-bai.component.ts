@@ -22,7 +22,7 @@ export class VietBaiComponent implements OnInit {
   urlImage: string;
 
   formAdd: FormGroup;
-  dataEdit: any[];
+  dataEdit: any;
 
   subscription: Subscription;
 

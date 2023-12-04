@@ -5,6 +5,9 @@
     Tiêu đề
     <div class="mt-2 mb-3">
       <input style="width: 100%;" formControlName="title">
+      <div *ngIf="f.data.errors">
+        <div style="color: red;" *ngIf="f.data.errors.required"> Dữ liệu không được để trống</div>
+      </div>
     </div>
     Phân loại
     <div class="mt-2 mb-3">
@@ -31,7 +34,12 @@
         <nz-upload
           [nzHeaders]="{ authorization: 'authorization-text' }"
           (nzChange)="onUpload($event)"
+          [nzShowUploadList]="false"
         >
+          <ng-container *ngIf="!urlImage">
+            <i class="upload-icon" nz-icon [nzType]="isLoading ? 'loading' : 'plus'"></i>
+            <div class="ant-upload-text">{{ 'merchant.upload_logo' | translate }}</div>
+          </ng-container>
           <button nz-button><i nz-icon nzType="upload"></i>Click to Upload</button>
         </nz-upload>
       </div>

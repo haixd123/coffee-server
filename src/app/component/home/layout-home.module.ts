@@ -17,14 +17,17 @@ import {NotificationComponent} from './notification/notification.component';
 import {DetailModule} from './detail/detail.module';
 import { ContactComponent } from './contact/contact.component';
 import {Api} from '../../services/api';
+import { ProductComponent } from './product/product.component';
+import { CheckoutComponent } from './checkout/checkout.component';
+import {CarouselModule} from 'ngx-owl-carousel-o';
 
 @NgModule({
-  declarations: [HomeComponent, HomePostsComponent, HomeCoffeeBeanComponent, VietBaiComponent, TestCkeditorComponent, EquipmentComponent, UserComponent, NotificationComponent, ContactComponent],
+  declarations: [CheckoutComponent, HomeComponent, ProductComponent, HomePostsComponent, HomeCoffeeBeanComponent, VietBaiComponent, TestCkeditorComponent, EquipmentComponent, UserComponent, NotificationComponent, ContactComponent, ProductComponent, CheckoutComponent],
   imports: [NzFormModule, NgZorroAntdModule, SharedModule, DetailModule,
     RouterModule.forChild([]),
     // HomeLayoutRoutingModule,
     NzDropDownModule,
-    NzBreadCrumbModule, CKEditorModule, DetailModule],
+    NzBreadCrumbModule, CKEditorModule, DetailModule, CarouselModule],
   exports: [
     NotificationComponent
   ],

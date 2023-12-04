@@ -1,0 +1,66 @@
+<form nz-form [formGroup]="formEdit">
+  <!--  <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>-->
+  <nz-modal nzWidth="600px" [(nzVisible)]="isEdit" nzTitle="Thêm mới sản phẩm" (nzOnCancel)="handleCancel(false)"
+            (nzOnOk)="handleOk()">
+
+    <div class="mb-3">
+      Tên sản phẩm
+      <input formControlName="name" style="width: 100%;" nz-input name="required" required
+             placeholder="Tên sản phẩm"/>
+      <div *ngIf="f.data.errors">
+        <div style="color: red;" *ngIf="f.data.errors.required"> Dữ liệu không được để trống</div>
+      </div>
+    </div>
+    <div class="mb-3">
+      Mã sản phẩm
+      <input formControlName="sku" style="width: 100%;" nz-input name="required" required
+             placeholder="Mã sản phẩm"/>
+    </div>
+    <div class="mb-3">
+      Mô tả
+      <input formControlName="description" style="width: 100%;" nz-input name="required" required
+             placeholder="Mô tả"/>
+    </div>
+
+    <div class="mb-3">
+      Thể loại
+      <input formControlName="category" style="width: 100%;" nz-input name="required" required
+             placeholder="Thể loại"/>
+    </div>
+    <div class="mb-3">
+      Giảm giá
+      <input formControlName="discount" style="width: 100%;" nz-input name="required" required
+             placeholder="Giảm giá"/>
+    </div>
+    <div class="mb-3">
+      Giá
+      <input formControlName="price" style="width: 100%;" nz-input name="required" required
+             placeholder="Giá"/>
+    </div>
+    <div class="mb-3">
+      Số lượng
+      <input formControlName="remaining" style="width: 100%;" nz-input name="required" required
+             placeholder="Số lượng"/>
+    </div>
+    <div class="mb-3" *ngIf="urlImage">
+      <img style="width: 100%; max-width: 350px" [src]="urlImage"/>
+    </div>
+    <div class="mb-3">
+      <nz-upload
+        [nzHeaders]="{ authorization: 'authorization-text' }"
+        (nzChange)="onUpload($event)"
+        [nzShowUploadList]="false"
+      >
+        <ng-container *ngIf="!urlImage">
+          <i class="upload-icon" nz-icon [nzType]="isLoading ? 'loading' : 'plus'"></i>
+          <div class="ant-upload-text">{{ 'merchant.upload_logo' | translate }}</div>
+        </ng-container>
+        <button nz-button><i nz-icon nzType="upload"></i>Click to Upload</button>
+      </nz-upload>
+    </div>
+    <div class="mb-3">
+      <span class="mb-3">Mô tả sản phẩm</span>
+      <ckeditor formControlName="detail" [editor]="Editor"></ckeditor>
+    </div>
+  </nz-modal>
+</form>

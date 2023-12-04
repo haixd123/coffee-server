@@ -5,6 +5,7 @@ import {ValidateService} from '../../../services/validate-service';
 import {NotificationService} from '../../../services/notification.service';
 import {SearchModelEntity} from '../search-model-entiry';
 import {Api} from '../../../services/api';
+import {DatePipe} from '@angular/common';
 
 
 interface Person {
@@ -29,7 +30,7 @@ export class TableCoffeeBeanComponent implements OnInit {
   dataEdit: any;
   total: number;
   searchModel: SearchModelEntity = new SearchModelEntity();
-  curPage: number;
+  curPage = 1;
 
   searchValue: string;
   sortValue: string;
@@ -74,7 +75,6 @@ export class TableCoffeeBeanComponent implements OnInit {
   changePage() {
     this.searchModel.pageIndex = this.curPage;
     this.searchModel.pageSize = 10;
-
     this.handleUpdate(this.searchModel, false);
   }
 

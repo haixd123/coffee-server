@@ -31,7 +31,7 @@ export class HomePostsComponent implements OnInit, OnChanges {
   subscription: Subscription;
 
   PostIdLocalStorage: string;
-  userLocalstorage: string;
+  userLocalstorage: any;
 
   constructor(
     private fb: FormBuilder,
@@ -109,7 +109,7 @@ export class HomePostsComponent implements OnInit, OnChanges {
 
   }
 
-  handleMoreBtn(item: any) {
+  handleMoreBtn(item?: any) {
     this.idPosts = item.id;
     this.isEditPosts = !this.isEditPosts;
   }

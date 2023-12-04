@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {NzUploadChangeParam} from 'ng-zorro-antd';
 import {finalize} from 'rxjs/operators';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -13,7 +13,7 @@ import {Api} from '../../../../services/api';
   templateUrl: './edit.component.html',
   styleUrls: ['./edit.component.scss']
 })
-export class EditComponent implements OnInit, OnChanges  {
+export class EditComponent implements OnInit, OnChanges {
   @Input() isEdit: boolean;
   @Input() dataEdit: any;
   @Input() disable: boolean;
@@ -24,6 +24,7 @@ export class EditComponent implements OnInit, OnChanges  {
   urlImage: string;
 
   formEdit: FormGroup;
+  isLoading = false;
 
 
   constructor(
@@ -35,7 +36,7 @@ export class EditComponent implements OnInit, OnChanges  {
   ) {
     this.formEdit = this.fb.group({
       id: null,
-      name: null,
+      name: [null, [Validators.required]],
       title: null,
       status: null,
       image: null,
@@ -49,7 +50,7 @@ export class EditComponent implements OnInit, OnChanges  {
     // }
     this.formEdit.patchValue({
       id: this.dataEdit.id,
-      name: this.dataEdit.name,
+      name: [this.dataEdit.name, [Validators.required]],
       title: this.dataEdit.title,
       status: this.dataEdit.status,
       image: this.dataEdit.image,
@@ -58,11 +59,15 @@ export class EditComponent implements OnInit, OnChanges  {
     this.urlImage = this.dataEdit.image;
   }
 
+  get f() {
+    return this.formEdit.controls;
+  }
+
   ngOnInit(): void {
   }
 
-  //??? Upload ảnh lâu nên hàm create,update phải đợi nhug k dùng asyns await đc
   onUpload(info: NzUploadChangeParam) {
+    this.isLoading = true;
     this.selectedFile = info.file.originFileObj;
     const uploadImageData = new FormData();
     uploadImageData.append('files', this.selectedFile, this.selectedFile.name);
@@ -71,6 +76,7 @@ export class EditComponent implements OnInit, OnChanges  {
     this.storage.upload(filePath, this.selectedFile).snapshotChanges().pipe(
       finalize(() => {
         fileRef.getDownloadURL().subscribe((url) => {
+          this.isLoading = false;
           this.urlImage = url;
         });
       })

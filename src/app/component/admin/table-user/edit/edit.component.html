@@ -7,6 +7,9 @@
       <div class="col-4">
         Tên đăng nhập
         <input class="mt-1" formControlName="userName" nz-input placeholder="Username"/>
+        <div *ngIf="f.data.errors">
+          <div style="color: red;" *ngIf="f.data.errors.required"> Dữ liệu không được để trống</div>
+        </div>
       </div>
 <!--      <div class="col-4">-->
 <!--        Mật khẩu-->
@@ -16,6 +19,9 @@
       <div class="col-4">
         Email
         <input class="mt-1" formControlName="email" nz-input placeholder="Email"/>
+        <div *ngIf="f.data.errors">
+          <div style="color: red;" *ngIf="f.data.errors.required"> Dữ liệu không được để trống</div>
+        </div>
       </div>
     </div>
 
@@ -77,7 +83,12 @@
       style="margin-left: 15px"
       [nzHeaders]="{ authorization: 'authorization-text' }"
       (nzChange)="onUpload($event)"
+      [nzShowUploadList]="false"
     >
+      <ng-container *ngIf="!urlImage">
+        <i class="upload-icon" nz-icon [nzType]="isLoading ? 'loading' : 'plus'"></i>
+        <div class="ant-upload-text">{{ 'merchant.upload_logo' | translate }}</div>
+      </ng-container>
       <button nz-button><i nz-icon nzType="upload"></i>Click to Upload</button>
     </nz-upload>
     <div class="d-flex justify-content-end mt-5">

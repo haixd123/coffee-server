@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {NotificationService} from '../../../../services/notification.service';
 import {NzMessageService, NzUploadChangeParam, NzUploadFile} from 'ng-zorro-antd';
@@ -25,6 +25,7 @@ export class AddUserComponent implements OnInit {
 
   selectedFile: File;
   urlImage: any;
+  isLoading = false;
 
 
   constructor(
@@ -35,9 +36,9 @@ export class AddUserComponent implements OnInit {
     public datePipe: DatePipe,
   ) {
     this.formAdd = this.fb.group({
-      userName: null,
+      userName: [null, [Validators.required]],
       passWord: null,
-      email: null,
+      email: [null, [Validators.required]],
       name: null,
       address: null,
       age: null,
@@ -60,6 +61,10 @@ export class AddUserComponent implements OnInit {
     this.isAdd = true;
   }
 
+  get f() {
+    return this.formAdd.controls;
+  }
+
 
   // handleChange(info: NzUploadChangeParam): void {
   //   // console.log('info: ', info.fileList.originFileObj[0]);
@@ -72,6 +77,7 @@ export class AddUserComponent implements OnInit {
   // }
 
   onUpload(info: NzUploadChangeParam) {
+    this.isLoading = true;
     this.selectedFile = info.file.originFileObj;
     const uploadImageData = new FormData();
     uploadImageData.append('files', this.selectedFile, this.selectedFile.name);
@@ -80,6 +86,7 @@ export class AddUserComponent implements OnInit {
     this.storage.upload(filePath, this.selectedFile).snapshotChanges().pipe(
       finalize(() => {
         fileRef.getDownloadURL().subscribe((url) => {
+          this.isLoading = false;
           this.urlImage = url;
         });
       })

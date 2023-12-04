@@ -29,7 +29,7 @@ export class TableUserComponent implements OnInit {
   total: number;
   dataEdit: any;
   searchModel: SearchModelEntity = new SearchModelEntity();
-  curPage: number;
+  curPage = 1;
   datafilter: any[];
 
 

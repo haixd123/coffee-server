@@ -86,12 +86,14 @@ export class TablePostsComponent implements OnInit {
   dataEdit: any;
   total: number;
   searchModel: SearchModelEntity = new SearchModelEntity();
-  curPage: number;
+  curPage = 1;
   testSort: any[];
 
   searchValue: string;
   sortValue: string;
-  isSort = false;
+  isSort = true;
+
+  displayedData: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -104,6 +106,10 @@ export class TablePostsComponent implements OnInit {
       pageIndex: 1,
       pageSize: 10,
       title: null,
+      sortLikeDown: null,
+      sortLikeUp: null,
+      sortCommentDown: null,
+      sortCommentUp: null,
     });
     this.handleSearch();
     // this.changePage();
@@ -137,11 +143,30 @@ export class TablePostsComponent implements OnInit {
     this.searchModel.pageSize = 10;
     // this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
     this.handleUpdate(this.searchModel, false);
+    //
+    // const startIndex = (this.curPage - 1) * 10;
+    // const endIndex = startIndex + 10;
+    // this.data = this.data.slice(startIndex, endIndex);
+  }
+
+  async handlechangePage(value: any) {
+    console.log('value: ', value);
+    this.searchModel.pageIndex = 1;
+    this.searchModel.pageSize = 100;
+    await this.api.getListPosts(this.searchModel).toPromise().then((data: any) => {
+      this.data = data.data;
+      this.total = data.optional;
+    });
+    const startIndex = (value - 1) * 10;
+    const endIndex = startIndex + 10;
+    this.data = this.data.slice(startIndex, endIndex);
+    console.log('this.data: ', this.data);
   }
 
   handleAdd() {
     this.isAdd = true;
   }
+
 
   handleEdit(item: any) {
     this.isEdit = true;
@@ -169,9 +194,70 @@ export class TablePostsComponent implements OnInit {
     });
   }
 
-  handleSort(value: string) {
-    this.sortValue = value;
-    this.isSort = !this.isSort;
+  handleLikeSort(value: string) {
+    if (this.isSort) {
+      this.formSearch.get('sortLikeUp').setValue(1);
+      this.formSearch.get('sortLikeDown').setValue(0);
+      this.formSearch.get('sortCommentDown').setValue(0);
+      this.formSearch.get('sortCommentUp').setValue(0);
+      this.searchModel.pageIndex = 1;
+      this.searchModel.pageSize = 10;
+      this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
+      this.api.getListPosts(this.formSearch.value).subscribe(res => {
+        this.data = res.data;
+      });
+      this.isSort = !this.isSort;
+      return;
+    }
+    if (!this.isSort) {
+      console.log('sucess');
+      this.formSearch.get('sortLikeDown').setValue(1);
+      this.formSearch.get('sortLikeUp').setValue(0);
+      this.formSearch.get('sortCommentDown').setValue(0);
+      this.formSearch.get('sortCommentUp').setValue(0);
+      this.searchModel.pageIndex = 1;
+      this.searchModel.pageSize = 10;
+      this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
+      this.api.getListPosts(this.formSearch.value).subscribe(res => {
+        this.data = res.data;
+      });
+      this.isSort = !this.isSort;
+      return;
+    }
+    // this.sortValue = value;
+    // this.isSort = !this.isSort;
+  }
+
+  handleCommentSort(value: string) {
+    if (this.isSort) {
+      this.formSearch.get('sortCommentUp').setValue(1);
+      this.formSearch.get('sortCommentDown').setValue(0);
+      this.formSearch.get('sortLikeDown').setValue(0);
+      this.formSearch.get('sortLikeUp').setValue(0);
+      this.searchModel.pageIndex = 1;
+      this.searchModel.pageSize = 10;
+      this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
+      this.api.getListPosts(this.formSearch.value).subscribe(res => {
+        this.data = res.data;
+      });
+      this.isSort = !this.isSort;
+      return;
+    }
+    if (!this.isSort) {
+      console.log('sucess');
+      this.formSearch.get('sortCommentDown').setValue(1);
+      this.formSearch.get('sortCommentUp').setValue(0);
+      this.formSearch.get('sortLikeDown').setValue(0);
+      this.formSearch.get('sortLikeUp').setValue(0);
+      this.searchModel.pageIndex = 1;
+      this.searchModel.pageSize = 10;
+      this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
+      this.api.getListPosts(this.formSearch.value).subscribe(res => {
+        this.data = res.data;
+      });
+      this.isSort = !this.isSort;
+      return;
+    }
   }
 
 }

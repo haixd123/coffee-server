@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AddUserComponent} from '../add/add.component';
 import {HttpClient} from '@angular/common/http';
 import {NotificationService} from '../../../../services/notification.service';
@@ -24,6 +24,7 @@ export class EditUserComponent implements OnInit, OnChanges {
 
   selectedFile: File;
   urlImage: string;
+  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -34,9 +35,9 @@ export class EditUserComponent implements OnInit, OnChanges {
   ) {
     this.formEdit = this.fb.group({
       id: null,
-      userName: null,
+      userName: [null, [Validators.required]],
       passWord: null,
-      email: null,
+      email: [null, [Validators.required]],
       name: null,
       address: null,
       age: null,
@@ -54,9 +55,9 @@ export class EditUserComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.formEdit.patchValue({
       id: this.dataEdit.id,
-      userName: this.dataEdit.userName,
+      userName: [this.dataEdit.userName, [Validators.required]],
       passWord: this.dataEdit.passWord,
-      email: this.dataEdit.email,
+      email: [this.dataEdit.email, [Validators.required]],
       name: this.dataEdit.name,
       address: this.dataEdit.address,
       age: this.dataEdit.age,
@@ -76,11 +77,16 @@ export class EditUserComponent implements OnInit, OnChanges {
   ngOnInit(): void {
   }
 
+  get f() {
+    return this.formEdit.controls;
+  }
+
   showModal(): void {
     this.isEdit = true;
   }
 
   onUpload(info: NzUploadChangeParam) {
+    this.isLoading = true;
     this.selectedFile = info.file.originFileObj;
     const uploadImageData = new FormData();
     uploadImageData.append('files', this.selectedFile, this.selectedFile.name);
@@ -89,6 +95,7 @@ export class EditUserComponent implements OnInit, OnChanges {
     this.storage.upload(filePath, this.selectedFile).snapshotChanges().pipe(
       finalize(() => {
         fileRef.getDownloadURL().subscribe((url) => {
+          this.isLoading = false;
           this.urlImage = url;
         });
       })

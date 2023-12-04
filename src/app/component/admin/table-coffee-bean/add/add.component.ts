@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {EditCoffeeBeanComponent} from '../edit/edit.component';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {HttpClient} from '@angular/common/http';
@@ -35,7 +35,7 @@ export class AddCoffeeBeanComponent implements OnInit {
     private api: Api,
   ) {
     this.formAdd = this.fb.group({
-      name: null,
+      name: [null, [Validators.required]],
       title: null,
       image: null,
       contentCoffee: null
@@ -51,6 +51,7 @@ export class AddCoffeeBeanComponent implements OnInit {
   }
 
   onUpload(info: NzUploadChangeParam) {
+    this.isLoading = true;
     this.selectedFile = info.file.originFileObj;
     const uploadImageData = new FormData();
     uploadImageData.append('files', this.selectedFile, this.selectedFile.name);
@@ -58,33 +59,26 @@ export class AddCoffeeBeanComponent implements OnInit {
     const fileRef = this.storage.ref(filePath);
     this.storage.upload(filePath, this.selectedFile).snapshotChanges().pipe(finalize(() => {
       fileRef.getDownloadURL().subscribe((url) => {
+        this.isLoading = false;
         this.urlImage = url;
       });
     })).subscribe();
-
-    // .subscribe((res) => {
-    //     if (res.status === 200) {
-    //       console.log('success | res : ', res);
-    //     } else {
-    //       console.log('failed');
-    //     }
-    //   }
-    // );
   }
 
   async handleOk() {
-
-    this.formAdd.get('image').setValue(this.urlImage);
-    await this.api.createCoffeeBean(this.formAdd.value).toPromise().then((data: any) => {
-      if (data.errorCode == '00') {
-        this.notificationService.showMessage('success', 'Thêm loại cafe mới thành công');
-      } else {
-        this.notificationService.showMessage('error', 'Thêm loại cafe mới thất bại');
-      }
-    });
-    this.handleCancel(true);
-    this.isAdd = false;
-    this.formAdd.reset();
+    if (this.formAdd.valid) {
+      this.formAdd.get('image').setValue(this.urlImage);
+      await this.api.createCoffeeBean(this.formAdd.value).toPromise().then((data: any) => {
+        if (data.errorCode == '00') {
+          this.notificationService.showMessage('success', 'Thêm loại cafe mới thành công');
+        } else {
+          this.notificationService.showMessage('error', 'Thêm loại cafe mới thất bại');
+        }
+      });
+      this.handleCancel(true);
+      this.isAdd = false;
+      this.formAdd.reset();
+    }
   }
 
   handleCancel(value): void {
@@ -92,5 +86,7 @@ export class AddCoffeeBeanComponent implements OnInit {
     this.closePopup.emit(value);
   }
 
-
+  get f() {
+    return this.formAdd.controls;
+  }
 }

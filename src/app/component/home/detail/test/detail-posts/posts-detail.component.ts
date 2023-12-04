@@ -40,18 +40,20 @@ export class PostsDetailComponent implements OnInit {
   dataSavePosts: any[];
   dataComment: any[];
   data: any[];
-  dataInfoUserNotification: any[];
+  dataInfoUserNotification: any;
+  dataInfoCommentNotification: any;
+  dataInfoPostNotification: any;
 
   idPostsLocalstorage: string;
   idUserLocalstorage: string;
 
   isEditPosts = false;
   idPosts: number;
-  userLocalstorage: string;
+  userLocalstorage: any;
 
   isEdit = false;
 
-  dataEdit: any[];
+  dataEdit: any;
   imgPostDetail: string;
   categoryDetail: string;
   subscription: Subscription;
@@ -66,9 +68,6 @@ export class PostsDetailComponent implements OnInit {
     private notificationService: NotificationService,
     private shareDataService: ShareDataService,
   ) {
-    // this.formSearch = this.fb.group({
-    //   category: null,
-    // });
     this.formLikeComment = this.fb.group({
       id: null,
       commentId: null,
@@ -98,15 +97,10 @@ export class PostsDetailComponent implements OnInit {
 
     this.formNotify = this.fb.group({
       id: null,
-      fromUser: null,
-      toUser: null,
-      isNotify: null,
-      name: null,
+      userId: null,
       postId: null,
       commentId: null,
       createAt: null,
-      image: null,
-      category: null,
     });
 
     this.formReply = this.fb.group({
@@ -116,15 +110,14 @@ export class PostsDetailComponent implements OnInit {
 
     this.userLocalstorage = JSON.parse(localStorage.getItem('user'));
     this.idUserLocalstorage = JSON.parse(localStorage.getItem('user')).id;
-    // this.idPostsLocalstorage = localStorage.getItem('postsId');
 
     this.websocketService.receiveComment().subscribe((comment: any) => {
-      this.http.post('http://localhost:8080/api/comment/search', this.searchModel).toPromise().then((data: any) => {
+      this.api.getListComment(this.searchModel).toPromise().then((data: any) => {
         this.dataComment = data.data;
         console.log('data.data: ', data.data);
       });
 
-      this.http.post('http://localhost:8080/api/comment/search', this.searchModel).toPromise().then((data: any) => {
+      this.api.getListComment(this.searchModel).toPromise().then((data: any) => {
         this.dataComment = data.data;
       });
     });
@@ -133,7 +126,11 @@ export class PostsDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
+      console.log('params: ', params);
       this.idPostsLocalstorage = params.get('id');
+      localStorage.setItem('postsCategory', params.get('category'));
+      localStorage.setItem('postsId', params.get('id'));
+      this.shareDataService.sendDataCategory(params.get('category'));
     });
   }
 
@@ -152,11 +149,13 @@ export class PostsDetailComponent implements OnInit {
         if (this.idPostsLocalstorage == item.id) {
           this.imgPostDetail = item.imagePath;
           this.categoryDetail = item.category;
+          this.dataInfoPostNotification = item;
+          console.log('item: ', item);
         }
       }
     });
 
-    this.http.post('http://localhost:8080/api/LikePosts/search', this.searchModel).toPromise().then((data: any) => {
+    this.api.getListLikePosts(this.searchModel).toPromise().then((data: any) => {
       this.dataLikePosts = data.data;
       for (const item of data.data) {
         if (item.userId == this.idUserLocalstorage && item.postId == this.idPostsLocalstorage) {
@@ -165,7 +164,7 @@ export class PostsDetailComponent implements OnInit {
       }
     });
 
-    this.http.post('http://localhost:8080/api/save-posts/search', this.searchModel).toPromise().then((data: any) => {
+    this.api.getListSavePosts(this.searchModel).toPromise().then((data: any) => {
       this.dataSavePosts = data.data;
       for (const item of data.data) {
         if (item.userId == this.idUserLocalstorage && item.postId == this.idPostsLocalstorage) {
@@ -174,7 +173,7 @@ export class PostsDetailComponent implements OnInit {
       }
     });
 
-    this.http.post('http://localhost:8080/api/comment/search', this.searchModel).toPromise().then((data: any) => {
+    this.api.getListComment(this.searchModel).toPromise().then((data: any) => {
       this.dataComment = data.data;
     });
 
@@ -197,7 +196,7 @@ export class PostsDetailComponent implements OnInit {
       postId: localStorage.getItem('postsId'),
       isLike: 1
     }, {});
-    this.http.post('http://localhost:8080/api/LikePosts/create', this.formAdd.value).subscribe(res => {
+    this.api.isLike(this.formAdd.value).subscribe(res => {
     });
   }
 
@@ -209,7 +208,7 @@ export class PostsDetailComponent implements OnInit {
       postId: localStorage.getItem('postsId'),
       isLike: 0
     });
-    this.http.post('http://localhost:8080/api/LikePosts/create', this.formAdd.value).subscribe(res => {
+    this.api.isLike(this.formAdd.value).subscribe(res => {
     });
   }
 
@@ -221,7 +220,7 @@ export class PostsDetailComponent implements OnInit {
       postId: localStorage.getItem('postsId'),
       isSave: 1
     }, {});
-    this.http.post('http://localhost:8080/api/save-posts/update', this.formAdd.value).subscribe(res => {
+    this.api.isSave(this.formAdd.value).subscribe(res => {
     });
   }
 
@@ -233,22 +232,22 @@ export class PostsDetailComponent implements OnInit {
       postId: localStorage.getItem('postsId'),
       isSave: 0
     });
-    this.http.post('http://localhost:8080/api/save-posts/update', this.formAdd.value).subscribe(res => {
+    this.api.isSave(this.formAdd.value).subscribe(res => {
     });
   }
 
   handleSubmitComment(item?: any) {
     const commentId = Math.floor(Math.random() * 10000000);
     if (this.dataEdit) {
-      this.formAdd.get('id').setValue(this.dataEdit.id);
-      this.formAdd.get('commentId').setValue(this.dataEdit.commentId);
-      this.formAdd.get('userId').setValue(this.dataEdit.userId);
-      this.formAdd.get('postId').setValue(this.dataEdit.postId);
+      this.formAdd.get('id').setValue(this.dataEdit?.id);
+      this.formAdd.get('commentId').setValue(this.dataEdit?.commentId);
+      this.formAdd.get('userId').setValue(this.dataEdit?.userId);
+      this.formAdd.get('postId').setValue(this.dataEdit?.postId);
       this.formAdd.get('commentText').setValue(this.formAdd.get('commentReplyText').value ? this.formAdd.get('commentReplyText').value : this.formAdd.get('commentText').value);
       this.formAdd.get('status').setValue(1);
-      this.formAdd.get('createAt').setValue(this.datePipe.transform(item.createAt, 'dd/MM/yyyy'));
-      this.formAdd.get('updateAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy'));
-      this.http.post('http://localhost:8080/api/comment/update', this.formAdd.value).toPromise().then((res: any) => {
+      this.formAdd.get('createAt').setValue(item.createAt);
+      this.formAdd.get('updateAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
+      this.api.updateComment(this.formAdd.value).toPromise().then((res: any) => {
         console.log('res: ', res);
         if (res.errorCode == '00') {
           this.notificationService.showMessage('success', 'Sửa luận thành công');
@@ -259,11 +258,11 @@ export class PostsDetailComponent implements OnInit {
     }
     if (!this.dataEdit) {
       this.formAdd.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
-      this.formAdd.get('postId').setValue(localStorage.getItem('postsId'));
+      this.formAdd.get('postId').setValue(this.idPostsLocalstorage);
       this.formAdd.get('commentId').setValue(commentId);
       this.formAdd.get('commentText').setValue(this.formAdd.get('commentText').value ? this.formAdd.get('commentText').value : this.formAdd.get('commentReplyText').value);
-      this.formAdd.get('createAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy'));
-      this.http.post('http://localhost:8080/api/comment/create', this.formAdd.value).toPromise().then((res: any) => {
+      this.formAdd.get('createAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
+      this.api.createComment(this.formAdd.value).toPromise().then((res: any) => {
         console.log('res: ', res);
         if (res.errorCode == '00') {
           this.notificationService.showMessage('success', 'Đăng bình luận thành công');
@@ -272,17 +271,23 @@ export class PostsDetailComponent implements OnInit {
         }
       });
     }
-    console.log('this.dataInfoUserNotification.id: ', this.dataInfoUserNotification);
-    this.formNotify.get('fromUser').setValue(this.idUserLocalstorage);
-    this.formNotify.get('toUser').setValue(this.dataInfoUserNotification ? this.dataInfoUserNotification.id : null);
-    this.formNotify.get('name').setValue(this.dataInfoUserNotification ? this.dataInfoUserNotification.name : null);
-    this.formNotify.get('postId').setValue(this.idPostsLocalstorage);
-    this.formNotify.get('commentId').setValue(commentId);
-    this.formNotify.get('createAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy'));
-    this.formNotify.get('image').setValue(this.imgPostDetail);
-    this.formNotify.get('category').setValue(this.categoryDetail);
-    this.http.post('http://localhost:8080/api/notify/create', this.formNotify.value).toPromise().then((res: any) => {
-    });
+    if (this.dataInfoCommentNotification) {
+      this.formNotify.get('userId').setValue(this.dataInfoCommentNotification.userId);
+      this.formNotify.get('postId').setValue(this.dataInfoCommentNotification.postId);
+      this.formNotify.get('commentId').setValue(this.dataInfoCommentNotification.commentId);
+      this.formNotify.get('createAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
+      this.api.createNotify(this.formNotify.value).toPromise().then((res: any) => {
+      });
+    }
+    if (!this.dataInfoCommentNotification) {
+      this.formNotify.get('userId').setValue(this.dataInfoPostNotification.userId);
+      this.formNotify.get('postId').setValue(this.dataInfoPostNotification.id);
+      this.formNotify.get('commentId').setValue(null);
+      this.formNotify.get('createAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
+      this.api.createNotify(this.formNotify.value).toPromise().then((res: any) => {
+      });
+    }
+
     this.websocketService.sendComment('1', '2');
     this.isReplyComment = false;
     this.formAdd.reset();
@@ -292,14 +297,15 @@ export class PostsDetailComponent implements OnInit {
   }
 
 
-  handleReplyComment(itemUser?: any) {
-    console.log('itemUser: ', itemUser);
+  handleReplyComment(itemComment?: any) {
+    console.log('itemComment: ', itemComment);
     this.isReplyComment = !this.isReplyComment;
-    this.dataInfoUserNotification = itemUser;
+    this.dataInfoCommentNotification = itemComment;
     if (this.isReplyComment) {
       this.formAdd.reset();
       setTimeout(() => {
         this.focusTextAriaReplyComment();
+
       }, 10);
     }
   }
@@ -327,6 +333,7 @@ export class PostsDetailComponent implements OnInit {
     this.formAdd.get('commentId').setValue(item.commentId);
     this.formAdd.get('userId').setValue(item.userId);
     this.formAdd.get('postId').setValue(item.postId);
+    // tslint:disable-next-line:max-line-length
     this.formAdd.get('commentReplyText').setValue(this.formAdd.get('commentText').value ? this.formAdd.get('commentText').value : this.formAdd.get('commentReplyText').value);
     // this.formAdd.get('createAt').setValue(this.datePipe.transform(item.createAt, 'dd/MM/yyyy'));
     this.searchModel = Object.assign({}, this.searchModel, this.formAdd.value);
@@ -335,17 +342,16 @@ export class PostsDetailComponent implements OnInit {
   }
 
   deletePosts(item: any) {
-    this.http.post('http://localhost:8080/api/comment/delete', item).toPromise().then(res => {
+    this.api.deleteComment(item).subscribe((res: any) => {
       if (res.errorCode == '00') {
         this.notificationService.showMessage('success', 'Xóa luận thành công');
       } else {
         this.notificationService.showMessage('error', 'Xóa luận thất bại');
       }
       console.log('res: ', res);
-
     });
 
-    this.http.post('http://localhost:8080/api/notify/delete', item).toPromise().then(res => {
+    this.api.deleteNotify(item).toPromise().then(res => {
     });
     this.websocketService.sendComment('1', '2');
   }
@@ -361,7 +367,7 @@ export class PostsDetailComponent implements OnInit {
     // this.formLikeComment.get('updateAt').setValue(item.updateAt);
     this.formLikeComment.get('likeComment').setValue(1);
     this.formLikeComment.get('status').setValue(1);
-    this.http.post('http://localhost:8080/api/comment/update', this.formLikeComment.value).toPromise().then(data => {
+    this.api.updateComment(this.formLikeComment.value).toPromise().then(data => {
 
     });
     this.websocketService.sendComment('1', '2');
@@ -378,7 +384,7 @@ export class PostsDetailComponent implements OnInit {
     // this.formLikeComment.get('updateAt').setValue(item.updateAt);
     this.formLikeComment.get('likeComment').setValue(0);
     this.formLikeComment.get('status').setValue(1);
-    this.http.post('http://localhost:8080/api/comment/update', this.formLikeComment.value).toPromise().then(data => {
+    this.api.updateComment(this.formLikeComment.value).toPromise().then(data => {
 
     });
     this.websocketService.sendComment('1', '2');

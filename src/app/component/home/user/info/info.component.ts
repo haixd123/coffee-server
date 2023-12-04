@@ -26,10 +26,13 @@ export class InfoComponent implements OnInit, OnChanges {
   isUpdateDateOfBirth = true;
   isUpdateSex = true;
   isUpdatePhone = true;
+  isUpdateEmail = true;
+
   isCancelUpdateName: boolean;
   isCancelUpdateDateOfBirth: boolean;
   isCancelUpdateSex: boolean;
   isCancelUpdatePhone: boolean;
+  isCancelUpdateEmail: boolean;
 
   isVisible = false;
 
@@ -54,6 +57,8 @@ export class InfoComponent implements OnInit, OnChanges {
       sex: JSON.parse(localStorage.getItem('user')).sex ? JSON.parse(localStorage.getItem('user')).sex : '',
       phoneNumber: JSON.parse(localStorage.getItem('user')).phoneNumber ? JSON.parse(localStorage.getItem('user')).phoneNumber : '',
       image: JSON.parse(localStorage.getItem('user')).image ? JSON.parse(localStorage.getItem('user')).image : null,
+      email: JSON.parse(localStorage.getItem('user')).email ? JSON.parse(localStorage.getItem('user')).email : '',
+
     });
     this.handleSearch();
     this.idUserLocalstorage = JSON.parse(localStorage.getItem('user')).id;
@@ -92,6 +97,11 @@ export class InfoComponent implements OnInit, OnChanges {
     this.isCancelUpdateName = true;
   }
 
+  handleSubmidUpdateEmail() {
+    this.isUpdateEmail = false;
+    this.isCancelUpdateEmail = true;
+  }
+
   handleSubmidUpdateDateOfBirth() {
     this.isUpdateDateOfBirth = false;
     this.isCancelUpdateDateOfBirth = true;
@@ -110,6 +120,11 @@ export class InfoComponent implements OnInit, OnChanges {
   cancelUpdateName() {
     this.isUpdateName = true;
     this.isCancelUpdateName = false;
+  }
+
+  cancelUpdateEmail() {
+    this.isUpdateEmail = true;
+    this.isCancelUpdateEmail = false;
   }
 
   cancelUpdateDateOfBirth() {
@@ -182,6 +197,7 @@ export class InfoComponent implements OnInit, OnChanges {
           this.cancelUpdateDateOfBirth();
           this.cancelUpdateSex();
           this.cancelUpdatePhoneNumber();
+          this.cancelUpdateEmail();
         }, 200);
       });
     });

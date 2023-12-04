@@ -58,12 +58,12 @@ export class UserComponent implements OnInit {
       userId: this.idUserLocalstorage,
     });
     this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
-    await this.http.post('http://localhost:8080/api/LikePosts/searchTotalLikePost', this.searchModel).toPromise().then((data: any) => {
+    await this.api.getTotalLikePost(this.searchModel).toPromise().then((data: any) => {
       this.totalLike = data.optional;
 
     });
 
-    await this.http.post('http://localhost:8080/api/comment/searchTotalCommentPost', this.searchModel).toPromise().then((data: any) => {
+    await this.api.getTotalCommentPost(this.searchModel).toPromise().then((data: any) => {
       this.totalComment = data.optional;
     });
 

@@ -26,8 +26,11 @@ import {BsDatepickerActions} from 'ngx-bootstrap/datepicker/reducer/bs-datepicke
 import {DatePipe} from '@angular/common';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {Api} from '../../services/api';
+import { TableProductComponent } from './table-product/table-product.component';
+import {EditProductComponent} from './table-product/edit/edit.component';
+import {AddProductComponent} from './table-product/add/add.component';
 @NgModule({
-  declarations: [AdminComponent, TableCoffeeBeanComponent, TableEquipmentComponent, TableUserComponent, AddComponent, EditComponent, TablePostsComponent, AddComponent, EditComponent, EditCoffeeBeanComponent, AddCoffeeBeanComponent, AddUserComponent, EditUserComponent, AddPostsComponent, EditPostsComponent],
+  declarations: [AdminComponent, TableProductComponent, TableCoffeeBeanComponent, TableEquipmentComponent, TableUserComponent, AddComponent, EditComponent, TablePostsComponent, AddComponent, EditComponent, EditCoffeeBeanComponent, AddCoffeeBeanComponent, AddUserComponent, EditUserComponent, AddPostsComponent, EditPostsComponent, TableProductComponent, EditProductComponent, AddProductComponent],
     imports: [
         NzFormModule,
         NgZorroAntdModule,

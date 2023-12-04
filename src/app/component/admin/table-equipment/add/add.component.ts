@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {HttpClient} from '@angular/common/http';
 import {NzUploadChangeParam} from 'ng-zorro-antd';
@@ -23,6 +23,7 @@ export class AddComponent implements OnInit {
 
   selectedFile: File;
   urlImage: string;
+  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -33,11 +34,14 @@ export class AddComponent implements OnInit {
 
   ) {
     this.formAdd = this.fb.group({
-      name: null,
+      name: [null, [Validators.required]],
       title: null,
       image: null,
       contentEquipment: null
     });
+  }
+  get f() {
+    return this.formAdd.controls;
   }
 
   ngOnInit(): void {
@@ -49,6 +53,7 @@ export class AddComponent implements OnInit {
   }
 
   onUpload(info: NzUploadChangeParam) {
+    this.isLoading = true;
     this.selectedFile = info.file.originFileObj;
     const uploadImageData = new FormData();
     uploadImageData.append('files', this.selectedFile, this.selectedFile.name);
@@ -57,6 +62,7 @@ export class AddComponent implements OnInit {
     this.storage.upload(filePath, this.selectedFile).snapshotChanges().pipe(
       finalize(() => {
         fileRef.getDownloadURL().subscribe((url) => {
+          this.isLoading = false;
           this.urlImage = url;
         });
       })

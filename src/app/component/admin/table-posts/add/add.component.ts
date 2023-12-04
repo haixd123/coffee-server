@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 // import {Api} from '../../api.service';
 import {HttpClient} from '@angular/common/http';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
@@ -23,8 +23,10 @@ export class AddPostsComponent implements OnInit {
   formAdd: FormGroup;
   public Editor = ClassicEditor;
 
+
   selectedFile: File;
   urlImage: string;
+  isLoading = false;
 
   constructor(
     private fb: FormBuilder,
@@ -36,7 +38,7 @@ export class AddPostsComponent implements OnInit {
 
   ) {
     this.formAdd = this.fb.group({
-      title: null,
+      title: [null, [Validators.required]],
       contentPost: null,
       imagePath: null,
       category: 'Trang thiết bị',
@@ -48,12 +50,17 @@ export class AddPostsComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  get f() {
+    return this.formAdd.controls;
+  }
+
 
   showModal(): void {
     this.isAdd = true;
   }
 
   onUpload(info: NzUploadChangeParam) {
+    this.isLoading = true;
     this.selectedFile = info.file.originFileObj;
     const uploadImageData = new FormData();
     uploadImageData.append('files', this.selectedFile, this.selectedFile.name);
@@ -62,6 +69,7 @@ export class AddPostsComponent implements OnInit {
     this.storage.upload(filePath, this.selectedFile).snapshotChanges().pipe(
       finalize(() => {
         fileRef.getDownloadURL().subscribe((url) => {
+          this.isLoading = false;
           this.urlImage = url;
         });
       })

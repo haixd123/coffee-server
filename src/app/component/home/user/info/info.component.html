@@ -222,6 +222,48 @@
                   <a class="fix-info mr-5 p-2" (click)="handleSubmidUpdatePhoneNumber()">Chỉnh sửa</a>
                 </div>
               </div>
+
+              <div style="border-bottom: 1px solid #c3c3c3; position: relative" class="pb-3 mx-1 row update-info">
+                <div class="col-1 d-flex justify-content-center mt-2">
+                  <svg style="font-size: 16px" xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                    <!--! Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+                    <path
+                      d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512H418.3c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304H178.3z"/>
+                  </svg>
+                </div>
+                <div class="col-11">
+                  <div>
+                    <span style="font-size: 16px; color: #000">Email</span><br/>
+                    <div *ngIf="isUpdateEmail">
+                     <span *ngIf="item.email" style="font-size: 16px; font-weight: 600; color: #000">
+                       {{item.email}}
+                     </span>
+                      <span *ngIf="!item.email" style="font-size: 16px; font-weight: 600; color: #000">
+                      Chưa có thông tin
+                    </span>
+                    </div>
+                    <div *ngIf="!isUpdateEmail && isCancelUpdateEmail">
+                      <input formControlName="email" *ngIf="item.email"
+                             style="font-size: 16px; color: #000; font-weight: 500"
+                             class="py-2" nz-input
+                             placeholder="Nhập họ và tên" type="text"/>
+                      <input formControlName="email" *ngIf="!item.email" style="font-size: 16px" class="py-2" nz-input
+                             placeholder="Nhập họ và tên"
+                             type="text"/>
+                      <div class="d-flex justify-content-end mt-2">
+                        <button class="mr-3 px-2 py-1" nz-button nzType="primary" (click)="handleUpdateInfo()">Xác nhận
+                        </button>
+                        <button class="px-2 py-1" nz-button nzType="primary" (click)="cancelUpdateEmail()">Hủy bỏ
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="isUpdateEmail">
+                  <a class="fix-info mr-5 p-2" (click)="handleSubmidUpdateEmail()">Chỉnh sửa</a>
+                </div>
+              </div>
             </div>
           </div>
         </div>

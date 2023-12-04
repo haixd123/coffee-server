@@ -28,7 +28,7 @@ export class TableEquipmentComponent implements OnInit {
   dataEdit: any;
   total: number;
   searchModel: SearchModelEntity = new SearchModelEntity();
-  curPage: number;
+  curPage = 1;
 
   searchValue: string;
   sortValue: string;

@@ -17,6 +17,8 @@ export class Api extends BaseService{
   //   return this.http.post(url, formData);
   // }
 
+
+  //CoffeeBean
   getListCoffee(searchModel: SearchModelEntity) {
     return this.post('/coffee/search', searchModel);
   }
@@ -33,6 +35,9 @@ export class Api extends BaseService{
     return this.post('/coffee/delete', searchModel);
   }
 
+
+
+  //Equipment
   getListEquipment(searchModel: SearchModelEntity) {
     return this.post('/equipment/search', searchModel);
   }
@@ -49,6 +54,9 @@ export class Api extends BaseService{
     return this.post('/equipment/delete', searchModel);
   }
 
+
+
+  //Posts
   getListPosts(searchModel: SearchModelEntity) {
     return this.post('/posts/search', searchModel);
   }
@@ -71,5 +79,87 @@ export class Api extends BaseService{
 
   deletePosts(searchModel: SearchModelEntity) {
     return this.post('/posts/delete', searchModel);
+  }
+
+
+  //Product
+  getListProduct(searchModel: SearchModelEntity) {
+    return this.post('/product/search', searchModel);
+  }
+
+  createProduct(searchModel: SearchModelEntity) {
+    return this.post('/product/create', searchModel);
+  }
+
+  updateProduct(searchModel: SearchModelEntity) {
+    return this.post('/product/update', searchModel);
+  }
+
+  deleteProduct(searchModel: SearchModelEntity) {
+    return this.post('/product/delete', searchModel);
+  }
+
+
+
+
+//////////
+//Comment
+  getTotalCommentPost(searchModel: SearchModelEntity) {
+    return this.post('/comment/searchTotalCommentPost', searchModel);
+  }
+  getListComment(searchModel: SearchModelEntity) {
+    return this.post('/comment/search', searchModel);
+  }
+
+  createComment(searchModel: SearchModelEntity) {
+    return this.post('/comment/create', searchModel);
+  }
+
+  updateComment(searchModel: SearchModelEntity) {
+    return this.post('/comment/update', searchModel);
+  }
+
+  deleteComment(searchModel: SearchModelEntity) {
+    return this.post('/comment/delete', searchModel);
+  }
+
+
+
+  //LikePosts
+  getTotalLikePost(searchModel: SearchModelEntity) {
+    return this.post('/LikePosts/searchTotalLikePost', searchModel);
+  }
+
+  getListLikePosts(searchModel: SearchModelEntity) {
+    return this.post('/LikePosts/search', searchModel);
+  }
+
+  isLike(searchModel: SearchModelEntity) {
+    return this.post('/LikePosts/create', searchModel);
+  }
+
+
+  //Notify
+  getListNotify(searchModel: SearchModelEntity) {
+    return this.post('/notify/search-all-notify', searchModel);
+  }
+
+  createNotify(searchModel: SearchModelEntity) {
+    return this.post('/notify/create', searchModel);
+  }
+
+  deleteNotify(searchModel: SearchModelEntity) {
+    return this.post('/notify/delete', searchModel);
+  }
+
+
+
+  //SavePosts
+  getListSavePosts(searchModel: SearchModelEntity) {
+    return this.post('/save-posts/search', searchModel);
+  }
+
+  isSave(searchModel: SearchModelEntity) {
+    return this.post('/save-posts/update', searchModel);
   }
 }
