@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit {
       toUser: null,
     });
     this.handleUpdate();
-
+    console.log('this.userLocalstorage: ', this.userLocalstorage);
     this.userLocalstorage = JSON.parse(localStorage.getItem('user'));
     this.websocketService.receiveComment().subscribe((comment: any) => {
       this.handleUpdate();
@@ -71,16 +71,16 @@ export class HomeComponent implements OnInit {
 
 
   async handleUpdate(searchModel?: SearchModelEntity) {
-    await this.http.get('http://localhost:8080/api/posts/search-list-category').toPromise().then((data: any) => {
+    await this.http.get('http://localhost:8080/api/authors/posts/search-list-category').toPromise().then((data: any) => {
       this.dataCategory = data.data;
       this.total = data.optional;
     });
 
-    this.formSearchNotify.get('toUser').setValue(JSON.parse(localStorage.getItem('user')).id);
-    await this.api.getListNotify(this.formSearchNotify.value).toPromise().then((data: any) => {
-      this.dataNotify = data.data;
-      console.log('this.dataNotify: ', this.dataNotify);
-    });
+    // this.formSearchNotify.get('toUser').setValue(JSON.parse(localStorage.getItem('user')).id);
+    // await this.api.getListNotify(this.formSearchNotify.value).toPromise().then((data: any) => {
+    //   this.dataNotify = data.data;
+    //   console.log('this.dataNotify: ', this.dataNotify);
+    // });
 
     this.searchModel.pageIndex = 1;
     this.searchModel.pageSize = 150;
@@ -153,7 +153,7 @@ export class HomeComponent implements OnInit {
     this.autoFocus = true;
     this.isDisabledInputChat = true;
     this.isWaitingReply = true;
-    this.http.get(`http://localhost:8080/bot/chat?prompt=${this.inputChatAsk}`).toPromise().then(data => {
+    this.http.get(`http://localhost:8080/api/authors/bot/chat?prompt=${this.inputChatAsk}`).toPromise().then(data => {
       console.log('success1');
       console.log('data: ', data);
       console.log('success2');

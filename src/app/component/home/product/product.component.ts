@@ -65,7 +65,7 @@ export class ProductComponent implements OnInit {
       quantity: null,
     });
     this.formUpdateQuantity.patchValue({
-      quantity: JSON.parse(localStorage.getItem('cartItems')).quantity,
+      quantity: JSON.parse(localStorage.getItem('cartItems'))?.quantity,
     });
   }
 

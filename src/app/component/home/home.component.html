@@ -68,7 +68,7 @@
             </div>
           </div>
         </div>
-        <div class="notify-link">
+        <div *ngIf="userLocalstorage" class="notify-link">
           <a class="d-flex align-items-center px-3" style="color: #fff">
             <!--            (click)="linkToContact()">-->
             <i nz-icon nzType="bell" nzTheme="outline"></i>Thông báo</a>

@@ -24,6 +24,9 @@ export class HomePostsComponent implements OnInit, OnChanges {
   isEditPosts = false;
   idPosts: number;
 
+  listFromUser: any;
+  listIsCommentPost: any;
+  listIsReplyComment: any;
 
   searchCoffee: string;
 
@@ -75,6 +78,26 @@ export class HomePostsComponent implements OnInit, OnChanges {
         this.search(null);
       }
     });
+
+//???
+//     this.http.get('http://localhost:8080/api/authors/notify/search-list-from-user').subscribe(res => {
+//       console.log('search-list-from-user: ', res);
+//       this.listFromUser = res;
+//     });
+//
+//     this.http.get('http://localhost:8080/api/authors/notify/search-list-isComment-post').subscribe(res => {
+//       console.log('search-list-isComment-post: ', res);
+//       this.listFromUser = res;
+//     });
+//
+//     this.http.get('http://localhost:8080/api/authors/notify/search-list-isReply-comment').subscribe(res => {
+//       console.log('search-list-isReply-comment: ', res);
+//       this.listFromUser = res;
+//     });
+
+    // listFromUser: any;
+    // listIsCommentPost: any;
+    // listIsReplyComment: any;
   }
 
   update(searchModel: SearchModelEntity, reset = false) {

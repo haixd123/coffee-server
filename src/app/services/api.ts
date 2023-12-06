@@ -20,7 +20,7 @@ export class Api extends BaseService{
 
   //CoffeeBean
   getListCoffee(searchModel: SearchModelEntity) {
-    return this.post('/coffee/search', searchModel);
+    return this.post('/authors/coffee/search', searchModel);
   }
 
   createCoffeeBean(searchModel: SearchModelEntity) {
@@ -39,7 +39,7 @@ export class Api extends BaseService{
 
   //Equipment
   getListEquipment(searchModel: SearchModelEntity) {
-    return this.post('/equipment/search', searchModel);
+    return this.post('/authors/equipment/search', searchModel);
   }
 
   createEquipment(searchModel: SearchModelEntity) {
@@ -58,15 +58,15 @@ export class Api extends BaseService{
 
   //Posts
   getListPosts(searchModel: SearchModelEntity) {
-    return this.post('/posts/search', searchModel);
+    return this.post('/authors/posts/search', searchModel);
   }
 
   getListCategoryPosts(searchModel: SearchModelEntity) {
-    return this.post('/posts/search-list-category', searchModel);
+    return this.post('/authors/posts/search-list-category', searchModel);
   }
 
   getListTotalPosts(searchModel: SearchModelEntity) {
-    return this.post('/posts/searchTotalPost', searchModel);
+    return this.post('/authors/posts/searchTotalPost', searchModel);
   }
 
   createPosts(searchModel: SearchModelEntity) {
@@ -84,7 +84,7 @@ export class Api extends BaseService{
 
   //Product
   getListProduct(searchModel: SearchModelEntity) {
-    return this.post('/product/search', searchModel);
+    return this.post('/authors/product/search', searchModel);
   }
 
   createProduct(searchModel: SearchModelEntity) {
@@ -105,10 +105,10 @@ export class Api extends BaseService{
 //////////
 //Comment
   getTotalCommentPost(searchModel: SearchModelEntity) {
-    return this.post('/comment/searchTotalCommentPost', searchModel);
+    return this.post('/authors/comment/searchTotalCommentPost', searchModel);
   }
   getListComment(searchModel: SearchModelEntity) {
-    return this.post('/comment/search', searchModel);
+    return this.post('/authors/comment/search', searchModel);
   }
 
   createComment(searchModel: SearchModelEntity) {
@@ -127,11 +127,11 @@ export class Api extends BaseService{
 
   //LikePosts
   getTotalLikePost(searchModel: SearchModelEntity) {
-    return this.post('/LikePosts/searchTotalLikePost', searchModel);
+    return this.post('/authors/LikePosts/searchTotalLikePost', searchModel);
   }
 
   getListLikePosts(searchModel: SearchModelEntity) {
-    return this.post('/LikePosts/search', searchModel);
+    return this.post('/authors/LikePosts/search', searchModel);
   }
 
   isLike(searchModel: SearchModelEntity) {
@@ -139,10 +139,19 @@ export class Api extends BaseService{
   }
 
 
-  //Notify
-  getListNotify(searchModel: SearchModelEntity) {
-    return this.post('/notify/search-all-notify', searchModel);
-  }
+  // Notify
+  // createSqlGetListfromUser(searchModel: SearchModelEntity) {
+  //   return this.post('/authors/notify/search-list-from-user', searchModel);
+  // }
+  //
+  // createSqlGetListIsCommentPost(searchModel: SearchModelEntity) {
+  //   return this.post('/authors/notify/search-list-isComment-post', searchModel);
+  // }
+  //
+  // createSqlGetListIsReplyComment(searchModel: SearchModelEntity) {
+  //   return this.post('/authors/notify/search-list-isReply-comment', searchModel);
+  // }
+
 
   createNotify(searchModel: SearchModelEntity) {
     return this.post('/notify/create', searchModel);
@@ -156,7 +165,7 @@ export class Api extends BaseService{
 
   //SavePosts
   getListSavePosts(searchModel: SearchModelEntity) {
-    return this.post('/save-posts/search', searchModel);
+    return this.post('/authors/save-posts/search', searchModel);
   }
 
   isSave(searchModel: SearchModelEntity) {

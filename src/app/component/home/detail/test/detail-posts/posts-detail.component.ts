@@ -271,6 +271,7 @@ export class PostsDetailComponent implements OnInit {
         }
       });
     }
+
     if (this.dataInfoCommentNotification) {
       this.formNotify.get('userId').setValue(this.dataInfoCommentNotification.userId);
       this.formNotify.get('postId').setValue(this.dataInfoCommentNotification.postId);
@@ -287,6 +288,7 @@ export class PostsDetailComponent implements OnInit {
       this.api.createNotify(this.formNotify.value).toPromise().then((res: any) => {
       });
     }
+
 
     this.websocketService.sendComment('1', '2');
     this.isReplyComment = false;
@@ -350,6 +352,7 @@ export class PostsDetailComponent implements OnInit {
       }
       console.log('res: ', res);
     });
+
 
     this.api.deleteNotify(item).toPromise().then(res => {
     });

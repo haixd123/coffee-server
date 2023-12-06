@@ -34,7 +34,7 @@
 
 
     </div>
-    <div *ngIf="(userLocalstorage.id == item.userId) || userLocalstorage.role == 'ADMIN'" class="d-flex flex-wrap"
+    <div *ngIf="(userLocalstorage?.id == item.userId) || userLocalstorage?.role == 'ADMIN'" class="d-flex flex-wrap"
          style="position: relative; margin-top: 28px">
       <i class="moreButton" style="font-size: 25px" nz-icon nzType="more" nzTheme="outline"
          (click)="handleMoreBtn(item)"></i>
