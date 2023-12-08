@@ -39,6 +39,15 @@ export class HomeComponent implements OnInit {
   isWaitingReply: boolean;
   isOpenChatBot = false;
 
+  dataFromUser: any;
+  dataCommentPost: any;
+  dataReplyComment: any;
+
+  dataReceiveNotifyFromPost: any[] = [];
+  dataReceiveNotifyFromReplyComment: any[] = [];
+  userReceiveNotifyFromReplyComment: any[] = [];
+  totalNotify: any[] = [];
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -63,6 +72,42 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.http.get('http://localhost:8080/api/authors/notify/search-list-from-user').subscribe((res: any) => {
+      this.dataFromUser = res.data;
+    });
+    this.http.get('http://localhost:8080/api/authors/notify/search-list-isComment-post').subscribe((res: any) => {
+      this.dataCommentPost = res.data;
+      console.log('res.data: ', res.data);
+      for (const item of this.dataCommentPost) {
+        if (item.commentId == null) {
+          if (item.userName == this.userLocalstorage.userName) {
+            this.dataReceiveNotifyFromPost.push(item);
+          }
+        }
+        if (item.commentId != null) {
+          this.dataReceiveNotifyFromReplyComment.push(item);
+        }
+      }
+      console.log('this.dataCommentPost: ', this.dataCommentPost);
+
+    });
+    this.http.get('http://localhost:8080/api/authors/notify/search-list-isReply-comment').subscribe((res: any) => {
+      this.dataReplyComment = res.data;
+      for (const item of this.dataReplyComment) {
+        for (const item1 of this.dataReceiveNotifyFromReplyComment) {
+          if (item.commentId == item1.commentId) {
+            if (item1.userName == this.userLocalstorage.userName) {
+              this.dataReceiveNotifyFromPost.push(item1);
+            }
+          }
+        }
+      }
+    });
+    console.log('this.dataReceiveNotifyFromPost: ', this.dataReceiveNotifyFromPost);
+    // console.log('this.userReceiveNotifyFromReplyComment: ', this.userReceiveNotifyFromReplyComment);
+    //
+    // this.totalNotify = [...this.dataReceiveNotifyFromPost, ...this.userReceiveNotifyFromReplyComment];
+    // console.log('this.totalNotify: ', this.totalNotify);
   }
 
   sendData(value?: any) {
@@ -167,9 +212,9 @@ export class HomeComponent implements OnInit {
 
   linkToPostDetail(item: any) {
     console.log('linkToPostDetail | item: ', item);
-    localStorage.setItem('postsCategory', item.category);
-    this.shareDataService.sendDataCategory(item.category);
-    this.router.navigate([`/home/detail/posts/${item.category}/${item.postId}`]);
+    localStorage.setItem('postsCategory', item.postscategory);
+    this.shareDataService.sendDataCategory(item.postscategory);
+    this.router.navigate([`/home/detail/posts/${item.postscategory}/${item.postsid}`]);
   }
 
   openChatBot() {

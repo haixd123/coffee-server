@@ -72,7 +72,7 @@ export class TableUserComponent implements OnInit {
 
 
   handleUpdate(searchModel: SearchModelEntity, reset = false) {
-    this.http.post('http://localhost:8080/api/user/search', this.searchModel).toPromise().then((data: any) => {
+    this.http.post('http://localhost:8080/api/authors/user/search', this.searchModel).toPromise().then((data: any) => {
       this.data = data.data;
       this.total = data.optional;
       // for (const item of data.data) {

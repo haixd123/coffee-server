@@ -139,7 +139,7 @@ export class PostsDetailComponent implements OnInit {
     this.searchModel.pageIndex = 1;
     this.searchModel.pageSize = 299;
 
-    this.http.post('http://localhost:8080/api/user/search', this.searchModel).toPromise().then((data: any) => {
+    this.api.getListUser(this.searchModel).toPromise().then((data: any) => {
       this.dataUser = data.data;
     });
 
@@ -273,7 +273,9 @@ export class PostsDetailComponent implements OnInit {
     }
 
     if (this.dataInfoCommentNotification) {
+      console.log('dataInfoCommentNotification: ', this.dataInfoCommentNotification);
       this.formNotify.get('userId').setValue(this.dataInfoCommentNotification.userId);
+      // this.formNotify.get('userId').setValue(this.dataInfoCommentNotification.userId);
       this.formNotify.get('postId').setValue(this.dataInfoCommentNotification.postId);
       this.formNotify.get('commentId').setValue(this.dataInfoCommentNotification.commentId);
       this.formNotify.get('createAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
@@ -281,8 +283,8 @@ export class PostsDetailComponent implements OnInit {
       });
     }
     if (!this.dataInfoCommentNotification) {
-      this.formNotify.get('userId').setValue(this.dataInfoPostNotification.userId);
-      this.formNotify.get('postId').setValue(this.dataInfoPostNotification.id);
+      this.formNotify.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
+      this.formNotify.get('postId').setValue(localStorage.getItem('postsId'));
       this.formNotify.get('commentId').setValue(null);
       this.formNotify.get('createAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
       this.api.createNotify(this.formNotify.value).toPromise().then((res: any) => {

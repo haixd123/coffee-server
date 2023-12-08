@@ -8,6 +8,7 @@ import {finalize} from 'rxjs/operators';
 import {NotificationService} from '../../../../services/notification.service';
 import {Router} from '@angular/router';
 import {DatePipe} from '@angular/common';
+import {Api} from '../../../../services/api';
 
 @Component({
   selector: 'app-info',
@@ -47,6 +48,7 @@ export class InfoComponent implements OnInit, OnChanges {
     private notificationService: NotificationService,
     private router: Router,
     public datePipe: DatePipe,
+    private api: Api,
   ) {
     this.formAdd = this.fb.group({
       id: JSON.parse(localStorage.getItem('user')).id,
@@ -80,7 +82,7 @@ export class InfoComponent implements OnInit, OnChanges {
   }
 
   handleUpdate(searchModel: SearchModelEntity) {
-    this.http.post('http://localhost:8080/api/user/search', this.searchModel).toPromise().then((data: any) => {
+    this.api.getListUser(this.searchModel).toPromise().then((data: any) => {
       this.data = data.data;
       this.total = data.optional;
     });
@@ -165,7 +167,7 @@ export class InfoComponent implements OnInit, OnChanges {
     setTimeout(() => {
       this.formAdd.get('image').setValue(this.urlImage);
       this.http.post('http://localhost:8080/api/user/updateInfo', this.formAdd.value).toPromise().then((data: any) => {
-        this.http.post(`http://localhost:8080/api/user/search/${data.data.id}`, data.data.id).subscribe((res: any) => {
+        this.http.post(`http://localhost:8080/api/authors/user/search/${data.data.id}`, data.data.id).subscribe((res: any) => {
           localStorage.setItem('user', JSON.stringify(res.data));
           // this.handleSearch();
           // setTimeout(() => {
@@ -189,7 +191,7 @@ export class InfoComponent implements OnInit, OnChanges {
 
     console.log(this.formAdd.value);
     this.http.post('http://localhost:8080/api/user/updateInfo', this.formAdd.value).toPromise().then((data: any) => {
-      this.http.post(`http://localhost:8080/api/user/search/${data.data.id}`, data.data.id).subscribe((res: any) => {
+      this.http.post(`http://localhost:8080/api/authors/user/search/${data.data.id}`, data.data.id).subscribe((res: any) => {
         localStorage.setItem('user', JSON.stringify(res.data));
         this.handleSearch();
         setTimeout(() => {

@@ -43,7 +43,7 @@ export class UserComponent implements OnInit {
   }
 
   async handleUpdate(searchModel: SearchModelEntity, reset = false) {
-    await this.http.post('http://localhost:8080/api/user/search', this.searchModel).toPromise().then((data: any) => {
+    await this.http.post('http://localhost:8080/api/authors/user/search', this.searchModel).toPromise().then((data: any) => {
       this.data = data.data;
       this.total = data.optional;
     });

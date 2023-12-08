@@ -33,7 +33,7 @@ export class NotificationComponent implements OnInit, OnChanges {
     this.searchModel.pageIndex = 1;
     this.searchModel.pageSize = 298;
 
-    this.http.post('http://localhost:8080/api/user/search', this.searchModel).toPromise().then((data: any) => {
+    this.http.post('http://localhost:8080/api/authors/user/search', this.searchModel).toPromise().then((data: any) => {
       this.dataUser = data.data;
     });
   }

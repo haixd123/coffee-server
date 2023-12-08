@@ -74,27 +74,33 @@
             <i nz-icon nzType="bell" nzTheme="outline"></i>Thông báo</a>
           <div class="notify" style="color: #000">
             <div class="mx-3">
-              <div *ngFor="let item of dataNotify">
-                <!--                <div *ngFor="let itemPost of dataPost">-->
-                <!--                  <div *ngIf="item.postId == itemPost.id" class="row"-->
-                <div class="row item-noti"
-                     (click)="linkToPostDetail(item)">
-                  <a class="col-3">
-                    <img style="max-width: 120%; height: 70%; object-fit: cover; border-radius: 50%"
-                         [src]="item.image"/>
-                  </a>
-                  <div style="font-size: 15px; margin-left: -10px;" class="col-9 d-flex">
-                    <div>
-                      <div style="margin-top: -17px; height: 33px;" class="ml-2">
-                        <a style="color: #000" class="mr-2">{{item.name}}</a>
-                        <a style="height: 25px">Đã nhắc đến bạn</a>
+              <div *ngFor="let item of dataReceiveNotifyFromPost">
+                <div *ngFor="let item1 of dataFromUser">
+                  <div *ngIf="item.id == item1.id">
+
+
+                    <!--                <div *ngFor="let itemPost of dataPost">-->
+                    <!--                  <div *ngIf="item.postId == itemPost.id" class="row"-->
+                    <div class="row item-noti"
+                         (click)="linkToPostDetail(item)">
+                      <a class="col-3">
+                        <img style="max-width: 120%; height: 70%; object-fit: cover; border-radius: 50%"
+                             [src]="item.image"/>
+                      </a>
+                      <div style="font-size: 15px; margin-left: -10px;" class="col-9 d-flex">
+                        <div>
+                          <div style="margin-top: -17px; height: 33px;" class="ml-2">
+                            <a style="color: #000" class="mr-2">{{item1.name}}</a>
+                            <a style="height: 25px">Đã nhắc đến bạn</a>
+                          </div>
+                          <div class="ml-2">
+                            <a>{{item.createAt}}</a>
+                          </div>
+                        </div>
                       </div>
-                      <div class="ml-2">
-                        <a>{{item.createAt}}</a>
-                      </div>
+                      <!--                </div>-->
                     </div>
                   </div>
-                  <!--                </div>-->
                 </div>
               </div>
               <!--              <div style="font-size: 15px" class="d-flex justify-content-center">-->
@@ -248,8 +254,8 @@
       </div>
     </div>
   </div>
-<!--  <nz-footer style="display: flex; align-items: end; max-height: 200px">-->
-    <nz-footer>
+  <!--  <nz-footer style="display: flex; align-items: end; max-height: 200px">-->
+  <nz-footer>
     <div style="max-width: 1200px; margin: auto; display: grid; grid-template-columns: 22% 31% 24% 23%;">
       <div style="font-size: 17px; font-weight: 700; width: 100%" class="mr-5">
         © Design by Quang Hai

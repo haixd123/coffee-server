@@ -11,7 +11,7 @@ import {BaseService} from '../shared/base-service/base-service.service';
   providedIn: 'root'
 })
 // export class ImgUploadService extends BaseService {
-export class Api extends BaseService{
+export class Api extends BaseService {
 
   // imgUpload(url: string, formData: FormData): Observable<any> {
   //   return this.http.post(url, formData);
@@ -36,7 +36,6 @@ export class Api extends BaseService{
   }
 
 
-
   //Equipment
   getListEquipment(searchModel: SearchModelEntity) {
     return this.post('/authors/equipment/search', searchModel);
@@ -53,7 +52,6 @@ export class Api extends BaseService{
   deleteEquipment(searchModel: SearchModelEntity) {
     return this.post('/equipment/delete', searchModel);
   }
-
 
 
   //Posts
@@ -100,19 +98,18 @@ export class Api extends BaseService{
   }
 
 
-
-
 //////////
 //Comment
   getTotalCommentPost(searchModel: SearchModelEntity) {
     return this.post('/authors/comment/searchTotalCommentPost', searchModel);
   }
+
   getListComment(searchModel: SearchModelEntity) {
     return this.post('/authors/comment/search', searchModel);
   }
 
   createComment(searchModel: SearchModelEntity) {
-    return this.post('/comment/create', searchModel);
+    return this.post('/authors/comment/create', searchModel);
   }
 
   updateComment(searchModel: SearchModelEntity) {
@@ -122,7 +119,6 @@ export class Api extends BaseService{
   deleteComment(searchModel: SearchModelEntity) {
     return this.post('/comment/delete', searchModel);
   }
-
 
 
   //LikePosts
@@ -154,13 +150,12 @@ export class Api extends BaseService{
 
 
   createNotify(searchModel: SearchModelEntity) {
-    return this.post('/notify/create', searchModel);
+    return this.post('/authors/notify/create', searchModel);
   }
 
   deleteNotify(searchModel: SearchModelEntity) {
     return this.post('/notify/delete', searchModel);
   }
-
 
 
   //SavePosts
@@ -170,5 +165,10 @@ export class Api extends BaseService{
 
   isSave(searchModel: SearchModelEntity) {
     return this.post('/save-posts/update', searchModel);
+  }
+
+  //user
+  getListUser(searchModel: SearchModelEntity) {
+    return this.post('/authors/user/search', searchModel);
   }
 }
