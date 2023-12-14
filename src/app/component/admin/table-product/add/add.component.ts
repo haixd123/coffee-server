@@ -50,6 +50,13 @@ export class AddProductComponent implements OnInit {
   showModal(): void {
     this.isAdd = true;
   }
+  submitForm(): void {
+    // tslint:disable-next-line:forin
+    for (const key in this.formAdd.controls) {
+      this.formAdd.controls[key].markAsDirty();
+      this.formAdd.controls[key].updateValueAndValidity();
+    }
+  }
 
   get f() {
     return this.formAdd.controls;
@@ -71,7 +78,6 @@ export class AddProductComponent implements OnInit {
   }
 
   async handleOk() {
-
     this.formAdd.get('image').setValue(this.urlImage);
     await this.api.createProduct(this.formAdd.value).toPromise().then((data: any) => {
       if (data.errorCode == '00') {

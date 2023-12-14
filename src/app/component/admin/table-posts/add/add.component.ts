@@ -54,6 +54,14 @@ export class AddPostsComponent implements OnInit {
     return this.formAdd.controls;
   }
 
+  submitForm(): void {
+    // tslint:disable-next-line:forin
+    for (const key in this.formAdd.controls) {
+      this.formAdd.controls[key].markAsDirty();
+      this.formAdd.controls[key].updateValueAndValidity();
+    }
+  }
+
 
   showModal(): void {
     this.isAdd = true;

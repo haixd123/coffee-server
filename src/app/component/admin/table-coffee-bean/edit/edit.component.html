@@ -1,13 +1,18 @@
-<form nz-form [formGroup]="formEdit">
-  <!--  <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>-->
-  <nz-modal nzWidth="1300px" [(nzVisible)]="isEdit" nzTitle="The first Modal" (nzOnCancel)="handleCancel(false)"
-            (nzOnOk)="handleOk()" [nzFooter]="null">
+<!--  <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>-->
+<nz-modal nzWidth="1300px" [(nzVisible)]="isEdit" nzTitle="Chỉnh sửa loại cà phê" (nzOnCancel)="handleCancel(false)"
+          [nzFooter]="null">
+  <form nz-form [formGroup]="formEdit" (ngSubmit)="submitForm()">
+
     <div class="mb-3">
-      Tiêu đề
-      <input style="width: 100%;" formControlName="name">
-<!--      <div *ngIf="f.data.errors">-->
-<!--        <div style="color: red;" *ngIf="f.data.errors.required"> Dữ liệu không được để trống</div>-->
-<!--      </div>-->
+      <nz-form-item>
+        <div style="width: 100%;">
+          <nz-form-label style="height: 30px" nzRequired>Tên cà phê</nz-form-label>
+        </div>
+        <nz-form-control style="width: 100%" [nzSpan]="24" nzErrorTip="Tên loại cà phê không được để trống!">
+          <input formControlName="name" style="width: 100%;" nz-input name="required" required
+                 placeholder="Tiêu đề"/>
+        </nz-form-control>
+      </nz-form-item>
     </div>
     <div class="mt-3 mb-3">
       Giới thiệu
@@ -25,11 +30,14 @@
           [nzShowUploadList]="false"
 
         >
-          <ng-container *ngIf="!urlImage">
-            <i class="upload-icon" nz-icon [nzType]="isLoading ? 'loading' : 'plus'"></i>
-            <div class="ant-upload-text">{{ 'merchant.upload_logo' | translate }}</div>
-          </ng-container>
+<!--          <ng-container *ngIf="!urlImage">-->
+<!--            <i class="upload-icon" nz-icon [nzType]="isLoading ? 'loading' : 'plus'"></i>-->
+<!--&lt;!&ndash;            <div class="ant-upload-text">{{ 'merchant.upload_logo' }}</div>&ndash;&gt;-->
+<!--                      <div class="ant-upload-text">{{ 'merchant.upload_logo' | translate }}</div>-->
+<!--          </ng-container>-->
           <button nz-button><i nz-icon nzType="upload"></i>Click to Upload</button>
+          <i *ngIf="isLoading" class="upload-icon" nz-icon [nzType]="isLoading ? 'loading' : 'plus'"></i>
+
         </nz-upload>
       </div>
     </div>
@@ -40,5 +48,6 @@
       <button class="mr-4" (click)="handleOk()" nz-button nzType="primary">Ok</button>
       <button (click)="handleCancel(false)" nz-button nzType="primary">Cancel</button>
     </div>
-  </nz-modal>
-</form>
+  </form>
+
+</nz-modal>

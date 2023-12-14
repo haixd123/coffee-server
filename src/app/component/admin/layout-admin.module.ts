@@ -29,8 +29,11 @@ import {Api} from '../../services/api';
 import { TableProductComponent } from './table-product/table-product.component';
 import {EditProductComponent} from './table-product/edit/edit.component';
 import {AddProductComponent} from './table-product/add/add.component';
+import {TranslateModule} from '@ngx-translate/core';
+import {BillComponent} from './table-bill/bill.component';
+
 @NgModule({
-  declarations: [AdminComponent, TableProductComponent, TableCoffeeBeanComponent, TableEquipmentComponent, TableUserComponent, AddComponent, EditComponent, TablePostsComponent, AddComponent, EditComponent, EditCoffeeBeanComponent, AddCoffeeBeanComponent, AddUserComponent, EditUserComponent, AddPostsComponent, EditPostsComponent, TableProductComponent, EditProductComponent, AddProductComponent],
+  declarations: [AdminComponent, TableProductComponent, TableCoffeeBeanComponent, TableEquipmentComponent, TableUserComponent, AddComponent, EditComponent, TablePostsComponent, AddComponent, EditComponent, EditCoffeeBeanComponent, AddCoffeeBeanComponent, AddUserComponent, EditUserComponent, AddPostsComponent, EditPostsComponent, TableProductComponent, EditProductComponent, AddProductComponent, BillComponent],
     imports: [
         NzFormModule,
         NgZorroAntdModule,
@@ -38,6 +41,7 @@ import {AddProductComponent} from './table-product/add/add.component';
         CKEditorModule,
         RouterModule.forChild([]),
         FontAwesomeModule,
+        TranslateModule,
         // BsDatepickerModule.forRoot(),
         // AdminLayoutRoutingModule,
         // NzDropDownModule,

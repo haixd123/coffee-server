@@ -37,7 +37,6 @@ export class EditPostsComponent implements OnInit, OnChanges {
     private storage: AngularFireStorage,
     public datePipe: DatePipe,
     private api: Api,
-
   ) {
     this.formEdit = this.fb.group({
       id: null,
@@ -56,34 +55,43 @@ export class EditPostsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    // if (this.isEdit) {
-    //     this.formEdit.reset();
-    // }
-    console.log('dataEdit: ', this.dataEdit);
-    this.formEdit.patchValue({
-      id: this.dataEdit.id,
-      title: [this.dataEdit.title, [Validators.required]],
-      status: this.dataEdit.status,
-      imagePath: this.dataEdit.imagePath,
-      contentPost: this.dataEdit.contentPost,
-      contentDetail: this.dataEdit.contentDetail,
-      userId: this.dataEdit.userId,
-      createdAt: this.dataEdit.createdAt,
-      category: this.dataEdit.category,
-      like1: this.dataEdit.like1,
-      comment: this.dataEdit.comment,
-    });
-    this.urlImage = this.dataEdit.imagePath;
-    this.dataEdit.get('id').setValue(this.dataEdit.id);
-    this.dataEdit.get('userId').setValue(this.dataEdit.userId);
-    this.dataEdit.get('like1').setValue(this.dataEdit.like1);
-    this.dataEdit.get('comment').setValue(this.dataEdit.comment);
+    if (this.dataEdit) {
+      this.formEdit.reset();
+      console.log('dataEdit: ', this.dataEdit);
+      this.formEdit.patchValue({
+        id: this.dataEdit.id,
+        title: this.dataEdit.title,
+        status: this.dataEdit.status,
+        imagePath: this.dataEdit.imagePath,
+        contentPost: this.dataEdit.contentPost,
+        contentDetail: this.dataEdit.contentDetail,
+        userId: this.dataEdit.userId,
+        createdAt: this.dataEdit.createdAt,
+        category: this.dataEdit.category,
+        like1: this.dataEdit.like1,
+        comment: this.dataEdit.comment,
+      });
+      this.urlImage = this.dataEdit.imagePath;
+      this.dataEdit.get('id').setValue(this.dataEdit.id);
+      this.dataEdit.get('userId').setValue(this.dataEdit.userId);
+      this.dataEdit.get('like1').setValue(this.dataEdit.like1);
+      this.dataEdit.get('comment').setValue(this.dataEdit.comment);
+    }
   }
 
   ngOnInit(): void {
   }
+
   get f() {
     return this.formEdit.controls;
+  }
+
+  submitForm(): void {
+    // tslint:disable-next-line:forin
+    for (const key in this.formEdit.controls) {
+      this.formEdit.controls[key].markAsDirty();
+      this.formEdit.controls[key].updateValueAndValidity();
+    }
   }
 
   showModal(): void {

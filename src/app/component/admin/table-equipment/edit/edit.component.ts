@@ -45,18 +45,18 @@ export class EditComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    // if (this.isEdit) {
-    //     this.formEdit.reset();
-    // }
-    this.formEdit.patchValue({
-      id: this.dataEdit.id,
-      name: [this.dataEdit.name, [Validators.required]],
-      title: this.dataEdit.title,
-      status: this.dataEdit.status,
-      image: this.dataEdit.image,
-      contentEquipment: this.dataEdit.contentEquipment,
-    });
-    this.urlImage = this.dataEdit.image;
+    if (this.dataEdit) {
+      this.formEdit.reset();
+      this.formEdit.patchValue({
+        id: this.dataEdit.id,
+        name: this.dataEdit.name,
+        title: this.dataEdit.title,
+        status: this.dataEdit.status,
+        image: this.dataEdit.image,
+        contentEquipment: this.dataEdit.contentEquipment,
+      });
+      this.urlImage = this.dataEdit.image;
+    }
   }
 
   get f() {
@@ -64,6 +64,14 @@ export class EditComponent implements OnInit, OnChanges {
   }
 
   ngOnInit(): void {
+  }
+
+  submitForm(): void {
+    // tslint:disable-next-line:forin
+    for (const key in this.formEdit.controls) {
+      this.formEdit.controls[key].markAsDirty();
+      this.formEdit.controls[key].updateValueAndValidity();
+    }
   }
 
   onUpload(info: NzUploadChangeParam) {

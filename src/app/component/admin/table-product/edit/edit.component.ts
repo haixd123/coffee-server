@@ -49,25 +49,33 @@ export class EditProductComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    // if (this.isEdit) {
-    //     this.formEdit.reset();
-    // }
-    this.formEdit.patchValue({
-      id: this.dataEdit.id,
-      name: [this.dataEdit.name, [Validators.required]],
-      description: this.dataEdit.description,
-      sku: [this.dataEdit.sku, [Validators.required]],
-      price: this.dataEdit.price,
-      category: this.dataEdit.category,
-      discount: this.dataEdit.discount,
-      remaining: this.dataEdit.remaining,
-      image: this.dataEdit.image,
-      detail: this.dataEdit.detail,
-    });
-    this.urlImage = this.dataEdit.image;
+    if (this.dataEdit) {
+      this.formEdit.reset();
+      this.formEdit.patchValue({
+        id: this.dataEdit.id,
+        name: this.dataEdit.name,
+        description: this.dataEdit.description,
+        sku: this.dataEdit.sku,
+        price: this.dataEdit.price,
+        category: this.dataEdit.category,
+        discount: this.dataEdit.discount,
+        remaining: this.dataEdit.remaining,
+        image: this.dataEdit.image,
+        detail: this.dataEdit.detail,
+      });
+      this.urlImage = this.dataEdit.image;
+    }
   }
 
   ngOnInit(): void {
+  }
+
+  submitForm(): void {
+    // tslint:disable-next-line:forin
+    for (const key in this.formEdit.controls) {
+      this.formEdit.controls[key].markAsDirty();
+      this.formEdit.controls[key].updateValueAndValidity();
+    }
   }
 
   showModal(): void {

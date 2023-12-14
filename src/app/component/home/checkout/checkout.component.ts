@@ -1,4 +1,7 @@
 import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Api} from '../../../services/api';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -9,21 +12,60 @@ export class CheckoutComponent implements OnInit {
   cartItem: any;
   totalQuantity = 0;
   totalPrice = 0;
+  formAdd: FormGroup;
+  radioValue = 1;
 
-  constructor() {
+  constructor(
+    private fb: FormBuilder,
+    private api: Api,
+    private router: Router,
+  ) {
+    this.formAdd = this.fb.group({
+      name: [null, [Validators.required]],
+      email: [null, [Validators.required]],
+      phone: [null, [Validators.required]],
+      address: [null, [Validators.required]],
+      detail: null,
+      payments: 1,
+    });
   }
-
-  radioValue = 'A';
 
 
   ngOnInit(): void {
     this.cartItem = JSON.parse(localStorage.getItem('cartItems'));
+    // this.formAdd.get('payments').setValue(1);
     for (const item of this.cartItem) {
       this.totalQuantity += item.quantity;
       this.totalPrice += (item.price - item.price * item.discount / 100) * item.quantity;
     }
-    console.log('this.cartItem: ', this.cartItem);
-    console.log('this.totalQuantity: ', this.totalQuantity);
+  }
+
+  submitForm(): void {
+    // tslint:disable-next-line:forin
+    for (const key in this.formAdd.controls) {
+      this.formAdd.controls[key].markAsDirty();
+      this.formAdd.controls[key].updateValueAndValidity();
+    }
+  }
+
+  handleCheckout() {
+    if (this.formAdd.valid) {
+      //handle checkout
+      const dataCart: any[] = [];
+      let itemCart: any;
+      for (const item of this.cartItem) {
+        itemCart = 'name: ' + item.name + ',quantity: ' + item.quantity + ',price: ' + item.price + ',discount: ' + item.discount + '% ';
+        dataCart.push(itemCart);
+      }
+      console.log('itemCart: ', itemCart);
+      this.formAdd.get('detail').setValue(dataCart?.toString());
+      this.api.createBill(this.formAdd.value).subscribe((res: any) => {
+        alert('Bạn đã đặt hàng thành công');
+        localStorage.removeItem('cartItems');
+        this.router.navigate(['/home/product']);
+      });
+
+    }
   }
 
 }

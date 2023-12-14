@@ -53,25 +53,28 @@ export class EditUserComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.formEdit.patchValue({
-      id: this.dataEdit.id,
-      userName: [this.dataEdit.userName, [Validators.required]],
-      passWord: this.dataEdit.passWord,
-      email: [this.dataEdit.email, [Validators.required]],
-      name: this.dataEdit.name,
-      address: this.dataEdit.address,
-      age: this.dataEdit.age,
-      role: this.dataEdit.role,
-      phoneNumber: this.dataEdit.phoneNumber,
-      dateOfBirth: this.dataEdit.dateOfBirth,
-      sex: this.dataEdit.sex == 'nam' ? '1' : this.dataEdit.sex == 'nữ' ? '2' : '3',
-      createDate: this.dataEdit.createDate,
-      status: this.dataEdit.status,
-      image: this.dataEdit.image
-    });
-    this.urlImage = this.dataEdit.image;
-    this.formEdit.get('id').setValue(this.dataEdit.id);
-    this.formEdit.get('passWord').setValue(this.dataEdit.passWord);
+    if (this.dataEdit) {
+      this.formEdit.reset();
+      this.formEdit.patchValue({
+        id: this.dataEdit.id,
+        userName: [this.dataEdit.userName, [Validators.required]],
+        passWord: this.dataEdit.passWord,
+        email: [this.dataEdit.email, [Validators.required]],
+        name: this.dataEdit.name,
+        address: this.dataEdit.address,
+        age: this.dataEdit.age,
+        role: this.dataEdit.role,
+        phoneNumber: this.dataEdit.phoneNumber,
+        dateOfBirth: this.dataEdit.dateOfBirth,
+        sex: this.dataEdit.sex == 'nam' ? '1' : this.dataEdit.sex == 'nữ' ? '2' : '3',
+        createDate: this.dataEdit.createDate,
+        status: this.dataEdit.status,
+        image: this.dataEdit.image
+      });
+      this.urlImage = this.dataEdit.image;
+      this.formEdit.get('id').setValue(this.dataEdit.id);
+      this.formEdit.get('passWord').setValue(this.dataEdit.passWord);
+    }
   }
 
   ngOnInit(): void {

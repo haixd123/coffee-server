@@ -135,6 +135,9 @@ export class TablePostsComponent implements OnInit {
     if (this.formSearch.get('title').value == '') {
       this.formSearch.get('title').setValue(null);
     }
+    // if (this.formSearch.get('category').value == '') {
+    //   this.formSearch.get('category').setValue(null);
+    // }
     this.handleUpdate(this.searchModel, true);
   }
 

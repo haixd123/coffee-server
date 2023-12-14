@@ -27,6 +27,7 @@ import {ContactComponent} from './component/home/contact/contact.component';
 import {TableProductComponent} from './component/admin/table-product/table-product.component';
 import {ProductComponent} from './component/home/product/product.component';
 import {CheckoutComponent} from './component/home/checkout/checkout.component';
+import {BillComponent} from './component/admin/table-bill/bill.component';
 
 
 const routes: Routes = [
@@ -67,6 +68,10 @@ const routes: Routes = [
       {
         path: 'user',
         component: TableUserComponent,
+      },
+      {
+        path: 'bill',
+        component: BillComponent,
       }
     ],
     data: {

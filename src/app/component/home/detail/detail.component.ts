@@ -27,7 +27,7 @@ export class DetailComponent implements OnInit {
   subscription: Subscription;
 
   idPostsLocalstorage: string;
-
+  dataIdPost: any;
 
   // categoryPostsLocalstorage: string;
 
@@ -51,12 +51,17 @@ export class DetailComponent implements OnInit {
     this.idPostsLocalstorage = localStorage.getItem('postsId');
     this.category = localStorage.getItem('postsCategory');
 
+    this.subscription = this.shareDataService.dataIdPost$.subscribe(data => {
+      this.dataIdPost = data;
+      localStorage.setItem('postsId', this.dataIdPost);
+      this.idPostsLocalstorage = this.dataIdPost;
+    });
   }
 
   ngOnInit(): void {
-    this.activatedRoute.url.subscribe(params => {
-      console.log('params2: ', params);
-    });
+    // this.activatedRoute.url.subscribe(params => {
+    //   console.log('params2: ', params);
+    // });
   }
 
   handleUpdate(searchModel: SearchModelEntity, reset = false) {

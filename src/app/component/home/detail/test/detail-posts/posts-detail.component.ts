@@ -109,7 +109,7 @@ export class PostsDetailComponent implements OnInit {
     this.handleSearch();
 
     this.userLocalstorage = JSON.parse(localStorage.getItem('user'));
-    this.idUserLocalstorage = JSON.parse(localStorage.getItem('user')).id;
+    this.idUserLocalstorage = JSON.parse(localStorage.getItem('user'))?.id;
 
     this.websocketService.receiveComment().subscribe((comment: any) => {
       this.api.getListComment(this.searchModel).toPromise().then((data: any) => {
@@ -126,12 +126,14 @@ export class PostsDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
-      console.log('params: ', params);
+      // console.log('params: ', params);
       this.idPostsLocalstorage = params.get('id');
       localStorage.setItem('postsCategory', params.get('category'));
       localStorage.setItem('postsId', params.get('id'));
       this.shareDataService.sendDataCategory(params.get('category'));
+      this.shareDataService.sendDataIdPost(params.get('id'));
     });
+
   }
 
 
@@ -150,7 +152,6 @@ export class PostsDetailComponent implements OnInit {
           this.imgPostDetail = item.imagePath;
           this.categoryDetail = item.category;
           this.dataInfoPostNotification = item;
-          console.log('item: ', item);
         }
       }
     });
@@ -271,15 +272,16 @@ export class PostsDetailComponent implements OnInit {
         }
       });
     }
-
+//a
     if (this.dataInfoCommentNotification) {
       console.log('dataInfoCommentNotification: ', this.dataInfoCommentNotification);
       this.formNotify.get('userId').setValue(this.dataInfoCommentNotification.userId);
       // this.formNotify.get('userId').setValue(this.dataInfoCommentNotification.userId);
       this.formNotify.get('postId').setValue(this.dataInfoCommentNotification.postId);
-      this.formNotify.get('commentId').setValue(this.dataInfoCommentNotification.commentId);
+      this.formNotify.get('commentId').setValue(commentId);
       this.formNotify.get('createAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
       this.api.createNotify(this.formNotify.value).toPromise().then((res: any) => {
+        this.websocketService.sendComment('1', '2');
       });
     }
     if (!this.dataInfoCommentNotification) {
@@ -288,6 +290,7 @@ export class PostsDetailComponent implements OnInit {
       this.formNotify.get('commentId').setValue(null);
       this.formNotify.get('createAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
       this.api.createNotify(this.formNotify.value).toPromise().then((res: any) => {
+        this.websocketService.sendComment('1', '2');
       });
     }
 
@@ -313,6 +316,7 @@ export class PostsDetailComponent implements OnInit {
       }, 10);
     }
   }
+
 
   focusTextAriaComment() {
     this.textareaComment.nativeElement.focus();
@@ -362,7 +366,6 @@ export class PostsDetailComponent implements OnInit {
   }
 
   handleLikeComment(item: any) {
-    console.log('item: ', item);
     this.formLikeComment.get('id').setValue(item.id);
     this.formLikeComment.get('commentId').setValue(item.commentId);
     this.formLikeComment.get('userId').setValue(item.userId);

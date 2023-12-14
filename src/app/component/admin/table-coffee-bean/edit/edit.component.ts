@@ -48,23 +48,31 @@ export class EditCoffeeBeanComponent implements OnInit, OnChanges {
 
 
   ngOnChanges() {
-    // if (this.isEdit) {
-    //     this.formEdit.reset();
-    // }
-    this.formEdit.patchValue({
-      id: this.dataEdit.id,
-      name: [this.dataEdit.name, [Validators.required]],
-      title: this.dataEdit.title,
-      status: this.dataEdit.status,
-      image: this.dataEdit.image,
-      contentCoffee: this.dataEdit.contentCoffee,
-    });
-    this.urlImage = this.dataEdit.image;
+    if (this.dataEdit) {
+      this.formEdit.reset();
+      this.formEdit.patchValue({
+        id: this.dataEdit.id,
+        name: this.dataEdit.name,
+        title: this.dataEdit.title,
+        status: this.dataEdit.status,
+        image: this.dataEdit.image,
+        contentCoffee: this.dataEdit.contentCoffee,
+      });
+      this.urlImage = this.dataEdit.image;
+    }
+
   }
 
   ngOnInit(): void {
   }
 
+  submitForm(): void {
+    // tslint:disable-next-line:forin
+    for (const key in this.formEdit.controls) {
+      this.formEdit.controls[key].markAsDirty();
+      this.formEdit.controls[key].updateValueAndValidity();
+    }
+  }
 
   showModal(): void {
     this.isEdit = true;

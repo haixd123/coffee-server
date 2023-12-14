@@ -1,14 +1,23 @@
-<form nz-form [formGroup]="formAdd">
+<form nz-form [formGroup]="formAdd" (ngSubmit)="submitForm()">
   <div style="max-width: 1200px; margin: auto">
     <div style="width: 100%;" class="py-3 px-3">
       <!--    <nz-form-item style="width: 100%;">-->
       <!--      <nz-form-label [nzSpan]="5">Tiêu đề</nz-form-label>-->
       <!--      <nz-form-control style="width: 100%;" nzHasFeedback [nzSpan]="12" nzErrorTip="Input is required">-->
       Tiêu đề
-      <input formControlName="title" style="width: 100%;" nz-input name="required" required
-             placeholder="Tiêu đề"/>
+<!--      <input formControlName="title" style="width: 100%;" nz-input name="required" required-->
+<!--             placeholder="Tiêu đề"/>-->
       <!--      </nz-form-control>-->
       <!--    </nz-form-item>-->
+      <nz-form-item>
+        <div style="width: 100%;">
+          <nz-form-label style="height: 30px" nzRequired>Tiêu đề</nz-form-label>
+        </div>
+        <nz-form-control style="width: 100%" [nzSpan]="24" nzErrorTip="Tiêu đề không được để trống!">
+          <input formControlName="title" style="width: 100%;" nz-input name="required" required
+                 placeholder="Tiêu đề"/>
+        </nz-form-control>
+      </nz-form-item>
     </div>
     <div style="width: 100%;" class="py-3 px-3">
       <div>

@@ -6,10 +6,6 @@
               (click)="handleSearch()">
         <i nz-icon nzType="search" nzTheme="outline"></i> Tìm kiếm
       </button>
-      <button style="border-radius: 5px" class="d-flex align-items-center ml-3" nz-button nzType="primary"
-              (click)="handleAdd()">
-        <i nz-icon nzType="plus" nzTheme="outline"></i> Thêm mới
-      </button>
     </div>
 
     <div class="d-flex justify-content-end">
@@ -37,27 +33,29 @@
       <th>STT</th>
       <th>Id</th>
       <th>Tên</th>
-      <th>Tiêu đề</th>
-      <th>Nội dung</th>
-      <th>Ảnh</th>
-      <th>Hành động</th>
+      <th>Email</th>
+      <th>Số điện thoại</th>
+      <th>Địa chỉ</th>
+      <th>Chi tiết hóa đơn</th>
+      <!--      <th>Hành động</th>-->
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let item of data | filter:searchValue | sort:sortValue:isSort, let i = index">
+    <tr *ngFor="let item of data, let i = index">
       <td class="text-nowrap">{{validateService.getRowIndex(i, basicTable.nzPageIndex, basicTable.nzPageSize)}}</td>
       <td>{{ item.id }}</td>
       <td>{{ item.name }}</td>
-      <td style=" white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{ item.title }}</td>
+      <td>{{ item.email }}</td>
       <!--      <td>{{ item.title }}</td>-->
       <!--    <td>{{ item.contentCoffee }}</td>-->
-      <td style=" white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{ item.contentCoffee }}</td>
-      <td><img style="width: 100%;" [src]="item.image"/></td>
-      <td style="min-width: 120px; text-align: center">
-        <a style="font-size: 21px" class="mr-3" (click)="handleEdit(item)"><i nz-icon nzType="edit"
-                                                                              nzTheme="outline"></i></a>
-        <a style="font-size: 21px" nz-popconfirm nzPopconfirmTitle="Bạn chắc chắn muốn xóa bài đăng này?" (nzOnConfirm)="handleDelete(item)"><i nz-icon nzType="delete" nzTheme="outline"></i></a>
-      </td>
+      <td>{{ item.phone }}</td>
+      <td style=" white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{item.address}}</td>
+      <td>{{ item.detail }}</td>
+      <!--      <td style="min-width: 120px; text-align: center">-->
+      <!--        <a style="font-size: 21px" class="mr-3" (click)="handleEdit(item)"><i nz-icon nzType="edit"-->
+      <!--                                                                              nzTheme="outline"></i></a>-->
+      <!--        <a style="font-size: 21px" nz-popconfirm nzPopconfirmTitle="Bạn chắc chắn muốn xóa bài đăng này?" (nzOnConfirm)="handleDelete(item)"><i nz-icon nzType="delete" nzTheme="outline"></i></a>-->
+      <!--      </td>-->
     </tr>
     </tbody>
   </nz-table>
@@ -65,8 +63,4 @@
     <nz-pagination class="pb-4" (click)="changePage()" [(nzPageIndex)]="curPage" [nzTotal]="total"></nz-pagination>
   </div>
 
-
-  <app-add-coffee-bean [isAdd]="isAdd" (closePopup)=handleClosePopup($event)></app-add-coffee-bean>
-  <app-edit-coffee-bean [isEdit]="isEdit" [dataEdit]="dataEdit"
-                        (closePopup)=handleClosePopup($event)></app-edit-coffee-bean>
 </form>

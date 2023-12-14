@@ -1,6 +1,6 @@
 import {Component, OnChanges, OnInit} from '@angular/core';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import {FormBuilder, FormGroup} from '@angular/forms';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {HttpClient} from '@angular/common/http';
 import {NzUploadChangeParam} from 'ng-zorro-antd';
 import {finalize} from 'rxjs/operators';
@@ -39,7 +39,7 @@ export class VietBaiComponent implements OnInit {
   ) {
     this.formAdd = this.fb.group({
       id: null,
-      title: null,
+      title: [null, [Validators.required]],
       contentPost: null,
       contentDetail: null,
       imagePath: null,
@@ -53,7 +53,6 @@ export class VietBaiComponent implements OnInit {
     });
     this.subscription = this.shareDataService.dataEditPosts$.subscribe(data => {
       this.dataEdit = data;
-      console.log('this.dataEdit: ', this.dataEdit);
     });
 
     if (this.dataEdit) {
@@ -80,6 +79,14 @@ export class VietBaiComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  submitForm(): void {
+    // tslint:disable-next-line:forin
+    for (const key in this.formAdd.controls) {
+      this.formAdd.controls[key].markAsDirty();
+      this.formAdd.controls[key].updateValueAndValidity();
+    }
+  }
+
   onUpload(info: NzUploadChangeParam) {
     this.selectedFile = info.file.originFileObj;
     const uploadImageData = new FormData();
@@ -104,30 +111,32 @@ export class VietBaiComponent implements OnInit {
   }
 
   Submit() {
-    if (!this.dataEdit) {
-      setTimeout(() => {
-        this.formAdd.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
-        this.formAdd.get('imagePath').setValue(this.urlImage);
-        this.api.createPosts(this.formAdd.value).toPromise().then((data: any) => {
+    if (this.formAdd.get('title').value?.trim()) {
+      if (!this.dataEdit) {
+        setTimeout(() => {
+          this.formAdd.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
+          this.formAdd.get('imagePath').setValue(this.urlImage);
+          this.api.createPosts(this.formAdd.value).toPromise().then((data: any) => {
+            if (data.errorCode == '00') {
+              this.notificationService.showMessage('success', 'Đăng bài thành công');
+              this.formAdd.reset();
+            } else {
+              this.notificationService.showMessage('error', 'Đăng bài thất bại');
+            }
+          });
+        });
+      }
+
+      if (this.dataEdit) {
+        this.api.updatePosts(this.formAdd.value).toPromise().then((data: any) => {
           if (data.errorCode == '00') {
-            this.notificationService.showMessage('success', 'Đăng bài thành công');
+            this.notificationService.showMessage('success', 'Sửa bài đăng thành công');
             this.formAdd.reset();
           } else {
-            this.notificationService.showMessage('error', 'Đăng bài thất bại');
+            this.notificationService.showMessage('error', 'Sửa bài đăng thất bại');
           }
         });
-      });
-    }
-
-    if (this.dataEdit) {
-      this.api.updatePosts(this.formAdd.value).toPromise().then((data: any) => {
-        if (data.errorCode == '00') {
-          this.notificationService.showMessage('success', 'Sửa bài đăng thành công');
-          this.formAdd.reset();
-        } else {
-          this.notificationService.showMessage('error', 'Sửa bài đăng thất bại');
-        }
-      });
+      }
     }
   }
 }

@@ -171,4 +171,13 @@ export class Api extends BaseService {
   getListUser(searchModel: SearchModelEntity) {
     return this.post('/authors/user/search', searchModel);
   }
+
+  // Bill
+  getListBill(searchModel: SearchModelEntity) {
+    return this.post('/authors/bill/search', searchModel);
+  }
+
+  createBill(searchModel: SearchModelEntity) {
+    return this.post('/authors/bill/create', searchModel);
+  }
 }

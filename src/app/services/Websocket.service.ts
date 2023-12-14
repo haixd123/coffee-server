@@ -24,7 +24,7 @@ export class WebsocketService {
 
   private initializeWebSocketConnection() {
     // Tạo một đối tượng SockJS để kết nối đến endpoint '/ws' của server
-    const socket = new WebSocket('ws://localhost:8080/ws/webSocket');
+    const socket = new WebSocket('ws://localhost:8080/ws/websocket');
 
     // Tạo một đối tượng Stomp để giao tiếp qua WebSocket
     this.stompClient = Stomp.over(socket);
@@ -32,9 +32,10 @@ export class WebsocketService {
     // Kết nối đến server thông qua WebSocket
     this.stompClient.connect({}, () => {
       // Subscribe để lắng nghe thông báo từ endpoint '/topic/comments'
-      this.stompClient.subscribe('/api/authors/topic/comments', (comment) => {
+      this.stompClient.subscribe('/topic/comments', (comment) => {
         // Khi có thông báo mới, đẩy vào Subject để thông báo cho các thành phần khác
         console.log('front | receive | comment: ', comment);
+        console.log("-------------------------------------");
         this.commentSubject.next(comment.body);
         console.log('this.commentSubject: ', this.commentSubject);
 

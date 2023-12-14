@@ -39,7 +39,7 @@ export class HomeComponent implements OnInit {
   isWaitingReply: boolean;
   isOpenChatBot = false;
 
-  dataFromUser: any;
+  dataFromUser: any[] = [];
   dataCommentPost: any;
   dataReplyComment: any;
 
@@ -47,6 +47,7 @@ export class HomeComponent implements OnInit {
   dataReceiveNotifyFromReplyComment: any[] = [];
   userReceiveNotifyFromReplyComment: any[] = [];
   totalNotify: any[] = [];
+
 
   constructor(
     private fb: FormBuilder,
@@ -64,7 +65,6 @@ export class HomeComponent implements OnInit {
       toUser: null,
     });
     this.handleUpdate();
-    console.log('this.userLocalstorage: ', this.userLocalstorage);
     this.userLocalstorage = JSON.parse(localStorage.getItem('user'));
     this.websocketService.receiveComment().subscribe((comment: any) => {
       this.handleUpdate();
@@ -72,38 +72,10 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.get('http://localhost:8080/api/authors/notify/search-list-from-user').subscribe((res: any) => {
-      this.dataFromUser = res.data;
+    this.http.get('http://localhost:8080/api/authors/posts/search-list-category').toPromise().then((data: any) => {
+      this.dataCategory = data.data;
+      this.total = data.optional;
     });
-    this.http.get('http://localhost:8080/api/authors/notify/search-list-isComment-post').subscribe((res: any) => {
-      this.dataCommentPost = res.data;
-      console.log('res.data: ', res.data);
-      for (const item of this.dataCommentPost) {
-        if (item.commentId == null) {
-          if (item.userName == this.userLocalstorage.userName) {
-            this.dataReceiveNotifyFromPost.push(item);
-          }
-        }
-        if (item.commentId != null) {
-          this.dataReceiveNotifyFromReplyComment.push(item);
-        }
-      }
-      console.log('this.dataCommentPost: ', this.dataCommentPost);
-
-    });
-    this.http.get('http://localhost:8080/api/authors/notify/search-list-isReply-comment').subscribe((res: any) => {
-      this.dataReplyComment = res.data;
-      for (const item of this.dataReplyComment) {
-        for (const item1 of this.dataReceiveNotifyFromReplyComment) {
-          if (item.commentId == item1.commentId) {
-            if (item1.userName == this.userLocalstorage.userName) {
-              this.dataReceiveNotifyFromPost.push(item1);
-            }
-          }
-        }
-      }
-    });
-    console.log('this.dataReceiveNotifyFromPost: ', this.dataReceiveNotifyFromPost);
     // console.log('this.userReceiveNotifyFromReplyComment: ', this.userReceiveNotifyFromReplyComment);
     //
     // this.totalNotify = [...this.dataReceiveNotifyFromPost, ...this.userReceiveNotifyFromReplyComment];
@@ -116,10 +88,47 @@ export class HomeComponent implements OnInit {
 
 
   async handleUpdate(searchModel?: SearchModelEntity) {
-    await this.http.get('http://localhost:8080/api/authors/posts/search-list-category').toPromise().then((data: any) => {
-      this.dataCategory = data.data;
-      this.total = data.optional;
+    this.http.get('http://localhost:8080/api/authors/notify/search-list-from-user').subscribe((res: any) => {
+      // this.dataFromUser = res.data;
+      this.dataFromUser = res.data.filter((item: any) => item.userid != this.userLocalstorage.id);
+      // for (const item of res.data) {
+      //   if (item.userid != this.userLocalstorage.id) {
+      //     this.dataFromUser.push(item);
+      //   }
+      // }
+      console.log('this.dataFromUser: ', this.dataFromUser);
+      console.log('this.dataFromUser: ', this.userLocalstorage.id);
     });
+    this.http.get('http://localhost:8080/api/authors/notify/search-list-isComment-post').subscribe((res: any) => {
+      this.dataCommentPost = res.data;
+      console.log('this.dataCommentPost: ', this.dataCommentPost);
+
+      for (const item of this.dataCommentPost) {
+        if (item.commentId == null) {
+          if (item.userName == this.userLocalstorage.userName) {
+            this.dataReceiveNotifyFromPost.push(item);
+          }
+        }
+        if (item.commentId != null) {
+          this.dataReceiveNotifyFromReplyComment.push(item);
+        }
+      }
+    });
+    this.http.get('http://localhost:8080/api/authors/notify/search-list-isReply-comment').subscribe((res: any) => {
+      this.dataReplyComment = res.data;
+      console.log('this.dataReplyComment: ', this.dataReplyComment);
+      for (const item of this.dataReplyComment) {
+        for (const item1 of this.dataReceiveNotifyFromReplyComment) {
+          if (item.commentId == item1.commentId) {
+            if (item1.userName == this.userLocalstorage.userName) {
+              this.dataReceiveNotifyFromPost.push(item1);
+            }
+          }
+        }
+      }
+      console.log('this.dataReceiveNotifyFromPost: ', this.dataReceiveNotifyFromPost);
+    });
+
 
     // this.formSearchNotify.get('toUser').setValue(JSON.parse(localStorage.getItem('user')).id);
     // await this.api.getListNotify(this.formSearchNotify.value).toPromise().then((data: any) => {
@@ -211,7 +220,6 @@ export class HomeComponent implements OnInit {
   }
 
   linkToPostDetail(item: any) {
-    console.log('linkToPostDetail | item: ', item);
     localStorage.setItem('postsCategory', item.postscategory);
     this.shareDataService.sendDataCategory(item.postscategory);
     this.router.navigate([`/home/detail/posts/${item.postscategory}/${item.postsid}`]);

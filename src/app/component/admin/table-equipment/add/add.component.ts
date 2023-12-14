@@ -52,6 +52,14 @@ export class AddComponent implements OnInit {
     this.isAdd = true;
   }
 
+  submitForm(): void {
+    // tslint:disable-next-line:forin
+    for (const key in this.formAdd.controls) {
+      this.formAdd.controls[key].markAsDirty();
+      this.formAdd.controls[key].updateValueAndValidity();
+    }
+  }
+
   onUpload(info: NzUploadChangeParam) {
     this.isLoading = true;
     this.selectedFile = info.file.originFileObj;

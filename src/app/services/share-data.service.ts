@@ -8,11 +8,11 @@ export class ShareDataService {
   private dataSubjectSearch = new BehaviorSubject<any>('');
   private dataSubjectCategory = new BehaviorSubject<any>('');
   private dataSubjectEditPosts = new BehaviorSubject<any>('');
-  private dataSubjectEditComment = new BehaviorSubject<any>('');
+  private dataSubjectIdPost = new BehaviorSubject<any>('');
   dataSearch$ = this.dataSubjectSearch.asObservable();
   dataCategory$ = this.dataSubjectCategory.asObservable();
   dataEditPosts$ = this.dataSubjectEditPosts.asObservable();
-  dataEditComment$ = this.dataSubjectEditComment.asObservable();
+  dataIdPost$ = this.dataSubjectIdPost.asObservable();
 
   sendDataSearch(data: string) {
     this.dataSubjectSearch.next(data);
@@ -26,7 +26,7 @@ export class ShareDataService {
     this.dataSubjectEditPosts.next(data);
   }
 
-  sendDataEditComment(data: any) {
-    this.dataSubjectEditComment.next(data);
+  sendDataIdPost(data: any) {
+    this.dataSubjectIdPost.next(data);
   }
 }
