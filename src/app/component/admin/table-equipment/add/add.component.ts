@@ -86,21 +86,20 @@ export class AddComponent implements OnInit {
   }
 
   handleOk(): void {
-    setTimeout(() => {
+    // setTimeout(() => {
       this.formAdd.get('image').setValue(this.urlImage);
       this.api.createEquipment(this.formAdd.value).toPromise().then((data: any) => {
         if (data.errorCode == '00') {
-          this.notificationService.showMessage('success', 'Thêm loại cafe mới thành công');
+          this.notificationService.showMessage('success', 'Thêm loại trang thiết bị mới thành công');
           this.handleCancel(true);
+          this.isAdd = false;
+          this.formAdd.reset();
         } else {
-          this.notificationService.showMessage('error', 'Thêm loại cafe mới thất bại');
-          this.handleCancel(true);
+          this.notificationService.showMessage('error', 'Loại trang thiết bị đã tồn tại');
+          // this.handleCancel(true);
         }
       });
-      this.handleCancel(true);
-      this.isAdd = false;
-      this.formAdd.reset();
-    }, 2000);
+    // }, 2000);
   }
 
   handleCancel(value): void {

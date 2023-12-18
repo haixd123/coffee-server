@@ -118,12 +118,12 @@ export class EditProductComponent implements OnInit, OnChanges {
       if (data.errorCode == '00') {
         this.notificationService.showMessage('success', 'Cập nhật sản phẩm thành công');
         this.handleCancel(true);
+        this.isEdit = false;
+        this.formEdit.reset();
       } else {
         this.notificationService.showMessage('error', 'Cập nhật sản phẩm thất bại');
-        this.handleCancel(true);
+        // this.handleCancel(true);
       }
-      this.isEdit = false;
-      this.formEdit.reset();
     });
   }
 

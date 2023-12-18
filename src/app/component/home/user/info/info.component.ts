@@ -60,7 +60,6 @@ export class InfoComponent implements OnInit, OnChanges {
       phoneNumber: JSON.parse(localStorage.getItem('user')).phoneNumber ? JSON.parse(localStorage.getItem('user')).phoneNumber : '',
       image: JSON.parse(localStorage.getItem('user')).image ? JSON.parse(localStorage.getItem('user')).image : null,
       email: JSON.parse(localStorage.getItem('user')).email ? JSON.parse(localStorage.getItem('user')).email : '',
-
     });
     this.handleSearch();
     this.idUserLocalstorage = JSON.parse(localStorage.getItem('user')).id;
@@ -166,7 +165,7 @@ export class InfoComponent implements OnInit, OnChanges {
   handleChangeAvatar(): void {
     setTimeout(() => {
       this.formAdd.get('image').setValue(this.urlImage);
-      this.http.post('http://localhost:8080/api/user/updateInfo', this.formAdd.value).toPromise().then((data: any) => {
+      this.http.post('http://localhost:8080/api/authors/user/updateInfo', this.formAdd.value).toPromise().then((data: any) => {
         this.http.post(`http://localhost:8080/api/authors/user/search/${data.data.id}`, data.data.id).subscribe((res: any) => {
           localStorage.setItem('user', JSON.stringify(res.data));
           // this.handleSearch();
@@ -190,7 +189,7 @@ export class InfoComponent implements OnInit, OnChanges {
     this.formAdd.get('dateOfBirth').setValue(this.datePipe.transform(this.formAdd.get('dateOfBirthCur').value, 'dd/MM/yyyy'));
 
     console.log(this.formAdd.value);
-    this.http.post('http://localhost:8080/api/user/updateInfo', this.formAdd.value).toPromise().then((data: any) => {
+    this.http.post('http://localhost:8080/api/authors/user/updateInfo', this.formAdd.value).toPromise().then((data: any) => {
       this.http.post(`http://localhost:8080/api/authors/user/search/${data.data.id}`, data.data.id).subscribe((res: any) => {
         localStorage.setItem('user', JSON.stringify(res.data));
         this.handleSearch();

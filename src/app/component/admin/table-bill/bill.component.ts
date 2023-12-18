@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {SearchModelEntity} from '../search-model-entiry';
 import {Api} from '../../../services/api';
@@ -45,6 +45,9 @@ export class BillComponent implements OnInit {
   handleSearch() {
     this.searchModel.pageIndex = 1;
     this.searchModel.pageSize = 10;
+    if (this.formSearch.get('name').value == '') {
+      this.formSearch.get('name').setValue(null);
+    }
     this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
     this.handleUpdate(this.searchModel, true);
   }

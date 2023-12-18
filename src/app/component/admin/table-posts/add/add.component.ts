@@ -93,7 +93,7 @@ export class AddPostsComponent implements OnInit {
   }
 
   handleOk(): void {
-    setTimeout(() => {
+    // setTimeout(() => {
       // if (this.urlImage) {
       this.formAdd.get('imagePath').setValue(this.urlImage);
       // }
@@ -102,15 +102,15 @@ export class AddPostsComponent implements OnInit {
         if (data.errorCode == '00') {
           this.notificationService.showMessage('success', 'Thêm mới bài đăng thành công');
           this.handleCancel(true);
+          this.isAdd = false;
+          this.formAdd.reset();
         } else {
-          this.notificationService.showMessage('error', 'Thêm mới bài đăng thất bại');
-          this.handleCancel(true);
+          this.notificationService.showMessage('error', 'Bài đăng đã tồn tại');
+          // this.handleCancel(true);
         }
       });
-      this.isAdd = false;
-      this.formAdd.reset();
 
-    }, 2000);
+    // }, 2000);
   }
 
   handleCancel(value): void {

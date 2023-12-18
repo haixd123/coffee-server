@@ -35,7 +35,7 @@ export class SavePostsComponent implements OnInit {
   async handleUpdate(searchModel: SearchModelEntity, reset = false) {
 
 
-    await this.http.post('http://localhost:8080/api/save-posts/search', this.searchModel).toPromise().then((data: any) => {
+    await this.api.getListSavePosts(this.searchModel).toPromise().then((data: any) => {
       for (const i of data.data) {
         if (i.userId == this.savePostsUserId) {
           this.dataSavePost.push(i.postId);

@@ -133,16 +133,16 @@ export class EditPostsComponent implements OnInit, OnChanges {
         this.handleCancel(true);
         this.formEdit.reset();
       } else {
-        this.notificationService.showMessage('error', 'Sửa bài đăng thất bại');
-        this.isEdit = false;
-        this.handleCancel(true);
-        this.formEdit.reset();
+        this.notificationService.showMessage('error', 'Bài đăng đã tồn tại');
+        // this.isEdit = false;
+        // this.handleCancel(true);
+        // this.formEdit.reset();
       }
     });
 
-    this.handleCancel(true);
+    // this.handleCancel(true);
 
-    this.isEdit = false;
+    // this.isEdit = false;
 
   }
 

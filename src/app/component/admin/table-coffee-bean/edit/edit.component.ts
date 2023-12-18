@@ -108,14 +108,14 @@ export class EditCoffeeBeanComponent implements OnInit, OnChanges {
     this.formEdit.get('image').setValue(this.urlImage);
     this.api.updateCoffeeBean(this.formEdit.value).toPromise().then((data: any) => {
       if (data.errorCode == '00') {
-        this.notificationService.showMessage('success', 'Sửa bài đăng thành công');
+        this.notificationService.showMessage('success', 'Sửa thông tin loại cà phê thành công');
         this.handleCancel(true);
+        this.isEdit = false;
+        this.formEdit.reset();
       } else {
-        this.notificationService.showMessage('error', 'Sửa bài đăng thất bại');
-        this.handleCancel(true);
+        this.notificationService.showMessage('error', 'Thông tin loại cà phê đã tồn tại');
+        // this.handleCancel(true);
       }
-      this.isEdit = false;
-      this.formEdit.reset();
     });
   }
 

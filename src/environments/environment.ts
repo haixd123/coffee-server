@@ -8,12 +8,12 @@ export const environment = {
   env: 'development',
   apiUrl: 'http://localhost:8080/api/',
   firebaseConfig: {
-    apiKey: 'AIzaSyBLnNomPuo9kTdFMtSoArR0QUAFPEwA-9I',
-    authDomain: 'coffee2-c0521.firebaseapp.com',
-    projectId: 'coffee2-c0521',
-    storageBucket: 'coffee2-c0521.appspot.com',
-    messagingSenderId: '716579486971',
-    appId: '1:716579486971:web:c637fd5c9ba7dc8e32845e',
+    apiKey: 'AIzaSyAnwWxyhoPjNE1VegiQ1j3Xnqr5jN_gnlY',
+    authDomain: 'coffee-project-3c902.firebaseapp.com',
+    projectId: 'coffee-project-3c902',
+    storageBucket: 'coffee-project-3c902.appspot.com',
+    messagingSenderId: '838385784331',
+    appId: '1:838385784331:web:923e0d5322893c4044190e',
     measurementId: 'G-MEASUREMENT_ID',
   }
 };

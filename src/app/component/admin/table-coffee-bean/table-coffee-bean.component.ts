@@ -72,6 +72,7 @@ export class TableCoffeeBeanComponent implements OnInit {
     this.handleUpdate(this.searchModel, true);
   }
 
+
   changePage() {
     this.searchModel.pageIndex = this.curPage;
     this.searchModel.pageSize = 10;

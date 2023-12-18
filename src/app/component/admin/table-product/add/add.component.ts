@@ -82,13 +82,13 @@ export class AddProductComponent implements OnInit {
     await this.api.createProduct(this.formAdd.value).toPromise().then((data: any) => {
       if (data.errorCode == '00') {
         this.notificationService.showMessage('success', 'Thêm sản phẩm mới thành công');
+        this.handleCancel(true);
+        this.isAdd = false;
+        this.formAdd.reset();
       } else {
         this.notificationService.showMessage('error', 'Thêm sản phẩm mới thất bại');
       }
     });
-    this.handleCancel(true);
-    this.isAdd = false;
-    this.formAdd.reset();
   }
 
   handleCancel(value): void {

@@ -108,14 +108,14 @@ export class EditComponent implements OnInit, OnChanges {
 
     this.api.updateEquipment(this.formEdit.value).toPromise().then((data: any) => {
       if (data.errorCode == '00') {
-        this.notificationService.showMessage('success', 'Sửa bài đăng thành công');
+        this.notificationService.showMessage('success', 'Sửa Loại trang thiết bị thành công');
         this.handleCancel(true);
+        this.isEdit = false;
+        this.formEdit.reset();
       } else {
-        this.notificationService.showMessage('error', 'Sửa bài đăng thất bại');
-        this.handleCancel(true);
+        this.notificationService.showMessage('error', 'Loại trang thiết bị đẫ tồn tại');
+        // this.handleCancel(true);
       }
-      this.isEdit = false;
-      this.formEdit.reset();
     });
   }
 

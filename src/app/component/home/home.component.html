@@ -1,8 +1,9 @@
 ﻿<nz-layout style="height: 100vh;" xmlns="http://www.w3.org/1999/html">
   <nz-header style="background-color: #545454">
     <!--    class="{{isCoffee == 1 ? 'coffee' : isCoffee == 2 ? 'equipment' : isCoffee == 3 ? 'news' : isCoffee == 4 ? 'contact' : 'noBody' }}"-->
-    <div style="max-width: 1200px; margin: auto; display: flex; justify-content: space-between; color: #fff;width: 100%"
-         class="row">
+    <div
+      style="max-width: 1200px; margin: auto; display: flex; justify-content: space-between; color: #fff;width: 100%; flex-wrap: nowrap"
+      class="row">
       <div style="color: #fff" class="d-flex">
         <!--        content1-->
         <!--        <div>-->
@@ -23,12 +24,12 @@
           <a style="padding: 22px 10px; color: #fff" (click)="linkToProduct()">Sản phẩm</a>
         </div>
       </div>
-      <div>
-      </div>
+      <!--      <div>-->
+      <!--      </div>-->
       <div style="color: #fff">
         <!--        <form nz-form [formGroup]="formSearch">-->
 
-        <div class="d-flex align-items-center justify-content-center" style="width: 380px; height: 100%">
+        <div class="d-flex align-items-center justify-content-center" style="width: 310px; height: 100%">
           <!--          <a href="https://www.freepnglogos.com/images/coffee-logo-png-7521.html"></a>-->
           <img style="width: 40%"
                src="assets/coffee-house.png">
@@ -55,7 +56,7 @@
 
         <div class="category-link">
           <a class="d-flex align-items-center px-3 " style="color: #fff">
-            <i nz-icon nzType="unordered-list" nzTheme="outline" class="mr-1"></i>Danh mục bài viết
+            <i nz-icon nzType="unordered-list" nzTheme="outline" class="mr-1"></i>Danh mục
           </a>
           <div class="category">
             <div>
@@ -156,29 +157,38 @@
             </div>
           </div>
         </div>
-
+        <div>
+          <a style="color: #fff" [routerLink]="['/home/checkout']"><span style="font-size: 18px" nz-icon
+                                                                         nzType="shopping-cart"
+                                                                         nzTheme="outline"></span></a></div>
         <div *ngIf="userLocalstorage" class="user-link" style="padding: 15px 0">
           <a class="d-flex align-items-center px-3" style="color: #fff">
             <img
               style="width: 100%; border-radius: 50%; min-width: 35px; max-width: 35px; height: 35px; margin-right: 5px"
               [src]="userLocalstorage.image"/>
           </a>
-          <div class="user" style="width: 240px; color: #000; background-color: #e6e6e6; margin-top: 12px">
+          <div class="user" style="width: 280px; color: #000; background-color: #e6e6e6; margin-top: 12px">
 
             <div class="ml-3">
-              <div style="height: 64px" class="d-flex">
-                <div style="width: 50px; height: 50px" class="align-items-center p-0 mr-1">
+              <div class="row d-flex">
+                <div style="width: 50px; height: 50px" class="col-2 p-0 ml-2 mr-2">
                   <img style="width: 100%; border-radius: 50%; min-width: 50px; max-width: 50px; height: 50px"
                        [src]="userLocalstorage.image"/>
                 </div>
-                <div style="margin-top: -11px" class="d-flex flex-wrap">
-                  <div class="col-8" style="height: 20px; font-size: 17px">
-                    Xin chào
-                  </div>
-                  <div class="col-8" style="height: 20px; margin-top: -24px; font-size: 17px">
-                    {{userLocalstorage.name}}
-                  </div>
+                <!--                <div style="width: 180px;" class="">-->
+                <div class="col-9">
+                  <div style="height: 20px; font-size: 17px">Xin chào</div>
+                  <span style="height: 20px; font-size: 17px">{{userLocalstorage.name}}</span>
                 </div>
+
+
+                <!--                  <div style="height: 20px; font-size: 17px">-->
+                <!--                    <span>Xin chào</span><br/>-->
+                <!--                  </div>-->
+                <!--                  <div style="height: 20px; margin-top: -24px; font-size: 17px">-->
+                <!--                    {{userLocalstorage.name}}-->
+                <!--                  </div>-->
+                <!--                </div>-->
 
               </div>
               <!--              <a style="font-size: 17px" class="d-flex align-items-center mt-3"><i class="mr-3" nz-icon nzType="audit"-->

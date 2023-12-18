@@ -1,7 +1,8 @@
 <!--  <button nz-button [nzType]="'primary'" (click)="showModal()"><span>Show Modal</span></button>-->
 <nz-modal nzWidth="600px" [(nzVisible)]="isEdit"
           nzTitle="Thêm mới sản phẩm"
-          (nzOnCancel)="handleCancel(false)">
+          (nzOnCancel)="handleCancel(false)"
+          [nzFooter]="null">
   <form nz-form [formGroup]="formEdit" (ngSubmit)="submitForm()">
 
     <div class="mb-3">

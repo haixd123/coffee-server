@@ -78,13 +78,14 @@ export class AddCoffeeBeanComponent implements OnInit {
       await this.api.createCoffeeBean(this.formAdd.value).toPromise().then((data: any) => {
         if (data.errorCode == '00') {
           this.notificationService.showMessage('success', 'Thêm loại cafe mới thành công');
+          this.handleCancel(true);
+          this.isAdd = false;
+          this.formAdd.reset();
         } else {
-          this.notificationService.showMessage('error', 'Thêm loại cafe mới thất bại');
+          this.notificationService.showMessage('error', 'Tên loại cà phê đã tồn tại');
         }
       });
-      this.handleCancel(true);
-      this.isAdd = false;
-      this.formAdd.reset();
+
     }
   }
 
