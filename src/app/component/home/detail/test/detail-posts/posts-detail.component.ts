@@ -389,7 +389,7 @@ export class PostsDetailComponent implements OnInit {
     this.formLikeComment.get('postId').setValue(item.postId);
     this.formLikeComment.get('commentText').setValue(item.commentText);
     // this.formLikeComment.get('createAt').setValue(item.createAt);
-    // this.formLikeComment.get('updateAt').setValue(item.updateAt);
+    this.formLikeComment.get('updateAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
     this.formLikeComment.get('likeComment').setValue(0);
     this.formLikeComment.get('status').setValue(1);
     this.api.updateComment(this.formLikeComment.value).toPromise().then(data => {
