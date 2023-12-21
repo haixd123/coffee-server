@@ -134,6 +134,7 @@ export class HomePostsComponent implements OnInit, OnChanges {
 
   handleMoreBtn(item?: any) {
     this.idPosts = item.id;
+    this.isEditPosts = false;
     this.isEditPosts = !this.isEditPosts;
   }
 

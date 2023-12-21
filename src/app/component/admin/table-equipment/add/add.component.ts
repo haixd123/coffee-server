@@ -31,7 +31,6 @@ export class AddComponent implements OnInit {
     private notificationService: NotificationService,
     private storage: AngularFireStorage,
     private api: Api,
-
   ) {
     this.formAdd = this.fb.group({
       name: [null, [Validators.required]],
@@ -40,6 +39,7 @@ export class AddComponent implements OnInit {
       contentEquipment: null
     });
   }
+
   get f() {
     return this.formAdd.controls;
   }
@@ -87,18 +87,19 @@ export class AddComponent implements OnInit {
 
   handleOk(): void {
     // setTimeout(() => {
-      this.formAdd.get('image').setValue(this.urlImage);
-      this.api.createEquipment(this.formAdd.value).toPromise().then((data: any) => {
-        if (data.errorCode == '00') {
-          this.notificationService.showMessage('success', 'Thêm loại trang thiết bị mới thành công');
-          this.handleCancel(true);
-          this.isAdd = false;
-          this.formAdd.reset();
-        } else {
-          this.notificationService.showMessage('error', 'Loại trang thiết bị đã tồn tại');
-          // this.handleCancel(true);
-        }
-      });
+    this.formAdd.get('image').setValue(this.urlImage);
+    this.api.createEquipment(this.formAdd.value).toPromise().then((data: any) => {
+      if (data.errorCode == '00') {
+        this.notificationService.showMessage('success', 'Thêm loại trang thiết bị mới thành công');
+        this.handleCancel(true);
+        this.isAdd = false;
+        this.formAdd.reset();
+        this.urlImage = null;
+      } else {
+        this.notificationService.showMessage('error', 'Loại trang thiết bị đã tồn tại');
+        // this.handleCancel(true);
+      }
+    });
     // }, 2000);
   }
 

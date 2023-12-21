@@ -187,21 +187,22 @@ export class InfoComponent implements OnInit, OnChanges {
 
   handleUpdateInfo() {
     this.formAdd.get('dateOfBirth').setValue(this.datePipe.transform(this.formAdd.get('dateOfBirthCur').value, 'dd/MM/yyyy'));
-
-    console.log(this.formAdd.value);
-    this.http.post('http://localhost:8080/api/authors/user/updateInfo', this.formAdd.value).toPromise().then((data: any) => {
-      this.http.post(`http://localhost:8080/api/authors/user/search/${data.data.id}`, data.data.id).subscribe((res: any) => {
-        localStorage.setItem('user', JSON.stringify(res.data));
-        this.handleSearch();
-        setTimeout(() => {
+    if (this.formAdd.get('name').value) {
+      this.http.post('http://localhost:8080/api/authors/user/updateInfo', this.formAdd.value).toPromise().then((data: any) => {
+        this.http.post(`http://localhost:8080/api/authors/user/search/${data.data.id}`, data.data.id).subscribe((res: any) => {
+          localStorage.setItem('user', JSON.stringify(res.data));
+          this.handleSearch();
           this.cancelUpdateName();
           this.cancelUpdateDateOfBirth();
           this.cancelUpdateSex();
           this.cancelUpdatePhoneNumber();
           this.cancelUpdateEmail();
-        }, 200);
+        });
       });
-    });
+    } else {
+      alert('Tên người dùng không được để trống!')
+    }
+
   }
 
 }

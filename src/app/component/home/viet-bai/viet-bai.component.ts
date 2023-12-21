@@ -107,9 +107,9 @@ export class VietBaiComponent implements OnInit {
     //       console.log('failed');
     //     }
     //   }
+
     // );
   }
-
   Submit() {
     if (this.formAdd.get('title').value?.trim()) {
       if (!this.dataEdit) {

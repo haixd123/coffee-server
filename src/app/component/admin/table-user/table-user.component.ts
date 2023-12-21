@@ -90,6 +90,7 @@ export class TableUserComponent implements OnInit {
     });
   }
 
+
   handleSearch() {
     this.searchModel.pageIndex = 1;
     this.searchModel.pageSize = 10;
@@ -101,6 +102,7 @@ export class TableUserComponent implements OnInit {
     }
     this.handleUpdate(this.searchModel, true);
   }
+
 
   changePage() {
     this.searchModel.pageIndex = this.curPage;

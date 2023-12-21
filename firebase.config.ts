@@ -3,12 +3,13 @@
 
 
 export const firebaseConfig = {
-  apiKey: 'AIzaSyAnwWxyhoPjNE1VegiQ1j3Xnqr5jN_gnlY',
-  authDomain: 'coffee-project-3c902.firebaseapp.com',
-  projectId: 'coffee-project-3c902',
-  storageBucket: 'coffee-project-3c902.appspot.com',
-  messagingSenderId: '838385784331',
-  appId: '1:838385784331:web:923e0d5322893c4044190e',
+  apiKey : "AIzaSyBYoLC0Rwo-1H0oNE5tSMw5HdnJRDuc9rg" ,
+  authDomain : "coffee-80283.firebaseapp.com" ,
+  projectId : "coffee-80283" ,
+  storageBucket : "coffee-80283.appspot.com" ,
+  messagingSenderId : "817025563986" ,
+  appId : "1:817025563986:web:287c1899bfe9da531bce8b",
+  // measurementId: 'G-32X553RYQC'
 };
 
 // Initialize Firebase

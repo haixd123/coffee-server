@@ -37,7 +37,8 @@
   <!--      </button>-->
   <!--    </div>-->
   <!--  </div>-->
-  <nz-modal [nzWidth]="1000" [(nzVisible)]="isVisible" nzTitle="Chi tiết sản phẩm" (nzOnCancel)="handleCancel()" [nzFooter]=null>
+  <nz-modal [nzWidth]="1000" [(nzVisible)]="isVisible" nzTitle="Chi tiết sản phẩm" (nzOnCancel)="handleCancel()"
+            [nzFooter]=null>
     <div style="display: grid; grid-template-columns: 40% 60%;">
       <div>
         <img style="width: 100%;" [src]="detailProduct?.image"/>
@@ -73,9 +74,29 @@
       </div>
     </div>
   </nz-modal>
-  <div class="d-flex justify-content-center" style="font-size: 25px; font-weight: 600; margin-top: 35px;">Sản phẩm bán
-    chạy
-  </div>
+<!--  <div class="d-flex justify-content-center" style="font-size: 25px; font-weight: 600; margin-top: 35px;">Sản phẩm bán-->
+<!--    chạy-->
+<!--  </div>-->
+<!--  <owl-carousel-o [options]="customOptions" style="background-color: #c3c3c3">-->
+<!--    <ng-template *ngFor="let item of data" carouselSlide>-->
+<!--      <div *ngIf="item.price > 60000" class="item-product mx-2 px-3 my-3">-->
+<!--        <div>-->
+<!--          <div style="cursor: pointer" (click)="showModal(item)">-->
+<!--            <img style="width: 268px; height: 270px; object-fit: contain;" [src]="item.image"/>-->
+<!--          </div>-->
+<!--          <div class="my-2" style="width: 100%;">-->
+<!--            <div class="d-flex justify-content-center" style="width: 100%;">-->
+<!--              <span style="font-size: 19px; font-weight: 600;">{{item.name}}</span>-->
+<!--            </div>-->
+<!--            <div class="d-flex justify-content-center" style="width: 100%;">-->
+<!--              <span style="font-size: 14px; font-weight: 500; margin-right: 3px;">Giá: </span>-->
+<!--              <span style="font-size: 16px; color: #c60505">{{item.price | currency:'VND':'symbol':'1.0-0' }}</span>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--    </ng-template>-->
+<!--  </owl-carousel-o>-->
   <nz-drawer
     nzPlacement="right" nzTitle="Giỏ hàng"
     [nzClosable]="false"

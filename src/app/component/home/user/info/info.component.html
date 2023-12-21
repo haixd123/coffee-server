@@ -60,18 +60,18 @@
                      <span *ngIf="item.name" style="font-size: 16px; font-weight: 600; color: #000">
                        {{item.name}}
                      </span>
-                      <span *ngIf="!item.name" style="font-size: 16px; font-weight: 600; color: #000">
-                      Chưa có thông tin
-                    </span>
+<!--                      <span *ngIf="!item.name" style="font-size: 16px; font-weight: 600; color: #000">-->
+<!--                      Chưa có thông tin-->
+<!--                    </span>-->
                     </div>
                     <div *ngIf="!isUpdateName && isCancelUpdateName">
                       <input formControlName="name" *ngIf="item.name"
                              style="font-size: 16px; color: #000; font-weight: 500"
                              class="py-2" nz-input
                              placeholder="Nhập họ và tên" type="text"/>
-                      <input formControlName="name" *ngIf="!item.name" style="font-size: 16px" class="py-2" nz-input
-                             placeholder="Nhập họ và tên"
-                             type="text"/>
+<!--                      <input formControlName="name" *ngIf="!item.name" style="font-size: 16px" class="py-2" nz-input-->
+<!--                             placeholder="Nhập họ và tên"-->
+<!--                             type="text"/>-->
                       <div class="d-flex justify-content-end mt-2">
                         <button class="mr-3 px-2 py-1" nz-button nzType="primary" (click)="handleUpdateInfo()">Xác nhận
                         </button>

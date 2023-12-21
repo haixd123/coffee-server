@@ -246,17 +246,18 @@ export class PostsDetailComponent implements OnInit {
       this.formAdd.get('postId').setValue(this.dataEdit?.postId);
       this.formAdd.get('commentText').setValue(this.formAdd.get('commentReplyText').value ? this.formAdd.get('commentReplyText').value : this.formAdd.get('commentText').value);
       this.formAdd.get('status').setValue(1);
-      this.formAdd.get('createAt').setValue(item.createAt);
+      this.formAdd.get('createAt').setValue(this.dataEdit?.createAt);
       this.formAdd.get('updateAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
       this.api.updateComment(this.formAdd.value).toPromise().then((res: any) => {
         console.log('res: ', res);
         if (res.errorCode == '00') {
-          this.notificationService.showMessage('success', 'Sửa luận thành công');
+          this.notificationService.showMessage('success', 'Sửa  luận thành công');
         } else {
           this.notificationService.showMessage('error', 'Sửa luận thất bại');
         }
       });
     }
+
     if (!this.dataEdit) {
       this.formAdd.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
       this.formAdd.get('postId').setValue(this.idPostsLocalstorage);
