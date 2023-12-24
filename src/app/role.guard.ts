@@ -12,7 +12,6 @@ export class RoleGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const expectedRole = route.data.expectedRole;
-    console.log('expectedRole: ', expectedRole);
 
     if (!expectedRole) {
       return false; // Cho phép truy cập nếu không có yêu cầu vai trò cụ thể
@@ -27,7 +26,6 @@ export class RoleGuard implements CanActivate {
     const userRole = this.userService.getUserRole();
 
     if (userRole && userRole == expectedRole) {
-      console.log('userRole: ', userRole);
       return true; // Cho phép truy cập nếu người dùng có vai trò phù hợp
     }
 
@@ -37,7 +35,6 @@ export class RoleGuard implements CanActivate {
     //   return true;
     // }
 
-    console.log('userRole public: ', userRole);
     // Người dùng không có quyền, chuyển hướng đến trang không có quyền truy cập
     this.router.navigate(['/unauthorized']);
     return false;

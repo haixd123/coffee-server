@@ -40,11 +40,12 @@ export class LoginComponent implements OnInit {
             if (!!res) {
               this.notificationService.showMessage('success', 'Đăng nhập thành công');
               this.loading = false;
-              if (res.role === 1) {
-                this.router.navigate(['/home/posts']);
-              } else {
-                this.router.navigate(['/admin']);
-              }
+              //???
+              // if (res.role != 'ADMIN') {
+              this.router.navigate(['/home/posts']);
+              // } else {
+              //   this.router.navigate(['/admin']);
+              // }
             } else {
               this.loading = false;
               this.notificationService.showMessage('error', 'Tài khoản hoặc mật khẩu không chính xác');

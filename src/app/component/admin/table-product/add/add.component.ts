@@ -36,7 +36,8 @@ export class AddProductComponent implements OnInit {
       description: null,
       sku: [null, [Validators.required]],
       price: null,
-      category: null,
+      category: [null],
+      categoryCur: [null],
       discount: null,
       remaining: null,
       image: null,
@@ -79,6 +80,7 @@ export class AddProductComponent implements OnInit {
 
   async handleOk() {
     this.formAdd.get('image').setValue(this.urlImage);
+    this.formAdd.get('category').setValue(this.formAdd.get('categoryCur')?.value.toString())
     await this.api.createProduct(this.formAdd.value).toPromise().then((data: any) => {
       if (data.errorCode == '00') {
         this.notificationService.showMessage('success', 'Thêm sản phẩm mới thành công');
@@ -93,6 +95,7 @@ export class AddProductComponent implements OnInit {
 
   handleCancel(value): void {
     this.isAdd = false;
+    this.formAdd.reset();
     this.closePopup.emit(value);
   }
 }

@@ -57,7 +57,6 @@ export class EditPostsComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.dataEdit) {
       this.formEdit.reset();
-      console.log('dataEdit: ', this.dataEdit);
       this.formEdit.patchValue({
         id: this.dataEdit.id,
         title: this.dataEdit.title,

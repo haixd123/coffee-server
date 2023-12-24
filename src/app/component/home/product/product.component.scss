@@ -25,5 +25,12 @@
   border-radius: 4px;
 }
 
+::ng-deep .ant-input-number-handler-wrap {
+  display: none !important;
+}
+
+::ng-deep .ant-input-number-input {
+  text-align: center !important;
+}
 
 //text-decoration: line-through;

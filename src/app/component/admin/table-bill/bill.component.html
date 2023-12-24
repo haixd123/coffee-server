@@ -1,10 +1,13 @@
 <form nz-form [formGroup]="formSearch">
-
   <div class="d-flex align-items-center justify-content-between mb-4">
     <div class="d-flex">
       <button style="border-radius: 5px" class="d-flex align-items-center ml-3" nz-button nzType="primary"
               (click)="handleSearch()">
         <i nz-icon nzType="search" nzTheme="outline"></i> Tìm kiếm
+      </button>
+      <button style="border-radius: 5px" class="d-flex align-items-center ml-3" nz-button nzType="primary"
+              (click)="export()">
+        <i nz-icon nzType="search" nzTheme="outline"></i> Xuất excel
       </button>
     </div>
 
@@ -19,48 +22,71 @@
       </ng-template>
     </div>
   </div>
-  <nz-table
-    #basicTable
-    [nzData]="data"
-    [nzFrontPagination]="false"
-    [(nzPageIndex)]="searchModel.pageIndex"
-    nzBordered
-    nzShowSizeChanger
-    [nzScroll]="{ x: '1200px'}"
-  >
-    <thead>
-    <tr>
-      <th>STT</th>
-      <th>Id</th>
-      <th>Tên</th>
-      <th>Email</th>
-      <th>Số điện thoại</th>
-      <th>Địa chỉ</th>
-      <th>Chi tiết hóa đơn</th>
-      <!--      <th>Hành động</th>-->
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let item of data, let i = index">
-      <td class="text-nowrap">{{validateService.getRowIndex(i, basicTable.nzPageIndex, basicTable.nzPageSize)}}</td>
-      <td>{{ item.id }}</td>
-      <td>{{ item.name }}</td>
-      <td>{{ item.email }}</td>
-      <!--      <td>{{ item.title }}</td>-->
-      <!--    <td>{{ item.contentCoffee }}</td>-->
-      <td>{{ item.phone }}</td>
-      <td style=" white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{item.address}}</td>
-      <td>{{ item.detail }}</td>
-      <!--      <td style="min-width: 120px; text-align: center">-->
-      <!--        <a style="font-size: 21px" class="mr-3" (click)="handleEdit(item)"><i nz-icon nzType="edit"-->
-      <!--                                                                              nzTheme="outline"></i></a>-->
-      <!--        <a style="font-size: 21px" nz-popconfirm nzPopconfirmTitle="Bạn chắc chắn muốn xóa bài đăng này?" (nzOnConfirm)="handleDelete(item)"><i nz-icon nzType="delete" nzTheme="outline"></i></a>-->
-      <!--      </td>-->
-    </tr>
-    </tbody>
-  </nz-table>
-  <div class="d-flex justify-content-end">
-    <nz-pagination class="pb-4" (click)="changePage()" [(nzPageIndex)]="curPage" [nzTotal]="total"></nz-pagination>
-  </div>
-
 </form>
+
+
+<nz-table
+  #basicTable
+  [nzData]="data"
+  [nzFrontPagination]="true"
+  [nzPageSizeOptions]="pageSizeOptions"
+  [(nzPageIndex)]="searchModel.pageIndex"
+  (nzPageSizeChange)="onPageSizeChange($event)"
+
+  nzBordered
+  nzShowSizeChanger
+  [nzScroll]="{ x: '1200px'}"
+>
+  <thead>
+  <tr>
+    <th>STT</th>
+    <th>Id</th>
+    <th>Tên</th>
+    <th>Email</th>
+    <th>Số điện thoại</th>
+    <th>Địa chỉ</th>
+    <th>Chi tiết hóa đơn</th>
+    <!--      <th>Hành động</th>-->
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let item of data, let i = index">
+    <td class="text-nowrap">{{validateService.getRowIndex(i, basicTable.nzPageIndex, basicTable.nzPageSize)}}</td>
+    <td>{{ item.id }}</td>
+    <td>{{ item.name }}</td>
+    <td>{{ item.email }}</td>
+    <!--      <td>{{ item.title }}</td>-->
+    <!--    <td>{{ item.contentCoffee }}</td>-->
+    <td>{{ item.phone }}</td>
+    <td style=" white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{item.address}}</td>
+    <td>{{ item.detail }}</td>
+    <!--      <td style="min-width: 120px; text-align: center">-->
+    <!--        <a style="font-size: 21px" class="mr-3" (click)="handleEdit(item)"><i nz-icon nzType="edit"-->
+    <!--                                                                              nzTheme="outline"></i></a>-->
+    <!--        <a style="font-size: 21px" nz-popconfirm nzPopconfirmTitle="Bạn chắc chắn muốn xóa bài đăng này?" (nzOnConfirm)="handleDelete(item)"><i nz-icon nzType="delete" nzTheme="outline"></i></a>-->
+    <!--      </td>-->
+  </tr>
+  </tbody>
+</nz-table>
+<!--<div class="d-flex justify-content-end">-->
+<!--  <nz-pagination class="pb-4" (click)="changePage()" [(nzPageIndex)]="curPage" [nzTotal]="total"-->
+<!--                 [nzPageSizeOptions]="pageSizeOptions" (nzPageSizeChange)="onPageSizeChange($event)"></nz-pagination>-->
+<!--</div>-->
+
+
+<div style="display:flex; justify-content: center">
+  <ngx-charts-bar-vertical [results]="productSales1" [view]="view" [scheme]="colorScheme" [schemeType]="schemeType"
+                           [gradient]="gradient" [xAxis]="xAxis" [yAxis]="yAxis" [legend]="legend"
+                           [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+                           [xAxisLabel]="xAxisLabel" [yAxisLabel]="xAxisLabel" [legendTitle]="legendTitle"
+                           [legendPosition]="legendPosition" [animations]="animations" [showGridLines]="showGridLines"
+                           [trimXAxisTicks]="trimXAxisTicks" [trimYAxisTicks]="trimYAxisTicks"
+                           [rotateXAxisTicks]="rotateXAxisTicks" [maxXAxisTickLength]="maxXAxisTickLength"
+                           [maxYAxisTickLength]="maxYAxisTickLength" [xAxisTickFormatting]="formatString"
+                           [yAxisTickFormatting]="formatNumber" [yAxisTicks]="yAxisTicks"
+                           [showDataLabel]="showDataLabel"
+                           [barPadding]="barPadding" [tooltipDisabled]="tooltipDisabled" [roundEdges]="roundEdges">
+  </ngx-charts-bar-vertical>
+</div>
+
+

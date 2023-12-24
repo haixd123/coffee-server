@@ -37,7 +37,6 @@ export class MyPostsComponent implements OnInit {
 
   handleUpdate(searchModel: SearchModelEntity, reset = false) {
     this.api.getListPosts(this.searchModel).toPromise().then((data: any) => {
-      console.log('data: ', data);
       this.data = data.data;
       this.total = data.optional;
     });

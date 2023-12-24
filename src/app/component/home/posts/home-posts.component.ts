@@ -59,8 +59,6 @@ export class HomePostsComponent implements OnInit, OnChanges {
     });
     this.PostIdLocalStorage = localStorage.getItem('postsId');
     this.userLocalstorage = JSON.parse(localStorage.getItem('user'));
-    console.log('userLocalstorage: ', this.userLocalstorage);
-
   }
 
   ngOnChanges() {
@@ -70,7 +68,6 @@ export class HomePostsComponent implements OnInit, OnChanges {
     //???
     this.activatedRoute.paramMap.subscribe(params => {
       this.category = params.get('category');
-      console.log('params: ', params);
       if (this.category) {
         this.search(this.category);
       }
@@ -145,7 +142,6 @@ export class HomePostsComponent implements OnInit, OnChanges {
 
   deletePosts(item: any) {
     this.api.deletePosts(item).subscribe((data: any) => {
-      console.log('data: ', data);
       if (data.errorCode == '00') {
         this.notificationService.showMessage('success', 'Xóa đăng thành công');
         this.changePage();

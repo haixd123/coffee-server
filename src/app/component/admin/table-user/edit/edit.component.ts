@@ -57,9 +57,9 @@ export class EditUserComponent implements OnInit, OnChanges {
       this.formEdit.reset();
       this.formEdit.patchValue({
         id: this.dataEdit.id,
-        userName: [this.dataEdit.userName, [Validators.required]],
+        userName: this.dataEdit.userName,
         passWord: this.dataEdit.passWord,
-        email: [this.dataEdit.email, [Validators.required]],
+        email: this.dataEdit.email,
         name: this.dataEdit.name,
         address: this.dataEdit.address,
         age: this.dataEdit.age,

@@ -30,8 +30,9 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {Api} from './services/api';
 import {AppConfigService} from '../app-config.service';
 import {PaginationService} from 'ngx-pagination';
-import { CarouselModule } from 'ngx-owl-carousel-o';
+import {CarouselModule} from 'ngx-owl-carousel-o';
 import {TranslateModule} from '@ngx-translate/core';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
 
 registerLocaleData(vi);
 
@@ -60,6 +61,7 @@ registerLocaleData(vi);
     FontAwesomeModule,
     CarouselModule,
     TranslateModule.forRoot(),
+    NgxChartsModule,
   ],
   // tslint:disable-next-line:max-line-length
   providers: [AppConfigService, Api, NotificationService, NzConfigService, NzNotificationService, NzMessageService, DatePipe, FilterPipe, {

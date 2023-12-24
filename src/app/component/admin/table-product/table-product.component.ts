@@ -53,7 +53,6 @@ export class TableProductComponent implements OnInit {
   handleUpdate(searchModel: SearchModelEntity, reset = false) {
     this.api.getListProduct(this.searchModel).toPromise().then((data: any) => {
       this.data = data.data;
-      console.log('data: ', data);
       this.total = data.optional;
     });
   }
@@ -121,7 +120,6 @@ export class TableProductComponent implements OnInit {
       return;
     }
     if (!this.isSort) {
-      console.log('sucess');
       this.formSearch.get('sortPriceDown').setValue(1);
       this.formSearch.get('sortPriceUp').setValue(0);
       this.formSearch.get('sortDiscountDown').setValue(0);
@@ -159,7 +157,6 @@ export class TableProductComponent implements OnInit {
       return;
     }
     if (!this.isSort) {
-      console.log('sucess');
       this.formSearch.get('sortPriceDown').setValue(0);
       this.formSearch.get('sortPriceUp').setValue(0);
       this.formSearch.get('sortDiscountDown').setValue(1);
@@ -195,7 +192,6 @@ export class TableProductComponent implements OnInit {
       return;
     }
     if (!this.isSort) {
-      console.log('sucess');
       this.formSearch.get('sortPriceDown').setValue(0);
       this.formSearch.get('sortPriceUp').setValue(0);
       this.formSearch.get('sortDiscountDown').setValue(0);

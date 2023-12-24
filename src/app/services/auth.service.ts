@@ -28,7 +28,6 @@ export class AuthService {
       })
       .pipe(
         map((res: any) => {
-          console.log('res1: ', res);
           this.token.setToken(res.token);
           this.token.setUser(res.user);
           localStorage.setItem('user', JSON.stringify(res.user));

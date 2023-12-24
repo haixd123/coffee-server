@@ -48,8 +48,10 @@
 
     <div class="mb-3">
       Thể loại
-      <input formControlName="category" style="width: 100%;" nz-input name="required" required
-             placeholder="Thể loại"/>
+      <nz-select style="width: 100%;" nzMode="tags" [nzMaxMultipleCount]="1" formControlName="categoryCur">
+        <nz-option nzValue="coffee-milk" nzLabel="coffee-milk"></nz-option>
+        <nz-option nzValue="coffee" nzLabel="coffee"></nz-option>
+      </nz-select>
     </div>
     <div class="mb-3">
       Giảm giá

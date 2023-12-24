@@ -44,8 +44,11 @@
 
     <div class="mb-3">
       Thể loại
-      <input formControlName="category" style="width: 100%;" nz-input name="required" required
-             placeholder="Thể loại"/>
+<!--      <nz-select style="width: 100%;" nzMode="tags" [nzMaxMultipleCount]="1" formControlName="categoryCur">-->
+        <nz-select style="width: 100%;" nzMode="tags" [nzMaxMultipleCount]="1" formControlName="categoryCur">
+        <nz-option nzValue="coffee-milk" nzLabel="coffee-milk"></nz-option>
+        <nz-option nzValue="coffee" nzLabel="coffee"></nz-option>
+      </nz-select>
     </div>
     <div class="mb-3">
       Giảm giá
@@ -71,11 +74,11 @@
         (nzChange)="onUpload($event)"
         [nzShowUploadList]="false"
       >
-<!--        <ng-container *ngIf="!urlImage">-->
-<!--          <i class="upload-icon" nz-icon [nzType]="isLoading ? 'loading' : 'plus'"></i>-->
-<!--&lt;!&ndash;          <div class="ant-upload-text">{{ 'merchant.upload_logo' }}</div>&ndash;&gt;-->
-<!--          <div class="ant-upload-text">{{ 'merchant.upload_logo' | translate }}</div>-->
-<!--        </ng-container>-->
+        <!--        <ng-container *ngIf="!urlImage">-->
+        <!--          <i class="upload-icon" nz-icon [nzType]="isLoading ? 'loading' : 'plus'"></i>-->
+        <!--&lt;!&ndash;          <div class="ant-upload-text">{{ 'merchant.upload_logo' }}</div>&ndash;&gt;-->
+        <!--          <div class="ant-upload-text">{{ 'merchant.upload_logo' | translate }}</div>-->
+        <!--        </ng-container>-->
         <button nz-button><i nz-icon nzType="upload"></i>Click to Upload</button>
         <i *ngIf="isLoading" class="upload-icon" nz-icon [nzType]="isLoading ? 'loading' : 'plus'"></i>
 

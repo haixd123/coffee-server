@@ -42,6 +42,8 @@ export class ProductComponent implements OnInit {
   formUpdateQuantity: FormGroup;
 
   data: any[];
+  datProduct50k: any[] = [];
+  dataTop5: any[] = []
   isOpenDrawer = false;
   demoValue = 1;
   dataCart = [];
@@ -50,6 +52,8 @@ export class ProductComponent implements OnInit {
   found = false;
   isVisible = false;
   detailProduct: any;
+  ListProductSame: any[] = []
+  category: any;
 
   constructor(
     private api: Api,
@@ -57,8 +61,23 @@ export class ProductComponent implements OnInit {
     private reducerService: ReducerService,
     private router: Router,
   ) {
+
     this.api.getListProduct(this.searchModel).subscribe((data: any) => {
       this.data = data.data;
+      for (const item1 of this.data) {
+        const a = (item1?.price - item1?.price * item1?.discount / 100)
+        console.log('a: ', a)
+        console.log('typeof a: ', typeof a)
+        if (a <= 50000) {
+          this.datProduct50k.push(item1)
+        }
+      }
+
+      this.dataTop5 = data.data.sort((a, b) => {
+        return a.price - b.price
+      })
+      this.dataTop5.slice(0, 5)
+      console.log('this.dataTop5: ', this.dataTop5)
     });
 
     this.formUpdateQuantity = this.fb.group({
@@ -75,7 +94,7 @@ export class ProductComponent implements OnInit {
   addItemCart(value: any) {
     this.detailProduct = value;
     this.isVisible = false;
-    console.log('value: ', value);
+
     this.found = false;
     const isCartItems = JSON.parse(localStorage.getItem('cartItems'));
     if (this.dataCart.length === 0 && isCartItems) {
@@ -125,7 +144,6 @@ export class ProductComponent implements OnInit {
     if (this.dataCart.length == 0) {
       this.isOpenDrawer = false;
     }
-    console.log('this.dataCart: ', this.dataCart);
     localStorage.setItem('cartItems', JSON.stringify(this.dataCart));
   }
 
@@ -167,16 +185,32 @@ export class ProductComponent implements OnInit {
   showModal(value: any): void {
     this.detailProduct = value;
     this.isVisible = true;
+    this.category = value.category;
+    this.ListProductSame = []
+    for (const item of this.data) {
+      if (this.category == item.category && item.id != this.detailProduct.id) {
+        this.ListProductSame.push(item)
+      }
+    }
+    console.log('this.ListProductSame: ', this.ListProductSame)
   }
 
   handleOk(): void {
-    console.log('Button ok clicked!');
     this.isVisible = false;
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
     this.isVisible = false;
+  }
+
+  handleDetailProduct(value: any) {
+    this.detailProduct = value;
+    this.ListProductSame = []
+    for (const item of this.data) {
+      if (this.detailProduct.category == item.category && item.id != this.detailProduct.id) {
+        this.ListProductSame.push(item)
+      }
+    }
   }
 
 }

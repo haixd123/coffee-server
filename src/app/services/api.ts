@@ -180,4 +180,8 @@ export class Api extends BaseService {
   createBill(searchModel: SearchModelEntity) {
     return this.post('/authors/bill/create', searchModel);
   }
+
+  exportBill(searchModel: SearchModelEntity) {
+    return this.postRequestFile('/authors/bill/export', searchModel, null)
+  }
 }

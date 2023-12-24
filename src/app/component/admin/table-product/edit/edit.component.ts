@@ -41,6 +41,7 @@ export class EditProductComponent implements OnInit, OnChanges {
       sku: [null, [Validators.required]],
       price: null,
       category: null,
+      categoryCur: [null, [Validators.required]],
       discount: null,
       remaining: null,
       image: null,
@@ -49,15 +50,18 @@ export class EditProductComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
+    this.formEdit.get('categoryCur').setValue([])
+    this.formEdit.get('name').setValue('')
     if (this.dataEdit) {
-      this.formEdit.reset();
+      // this.formEdit.reset();
       this.formEdit.patchValue({
         id: this.dataEdit.id,
-        name: this.dataEdit.name,
+        // name: this.dataEdit.name,
         description: this.dataEdit.description,
         sku: this.dataEdit.sku,
         price: this.dataEdit.price,
-        category: this.dataEdit.category,
+        // categoryCur: [this.dataEdit.category],
+        categoryCur: [this.dataEdit.category],
         discount: this.dataEdit.discount,
         remaining: this.dataEdit.remaining,
         image: this.dataEdit.image,
@@ -66,6 +70,7 @@ export class EditProductComponent implements OnInit, OnChanges {
       this.urlImage = this.dataEdit.image;
     }
   }
+
 
   ngOnInit(): void {
   }
@@ -114,6 +119,7 @@ export class EditProductComponent implements OnInit, OnChanges {
   handleOk(): void {
     // this.formEdit.get('id').setValue(this.dataEdit.id);
     this.formEdit.get('image').setValue(this.urlImage);
+    this.formEdit.get('category').setValue(this.formEdit.get('categoryCur')?.value.toString())
     this.api.updateProduct(this.formEdit.value).subscribe((data: any) => {
       if (data.errorCode == '00') {
         this.notificationService.showMessage('success', 'Cập nhật sản phẩm thành công');
@@ -129,6 +135,7 @@ export class EditProductComponent implements OnInit, OnChanges {
 
   handleCancel(value: any): void {
     this.isEdit = false;
+    this.formEdit.reset();
     this.closePopup.emit(value);
   }
 }

@@ -69,7 +69,6 @@ export class UserComponent implements OnInit {
 
     await this.api.getListTotalPosts(this.searchModel).toPromise().then((data: any) => {
       this.totalPosts = data.optional;
-      console.log('this.totalComment: ', data);
     });
 
 

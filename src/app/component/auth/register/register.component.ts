@@ -29,6 +29,7 @@ export class RegisterComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
   onSubmit(): void {
     this.errorMessage = '';
     if (this.password && this.email && this.confirmPassword && this.userName && this.name) {

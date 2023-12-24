@@ -153,7 +153,6 @@ export class TablePostsComponent implements OnInit {
   }
 
   async handlechangePage(value: any) {
-    console.log('value: ', value);
     this.searchModel.pageIndex = 1;
     this.searchModel.pageSize = 100;
     await this.api.getListPosts(this.searchModel).toPromise().then((data: any) => {
@@ -163,7 +162,6 @@ export class TablePostsComponent implements OnInit {
     const startIndex = (value - 1) * 10;
     const endIndex = startIndex + 10;
     this.data = this.data.slice(startIndex, endIndex);
-    console.log('this.data: ', this.data);
   }
 
   handleAdd() {
@@ -213,7 +211,6 @@ export class TablePostsComponent implements OnInit {
       return;
     }
     if (!this.isSort) {
-      console.log('sucess');
       this.formSearch.get('sortLikeDown').setValue(1);
       this.formSearch.get('sortLikeUp').setValue(0);
       this.formSearch.get('sortCommentDown').setValue(0);
@@ -247,7 +244,6 @@ export class TablePostsComponent implements OnInit {
       return;
     }
     if (!this.isSort) {
-      console.log('sucess');
       this.formSearch.get('sortCommentDown').setValue(1);
       this.formSearch.get('sortCommentUp').setValue(0);
       this.formSearch.get('sortLikeDown').setValue(0);

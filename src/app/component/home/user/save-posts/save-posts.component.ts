@@ -54,7 +54,6 @@ export class SavePostsComponent implements OnInit {
         }
       }
       // this.dataDetailPost = data.data;
-      console.log('dataPosts: ', this.dataDetailPost);
       this.total = this.dataSavePost.length;
     });
 

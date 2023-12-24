@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Api} from '../../../services/api';
 import {Router} from '@angular/router';
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-checkout',
@@ -19,6 +20,7 @@ export class CheckoutComponent implements OnInit {
     private fb: FormBuilder,
     private api: Api,
     private router: Router,
+    public datePipe: DatePipe,
   ) {
     this.formAdd = this.fb.group({
       name: [null, [Validators.required]],
@@ -27,6 +29,8 @@ export class CheckoutComponent implements OnInit {
       address: [null, [Validators.required]],
       detail: null,
       payments: 1,
+      createDate: null,
+      total: null,
     });
   }
 
@@ -57,8 +61,10 @@ export class CheckoutComponent implements OnInit {
         itemCart = 'name: ' + item.name + ',quantity: ' + item.quantity + ',price: ' + item.price + ',discount: ' + item.discount + '% ';
         dataCart.push(itemCart);
       }
-      console.log('itemCart: ', itemCart);
       this.formAdd.get('detail').setValue(dataCart?.toString());
+      this.formAdd.get('createDate').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
+      this.formAdd.get('total').setValue(this.totalPrice);
+
       this.api.createBill(this.formAdd.value).subscribe((res: any) => {
         alert('Bạn đã đặt hàng thành công');
         localStorage.removeItem('cartItems');

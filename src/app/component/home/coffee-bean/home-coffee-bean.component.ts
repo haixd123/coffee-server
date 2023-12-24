@@ -70,7 +70,6 @@ export class HomeCoffeeBeanComponent implements OnInit {
 
   updatecofeeBeanId(item: any) {
     localStorage.setItem('cofeeBeanId', item.id);
-    console.log('item', item);
     localStorage.setItem('postsCategory', 'Cà phê');
 
     this.shareDataService.sendDataCategory('Cà phê');

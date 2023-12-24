@@ -96,12 +96,9 @@ export class HomeComponent implements OnInit {
       //     this.dataFromUser.push(item);
       //   }
       // }
-      console.log('this.dataFromUser: ', this.dataFromUser);
-      console.log('this.dataFromUser: ', this.userLocalstorage.id);
     });
     this.http.get('http://localhost:8080/api/authors/notify/search-list-isComment-post').subscribe((res: any) => {
       this.dataCommentPost = res.data;
-      console.log('this.dataCommentPost: ', this.dataCommentPost);
 
       for (const item of this.dataCommentPost) {
         if (item.commentId == null) {
@@ -116,7 +113,6 @@ export class HomeComponent implements OnInit {
     });
     this.http.get('http://localhost:8080/api/authors/notify/search-list-isReply-comment').subscribe((res: any) => {
       this.dataReplyComment = res.data;
-      console.log('this.dataReplyComment: ', this.dataReplyComment);
       for (const item of this.dataReplyComment) {
         for (const item1 of this.dataReceiveNotifyFromReplyComment) {
           if (item.commentId == item1.commentId) {
@@ -126,7 +122,6 @@ export class HomeComponent implements OnInit {
           }
         }
       }
-      console.log('this.dataReceiveNotifyFromPost: ', this.dataReceiveNotifyFromPost);
     });
 
 
@@ -208,9 +203,6 @@ export class HomeComponent implements OnInit {
     this.isDisabledInputChat = true;
     this.isWaitingReply = true;
     this.http.get(`http://localhost:8080/api/authors/bot/chat?prompt=${this.inputChatAsk}`).toPromise().then(data => {
-      console.log('success1');
-      console.log('data: ', data);
-      console.log('success2');
     }, error => {
       this.isDisabledInputChat = false;
       this.isWaitingReply = false;

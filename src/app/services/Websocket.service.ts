@@ -34,11 +34,7 @@ export class WebsocketService {
       // Subscribe để lắng nghe thông báo từ endpoint '/topic/comments'
       this.stompClient.subscribe('/topic/comments', (comment) => {
         // Khi có thông báo mới, đẩy vào Subject để thông báo cho các thành phần khác
-        console.log('front | receive | comment: ', comment);
-        console.log("-------------------------------------");
         this.commentSubject.next(comment.body);
-        console.log('this.commentSubject: ', this.commentSubject);
-
       });
     });
   }

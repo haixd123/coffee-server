@@ -114,7 +114,6 @@ export class PostsDetailComponent implements OnInit {
     this.websocketService.receiveComment().subscribe((comment: any) => {
       this.api.getListComment(this.searchModel).toPromise().then((data: any) => {
         this.dataComment = data.data;
-        console.log('data.data: ', data.data);
       });
 
       this.api.getListComment(this.searchModel).toPromise().then((data: any) => {
@@ -238,6 +237,10 @@ export class PostsDetailComponent implements OnInit {
   }
 
   handleSubmitComment(item?: any) {
+    if (this.dataInfoCommentNotification?.userId == JSON.parse(localStorage.getItem('user')).id) {
+      this.notificationService.showMessage('error', 'Bạn không thể tự trả lời chính mình');
+      return false;
+    }
     const commentId = Math.floor(Math.random() * 10000000);
     if (this.dataEdit) {
       this.formAdd.get('id').setValue(this.dataEdit?.id);
@@ -249,7 +252,6 @@ export class PostsDetailComponent implements OnInit {
       this.formAdd.get('createAt').setValue(this.dataEdit?.createAt);
       this.formAdd.get('updateAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
       this.api.updateComment(this.formAdd.value).toPromise().then((res: any) => {
-        console.log('res: ', res);
         if (res.errorCode == '00') {
           this.notificationService.showMessage('success', 'Sửa  luận thành công');
         } else {
@@ -259,13 +261,13 @@ export class PostsDetailComponent implements OnInit {
     }
 
     if (!this.dataEdit) {
+      this.formAdd.get('userId').setValue(null);
       this.formAdd.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
       this.formAdd.get('postId').setValue(this.idPostsLocalstorage);
       this.formAdd.get('commentId').setValue(commentId);
       this.formAdd.get('commentText').setValue(this.formAdd.get('commentText').value ? this.formAdd.get('commentText').value : this.formAdd.get('commentReplyText').value);
       this.formAdd.get('createAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
       this.api.createComment(this.formAdd.value).toPromise().then((res: any) => {
-        console.log('res: ', res);
         if (res.errorCode == '00') {
           this.notificationService.showMessage('success', 'Đăng bình luận thành công');
         } else {
@@ -275,8 +277,8 @@ export class PostsDetailComponent implements OnInit {
     }
 //a
     if (this.dataInfoCommentNotification) {
-      console.log('dataInfoCommentNotification: ', this.dataInfoCommentNotification);
-      this.formNotify.get('userId').setValue(this.dataInfoCommentNotification.userId);
+      // this.formNotify.get('userId').setValue(this.dataInfoCommentNotification.userId);
+      this.formNotify.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
       // this.formNotify.get('userId').setValue(this.dataInfoCommentNotification.userId);
       this.formNotify.get('postId').setValue(this.dataInfoCommentNotification.postId);
       this.formNotify.get('commentId').setValue(commentId);
@@ -306,7 +308,6 @@ export class PostsDetailComponent implements OnInit {
 
 
   handleReplyComment(itemComment?: any) {
-    console.log('itemComment: ', itemComment);
     this.isReplyComment = !this.isReplyComment;
     this.dataInfoCommentNotification = itemComment;
     if (this.isReplyComment) {
@@ -357,7 +358,6 @@ export class PostsDetailComponent implements OnInit {
       } else {
         this.notificationService.showMessage('error', 'Xóa luận thất bại');
       }
-      console.log('res: ', res);
     });
 
 
