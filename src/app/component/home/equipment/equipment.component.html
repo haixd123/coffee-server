@@ -31,5 +31,10 @@
     </div>
   </div>
 </div>
+<div style="width: 100%;" class="d-flex justify-content-end col-8">
+  <nz-pagination class="pb-4 mt-3" [(nzPageIndex)]="curPage" [nzTotal]="total" [nzPageSize]="12"
+                 (click)="changePage()"></nz-pagination>
+</div>
+
 
 <app-detail-equipment [equipmentId]="equipmentId" style="display: none"></app-detail-equipment>

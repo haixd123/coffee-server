@@ -7,6 +7,7 @@ import {NzUploadChangeParam} from 'ng-zorro-antd';
 import {finalize} from 'rxjs/operators';
 import {AngularFireStorage} from '@angular/fire/storage';
 import {DatePipe} from '@angular/common';
+import {Api} from "../../../../services/api";
 
 @Component({
   selector: 'app-edit-user',
@@ -32,6 +33,7 @@ export class EditUserComponent implements OnInit, OnChanges {
     private notificationService: NotificationService,
     private storage: AngularFireStorage,
     public datePipe: DatePipe,
+    private api: Api,
   ) {
     this.formEdit = this.fb.group({
       id: null,
@@ -54,6 +56,7 @@ export class EditUserComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.dataEdit) {
+      console.log('dataedit: ', this.dataEdit);
       this.formEdit.reset();
       this.formEdit.patchValue({
         id: this.dataEdit.id,
@@ -65,7 +68,7 @@ export class EditUserComponent implements OnInit, OnChanges {
         age: this.dataEdit.age,
         role: this.dataEdit.role,
         phoneNumber: this.dataEdit.phoneNumber,
-        dateOfBirth: this.dataEdit.dateOfBirth,
+        dateOfBirthCur: this.dataEdit.dateOfBirth,
         sex: this.dataEdit.sex == 'nam' ? '1' : this.dataEdit.sex == 'nữ' ? '2' : '3',
         createDate: this.dataEdit.createDate,
         status: this.dataEdit.status,
@@ -116,7 +119,7 @@ export class EditUserComponent implements OnInit, OnChanges {
   handleOk(): void {
     this.formEdit.get('image').setValue(this.urlImage);
     this.formEdit.get('dateOfBirth').setValue(this.datePipe.transform(this.formEdit.get('dateOfBirthCur').value, 'dd/MM/yyyy'));
-    this.http.post('http://localhost:8080/api/user/update', this.formEdit.value).toPromise().then((data: any) => {
+    this.api.updateUser(this.formEdit.value).toPromise().then((data: any) => {
       if (data.errorCode == '00') {
         this.notificationService.showMessage('success', 'Sửa bài đăng thành công');
         this.isEdit = false;

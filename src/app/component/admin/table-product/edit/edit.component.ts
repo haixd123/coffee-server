@@ -41,7 +41,8 @@ export class EditProductComponent implements OnInit, OnChanges {
       sku: [null, [Validators.required]],
       price: null,
       category: null,
-      categoryCur: [null, [Validators.required]],
+      categoryCur: null,
+      // categoryCur: [null, [Validators.required]],
       discount: null,
       remaining: null,
       image: null,
@@ -50,18 +51,20 @@ export class EditProductComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    this.formEdit.get('categoryCur').setValue([])
     this.formEdit.get('name').setValue('')
+    this.formEdit.reset();
     if (this.dataEdit) {
+      // console.log('a= ', this.dataEdit.category.split(' '))
+      // this.formEdit.get('categoryCur').setValue([this.dataEdit.category])
       // this.formEdit.reset();
       this.formEdit.patchValue({
         id: this.dataEdit.id,
-        // name: this.dataEdit.name,
+        name: this.dataEdit.name,
         description: this.dataEdit.description,
         sku: this.dataEdit.sku,
         price: this.dataEdit.price,
+        categoryCur: this.dataEdit.category,
         // categoryCur: [this.dataEdit.category],
-        categoryCur: [this.dataEdit.category],
         discount: this.dataEdit.discount,
         remaining: this.dataEdit.remaining,
         image: this.dataEdit.image,

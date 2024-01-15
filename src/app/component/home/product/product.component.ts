@@ -11,7 +11,7 @@ import {Router} from '@angular/router';
   templateUrl: './product.component.html',
   styleUrls: ['./product.component.scss']
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent implements OnInit, OnChanges {
 
   customOptions: any = {
     loop: true,
@@ -54,6 +54,7 @@ export class ProductComponent implements OnInit {
   detailProduct: any;
   ListProductSame: any[] = []
   category: any;
+  inputQuantity: any;
 
   constructor(
     private api: Api,
@@ -88,7 +89,12 @@ export class ProductComponent implements OnInit {
     });
   }
 
+  ngOnChanges() {
+    console.log('changes')
+  }
+
   ngOnInit(): void {
+    console.log('changes')
   }
 
   addItemCart(value: any) {
@@ -145,8 +151,25 @@ export class ProductComponent implements OnInit {
       this.isOpenDrawer = false;
     }
     localStorage.setItem('cartItems', JSON.stringify(this.dataCart));
+    this.totalMoneyCart = this.reducerService.reduceArray(this.dataCart, this.demoValue);
+
   }
 
+  changeInputQuantity(value: any, inputQuantity: any) {
+    console.log('inputQuantity1: ', this.inputQuantity)
+    console.log('inputQuantity2: ', inputQuantity)
+    this.dataCart = this.dataCart.map((item: any) => {
+      if (value.name === item.name) {
+        return {
+          ...item,
+          quantity: this.inputQuantity
+        };
+      }
+      return item;
+    });
+    localStorage.setItem('cartItems', JSON.stringify(this.dataCart));
+    this.totalMoneyCart = this.reducerService.reduceArray(this.dataCart, this.demoValue);
+  }
 
   plusItemCart(value: any) {
     this.dataCart = this.dataCart.map((item: any) => {
@@ -159,6 +182,8 @@ export class ProductComponent implements OnInit {
       return item;
     });
     localStorage.setItem('cartItems', JSON.stringify(this.dataCart));
+    this.totalMoneyCart = this.reducerService.reduceArray(this.dataCart, this.demoValue);
+
   }
 
   removeItemCart(value: any) {
@@ -170,6 +195,7 @@ export class ProductComponent implements OnInit {
       this.isOpenDrawer = false;
     }
     localStorage.setItem('cartItems', JSON.stringify(this.dataCart));
+    this.totalMoneyCart = this.reducerService.reduceArray(this.dataCart, this.demoValue);
 
   }
 

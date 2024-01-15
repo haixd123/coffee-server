@@ -21,7 +21,7 @@
     </div>
     <div style="width: 100%;" class="py-3 px-3">
       <div>
-        Category
+        Thể loại
       </div>
       <nz-select style="width: 180px" nzPlaceHolder="Trang thiết bị" formControlName="category">
         <nz-option nzValue="Cà phê" nzLabel="Cà phê"></nz-option>
@@ -37,30 +37,44 @@
     <!--    <nz-form-label [nzSpan]="5">Giới thiệu</nz-form-label>-->
     <!--    <nz-form-control nzHasFeedback [nzSpan]="12" nzErrorTip="Input is required">-->
     <div class="py-3 px-3">
-      Giới thiệu
-      <input formControlName="contentPost" style="width: 100%;" nz-input name="required" required
-             placeholder="Giới thiệu"/>
+      <nz-form-item>
+        <div style="width: 100%;">
+          <nz-form-label style="height: 30px" nzRequired>Giới thiệu</nz-form-label>
+        </div>
+        <nz-form-control style="width: 100%" [nzSpan]="24" nzErrorTip="Giới thiệu không được để trống!">
+          <input formControlName="contentPost" style="width: 100%;" nz-input name="required" required
+                 placeholder="Giới thiệu"/>
+        </nz-form-control>
+      </nz-form-item>
+
     </div>
     <div style="margin-left: 16px" class="mb-3" *ngIf="urlImage">
       <img style="width: 100%; max-width: 350px" [src]="urlImage"/>
     </div>
     <div class="clearfix my-3 ml-3">
       <nz-upload
-        class="upload-list-inline"
-        nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-        nzListType="picture"
         [nzHeaders]="{ authorization: 'authorization-text' }"
+        class="upload-list-inline"
         (nzChange)="onUpload($event)"
       >
-        <!--      [(nzFileList)]="fileList2"-->
         <button nz-button>
           <span><i nz-icon nzType="upload"></i> Upload</span>
         </button>
       </nz-upload>
     </div>
     <div class="py-3 px-3">
-      Nội dung
-      <ckeditor style="min-height: 300px" formControlName="contentDetail" [editor]="Editor"></ckeditor>
+      <nz-form-item>
+        <div style="width: 100%;">
+          <nz-form-label style="height: 30px" nzRequired>Nội dung</nz-form-label>
+        </div>
+        <nz-form-control style="width: 100%" [nzSpan]="24" nzErrorTip="Nội dung được để trống!">
+          <ckeditor style="min-height: 300px" formControlName="contentDetail" [editor]="Editor" required></ckeditor>
+<!--          <input formControlName="contentPost" style="width: 100%;" nz-input name="required" required-->
+<!--                 placeholder="Giới thiệu"/>-->
+        </nz-form-control>
+      </nz-form-item>
+<!--      Nội dung-->
+<!--      <ckeditor style="min-height: 300px" formControlName="contentDetail" [editor]="Editor"></ckeditor>-->
       <!--    <ckeditor style="min-height: 300px" formControlName="content1" [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>-->
     </div>
     <!--    <div class="py-3 px-3">-->

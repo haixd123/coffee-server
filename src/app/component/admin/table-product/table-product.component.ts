@@ -78,6 +78,7 @@ export class TableProductComponent implements OnInit {
   }
 
   handleEdit(item: any) {
+    console.log('item: ', item)
     this.isEdit = true;
     this.dataEdit = item;
   }

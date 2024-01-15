@@ -33,7 +33,13 @@
 
       <div class="col-4">
         Cấp phân quyền
-        <input class="mt-1" formControlName="role" nz-input placeholder="Role"/>
+        <nz-select style="width: 100%;" formControlName="role">
+          <!--        <nz-option nzValue="milk" nzLabel="milk"></nz-option>-->
+          <!--        <nz-option nzValue="coffee" nzLabel="coffee"></nz-option>-->
+          <nz-option nzValue="ADMIN" nzLabel="ADMIN"></nz-option>
+          <nz-option nzValue="USER" nzLabel="USER"></nz-option>
+        </nz-select>
+<!--        <input class="mt-1" formControlName="role" nz-input placeholder="Role"/>-->
       </div>
 
       <div class="col-4">

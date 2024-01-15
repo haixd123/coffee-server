@@ -5,101 +5,9 @@ import {Api} from '../../../services/api';
 import {HttpClient} from '@angular/common/http';
 import {ValidateService} from '../../../services/validate-service';
 import {NotificationService} from '../../../services/notification.service';
+import {DatePipe} from "@angular/common";
+import {saveAs} from "file-saver";
 
-
-// export var productSales = [
-//   {
-//     "name": "book",
-//     "value": 12001
-//   }, {
-//     "name": "graphic card",
-//     "value": 14322
-//   }, {
-//     "name": "desk",
-//     "value": 1726
-//   }, {
-//     "name": "laptop",
-//     "value": 2599
-//   }, {
-//     "name": "monitor",
-//     "value": 705
-//   }
-// ];
-
-
-// export var productSalesMulti = [
-//   {
-//     "name": "book",
-//     "series": [
-//       {
-//         "name": "January",
-//         "value": 125
-//       }, {
-//         "name": "February",
-//         "value": 197
-//       }, {
-//         "name": "March",
-//         "value": 209
-//       }
-//     ]
-//   }, {
-//     "name": "graphic card",
-//     "series": [
-//       {
-//         "name": "January",
-//         "value": 210
-//       }, {
-//         "name": "February",
-//         "value": 255
-//       }, {
-//         "name": "March",
-//         "value": 203
-//       }
-//     ]
-//   }, {
-//     "name": "desk",
-//     "series": [
-//       {
-//         "name": "January",
-//         "value": 89
-//       }, {
-//         "name": "February",
-//         "value": 105
-//       }, {
-//         "name": "March",
-//         "value": 66
-//       }
-//     ]
-//   }, {
-//     "name": "laptop",
-//     "series": [
-//       {
-//         "name": "January",
-//         "value": 178
-//       }, {
-//         "name": "February",
-//         "value": 165
-//       }, {
-//         "name": "March",
-//         "value": 144
-//       }
-//     ]
-//   }, {
-//     "name": "monitor",
-//     "series": [
-//       {
-//         "name": "January",
-//         "value": 144
-//       }, {
-//         "name": "February",
-//         "value": 250
-//       }, {
-//         "name": "March",
-//         "value": 133
-//       }
-//     ]
-//   }
-// ]
 
 @Component({
   selector: 'app-bill',
@@ -135,18 +43,19 @@ export class BillComponent implements OnInit {
   trimXAxisTicks: boolean = false;
   trimYAxisTicks: boolean = false;
   rotateXAxisTicks: boolean = false;
-  yAxisTicks: any[] = [100, 1000, 2000, 5000, 10000, 15000]
+  yAxisTicks: any[] = [1000, 100000, 500000, 1500000, 2500000, 3500000]
   animations: boolean = true; // animations on load
   showGridLines: boolean = true; // grid lines
   showDataLabel: boolean = true; // numbers on bars
   gradient: boolean = false;
   colorScheme = {
-    domain: ['#704FC4', '#4B852C', '#B67A3D', '#5B6FC8', '#25706F']
+    domain: ['#704FC4', '#4B852C', '#B67A3D', '#5B6FC8', '#25706F', '#0067EB']
   };
   schemeType: string = 'ordinal'; // 'ordinal' or 'linear'
   barPadding: number = 5
   tooltipDisabled: boolean = false;
   roundEdges: boolean = false;
+  dataChart: any;
 
   test = 12000;
 
@@ -169,7 +78,7 @@ export class BillComponent implements OnInit {
       "value": 705
     }, {
       "name": "Tháng 6",
-      "value": 705
+      "value": 7050
     }, {
       "name": "Tháng 7",
       "value": 705
@@ -196,6 +105,7 @@ export class BillComponent implements OnInit {
     private fb: FormBuilder,
     public validateService: ValidateService,
     private api: Api,
+    public datePipe: DatePipe,
     private notificationService: NotificationService,
   ) {
     this.formSearch = this.fb.group({
@@ -203,7 +113,6 @@ export class BillComponent implements OnInit {
       pageSize: 10,
       name: null,
     });
-    // Object.assign(this, {productSales});
     this.handleSearch();
   }
 
@@ -220,10 +129,48 @@ export class BillComponent implements OnInit {
 
   handleUpdate(searchModel: SearchModelEntity, reset = false) {
     this.api.getListBill(this.searchModel).toPromise().then((data: any) => {
+      console.log('data: ', data.data)
       this.data = data.data;
       this.total = data.optional;
+
+      const totalByMonth = {};
+      data.data.forEach(purchase => {
+        const month = purchase.createDate.split('-')[1];
+
+        if (!totalByMonth[month]) {
+          totalByMonth[month] = 0;
+        }
+
+        totalByMonth[month] += Number(purchase.total);
+      });
+
+      const newArray = Object.entries(totalByMonth).map(([month, total]) => ({month, total}));
+      this.dataChart = Object.entries(totalByMonth).map(([month, total]) => ({month, total}));
+
+      // for (const item of newArray)
+      console.log('newArray: ', newArray);
+      console.log('dataChart: ', this.dataChart);
+      this.dataChart = this.dataChart.map(item => {
+        console.log('this.dataChart: ', item)
+        return {
+          "name": `${item.month}`,
+          "value": `${item.total}`
+        };
+      });
+      // const numberToRound = 5665151;
+      // const roundedNumber = Math.ceil(numberToRound / (numberToRound / 3)) * (numberToRound / 3);
+      //
+      // console.log('roundedNumber: ', roundedNumber);
+//       const number = 5665151;
+//
+// // Chuyển đổi số thành chuỗi và đếm số chữ số
+//       const numberOfDigits = String(number).length;
+
+      // console.log(`Số ${number} có ${numberOfDigits} chữ số.`);
+      return newArray;
     });
   }
+
 
   handleSearch() {
     this.searchModel.pageIndex = 1;
@@ -245,16 +192,23 @@ export class BillComponent implements OnInit {
     this.pageSize = value;
   }
 
+
   export() {
     this.searchModel.pageIndex = this.curPage;
     this.searchModel.pageSize = this.pageSize;
     this.api.exportBill(this.searchModel).subscribe((res: any) => {
       console.log('res: ', res)
-      if (res.errorCode == '00') {
-        this.notificationService.showMessage('success', 'success');
-      } else {
-        this.notificationService.showMessage('error', 'error');
-      }
+      const reportFile = new Blob([res], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
+      let fileName = 'BAO_CAO_TONG_HOP_VIETQR';
+      let date = '';
+      date = this.datePipe.transform(new Date(), 'ddMMyyyy');
+      fileName = `${fileName}_${date}`;
+      saveAs(reportFile, fileName + '.xlsx');
+      // if (res.errorCode == '00') {
+      //   this.notificationService.showMessage('success', 'success');
+      // } else {
+      //   this.notificationService.showMessage('error', 'error');
+      // }
     }, error => console.log('err: ', error))
   }
 

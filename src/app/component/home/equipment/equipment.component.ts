@@ -17,8 +17,12 @@ export class EquipmentComponent implements OnInit {
   formSearch: FormGroup;
   equipmentId: any;
   data: any[];
+  total: number;
 
   searchEquipment: string;
+
+  curPage: number;
+
 
   constructor(
     private http: HttpClient,
@@ -31,9 +35,11 @@ export class EquipmentComponent implements OnInit {
       name: null,
     });
     this.searchModel.pageIndex = 1;
-    this.searchModel.pageSize = 16;
+    this.searchModel.pageSize = 12;
     this.api.getListEquipment(this.searchModel).toPromise().then((data: any) => {
+      console.log('data: ', data)
       this.data = data.data;
+      this.total = data.optional;
     });
   }
 
@@ -50,6 +56,16 @@ export class EquipmentComponent implements OnInit {
     // }, 100);
     // this.router.navigate(['/home/test']);
   }
+
+  changePage() {
+    this.searchModel.pageIndex = this.curPage;
+    this.searchModel.pageSize = 12;
+    this.api.getListEquipment(this.searchModel).toPromise().then((data: any) => {
+      this.data = data.data;
+      this.total = data.optional;
+    });
+  }
+
 
   handleSearchInput() {
     if (this.searchEquipment != null) {

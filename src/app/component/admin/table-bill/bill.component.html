@@ -39,12 +39,13 @@
 >
   <thead>
   <tr>
-    <th>STT</th>
-    <th>Id</th>
-    <th>Tên</th>
-    <th>Email</th>
-    <th>Số điện thoại</th>
+    <th nzWidth="100px">STT</th>
+    <th nzWidth="100px">Id</th>
+    <th nzWidth="210px">Tên</th>
+    <th nzWidth="210px">Email</th>
+    <th nzWidth="150px">Số điện thoại</th>
     <th>Địa chỉ</th>
+    <th>Ngày tạo hóa đơn</th>
     <th>Chi tiết hóa đơn</th>
     <!--      <th>Hành động</th>-->
   </tr>
@@ -55,10 +56,10 @@
     <td>{{ item.id }}</td>
     <td>{{ item.name }}</td>
     <td>{{ item.email }}</td>
-    <!--      <td>{{ item.title }}</td>-->
-    <!--    <td>{{ item.contentCoffee }}</td>-->
     <td>{{ item.phone }}</td>
-    <td style=" white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">{{item.address}}</td>
+    <!--    <td style=" white-space: nowrap; text-overflow: ellipsis; overflow: hidden">-->
+    <td> {{item.address}}</td>
+    <td>{{ item.createDate }}</td>
     <td>{{ item.detail }}</td>
     <!--      <td style="min-width: 120px; text-align: center">-->
     <!--        <a style="font-size: 21px" class="mr-3" (click)="handleEdit(item)"><i nz-icon nzType="edit"-->
@@ -75,7 +76,7 @@
 
 
 <div style="display:flex; justify-content: center">
-  <ngx-charts-bar-vertical [results]="productSales1" [view]="view" [scheme]="colorScheme" [schemeType]="schemeType"
+  <ngx-charts-bar-vertical [results]="dataChart" [view]="view" [scheme]="colorScheme" [schemeType]="schemeType"
                            [gradient]="gradient" [xAxis]="xAxis" [yAxis]="yAxis" [legend]="legend"
                            [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
                            [xAxisLabel]="xAxisLabel" [yAxisLabel]="xAxisLabel" [legendTitle]="legendTitle"
@@ -87,6 +88,7 @@
                            [showDataLabel]="showDataLabel"
                            [barPadding]="barPadding" [tooltipDisabled]="tooltipDisabled" [roundEdges]="roundEdges">
   </ngx-charts-bar-vertical>
+
 </div>
 
 

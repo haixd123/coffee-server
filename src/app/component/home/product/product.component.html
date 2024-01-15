@@ -50,7 +50,6 @@
   </owl-carousel-o>
 
 
-
   <div class="d-flex justify-content-center mb-5 mt-4" style="font-size: 25px; font-weight: 600; margin-top: 35px;">
     Sản phẩm bán cháy
   </div>
@@ -189,7 +188,8 @@
           <div class="d-flex justify-content-between py-1">
             <div style="font-size: 17px">Số lượng</div>
             <div
-              style="font-size: 17px; color: #c60505">{{itemCart.price - itemCart.price * itemCart.discount / 100 | currency:'VND':'symbol':'1.0-0' }}</div>
+              style="font-size: 17px; color: #c60505">{{inputQuantity ? inputQuantity * (itemCart.price - itemCart.price * itemCart.discount / 100) : itemCart.quantity * (itemCart.price - itemCart.price * itemCart.discount / 100) | currency:'VND':'symbol':'1.0-0' }}</div>
+            <!--            style="font-size: 17px; color: #c60505">{{itemCart.quantity * (itemCart.price - itemCart.price * itemCart.discount / 100) | currency:'VND':'symbol':'1.0-0' }}</div>-->
           </div>
           <div class="d-flex justify-content-between">
             <div class="d-flex">
@@ -198,10 +198,13 @@
                    nzTheme="outline"></i>
               </div>
               <!--              <form nz-form [formGroup]="formUpdateQuantity">-->
-              <!--            <i style="font-size: 34px;" nz-icon nzType="plus-square" nzTheme="outline"></i>-->
+
+
+              <!--                            [(ngModel)]="inputQuantity ?  inputQuantity : itemCart.quantity"-->
+              <!--              [(ngModel)]="itemCart.quantity"-->
               <nz-input-number
                 style="width: 45px; font-size: 16px; text-align: center"
-                [(ngModel)]="itemCart.quantity"
+                [(ngModel)]="inputQuantity ?  changeInputQuantity(itemCart, inputQuantity) : itemCart.quantity"
                 [nzPlaceHolder]="null"
                 [nzMin]="1" [nzMax]="1000"
                 [nzStep]="1">

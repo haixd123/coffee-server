@@ -11,7 +11,7 @@
         <a>
           <img *ngIf="item.imagePath" style="max-width: 252px" [src]="item.imagePath"/>
 
-          <img *ngIf="!item.imagePath" style="max-width: 252px"
+          <img *ngIf="!item.imagePath" style="max-width: 252px; max-height: 145px"
                src="https://cdnphoto.dantri.com.vn/7Ay2bMHqImHAgbQN5gvn_3JJp-Q=/zoom/378_252/2023/10/23/rocketphongtugazaveisraelreuters-crop-1698024802873.jpeg"/>
         </a>
       </div>
@@ -26,7 +26,7 @@
           {{item.category}}</div>
         <div>
           <a
-            style="text-overflow: ellipsis; display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3">{{item.contentPost}}</a>
+            style="text-overflow: ellipsis; display: -webkit-box; overflow: hidden; -webkit-box-orient: vertical; -webkit-line-clamp: 3; max-width: 90%">{{item.contentPost}}</a>
           <!--        <a>{{item.contentPost}}</a>-->
         </div>
         <!--            <div>{{item.hashTag}}</div>-->
@@ -110,7 +110,7 @@
   <!--  </div>-->
   <div style="width: 100%;" class="d-flex justify-content-end col-8">
     <nz-pagination class="pb-4 mt-3" (click)="changePage()" [(nzPageIndex)]="curPage" [nzTotal]="total"
-                   [nzPageSize]="15"></nz-pagination>
+                   [nzPageSize]="10"></nz-pagination>
   </div>
 
 </div>

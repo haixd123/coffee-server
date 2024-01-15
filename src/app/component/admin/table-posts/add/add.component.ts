@@ -39,10 +39,10 @@ export class AddPostsComponent implements OnInit {
   ) {
     this.formAdd = this.fb.group({
       title: [null, [Validators.required]],
-      contentPost: null,
+      contentPost: [null, [Validators.required]],
       imagePath: null,
       category: 'Trang thiết bị',
-      contentDetail: null,
+      contentDetail: [null, [Validators.required]],
       createAt: null,
     });
   }

@@ -250,7 +250,7 @@ export class PostsDetailComponent implements OnInit {
       this.formAdd.get('commentText').setValue(this.formAdd.get('commentReplyText').value ? this.formAdd.get('commentReplyText').value : this.formAdd.get('commentText').value);
       this.formAdd.get('status').setValue(1);
       this.formAdd.get('createAt').setValue(this.dataEdit?.createAt);
-      this.formAdd.get('updateAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
+      this.formAdd.get('updateAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
       this.api.updateComment(this.formAdd.value).toPromise().then((res: any) => {
         if (res.errorCode == '00') {
           this.notificationService.showMessage('success', 'Sửa  luận thành công');
@@ -266,7 +266,7 @@ export class PostsDetailComponent implements OnInit {
       this.formAdd.get('postId').setValue(this.idPostsLocalstorage);
       this.formAdd.get('commentId').setValue(commentId);
       this.formAdd.get('commentText').setValue(this.formAdd.get('commentText').value ? this.formAdd.get('commentText').value : this.formAdd.get('commentReplyText').value);
-      this.formAdd.get('createAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
+      this.formAdd.get('createAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
       this.api.createComment(this.formAdd.value).toPromise().then((res: any) => {
         if (res.errorCode == '00') {
           this.notificationService.showMessage('success', 'Đăng bình luận thành công');
@@ -282,18 +282,16 @@ export class PostsDetailComponent implements OnInit {
       // this.formNotify.get('userId').setValue(this.dataInfoCommentNotification.userId);
       this.formNotify.get('postId').setValue(this.dataInfoCommentNotification.postId);
       this.formNotify.get('commentId').setValue(commentId);
-      this.formNotify.get('createAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
+      this.formNotify.get('createAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
       this.api.createNotify(this.formNotify.value).toPromise().then((res: any) => {
-        this.websocketService.sendComment('1', '2');
       });
     }
     if (!this.dataInfoCommentNotification) {
       this.formNotify.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
       this.formNotify.get('postId').setValue(localStorage.getItem('postsId'));
       this.formNotify.get('commentId').setValue(null);
-      this.formNotify.get('createAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
+      this.formNotify.get('createAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
       this.api.createNotify(this.formNotify.value).toPromise().then((res: any) => {
-        this.websocketService.sendComment('1', '2');
       });
     }
 
@@ -390,7 +388,7 @@ export class PostsDetailComponent implements OnInit {
     this.formLikeComment.get('postId').setValue(item.postId);
     this.formLikeComment.get('commentText').setValue(item.commentText);
     // this.formLikeComment.get('createAt').setValue(item.createAt);
-    this.formLikeComment.get('updateAt').setValue(this.datePipe.transform(new Date(), 'HH:mm:ss dd/MM/yyyy'));
+    this.formLikeComment.get('updateAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
     this.formLikeComment.get('likeComment').setValue(0);
     this.formLikeComment.get('status').setValue(1);
     this.api.updateComment(this.formLikeComment.value).toPromise().then(data => {

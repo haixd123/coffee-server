@@ -182,6 +182,11 @@ export class Api extends BaseService {
   }
 
   exportBill(searchModel: SearchModelEntity) {
-    return this.postRequestFile('/authors/bill/export', searchModel, null)
+    return this.postRequestFile1(searchModel)
+  }
+
+  // User
+  updateUser(searchModel: SearchModelEntity) {
+    return this.post('/user/update', searchModel);
   }
 }

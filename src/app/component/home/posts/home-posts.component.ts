@@ -106,7 +106,7 @@ export class HomePostsComponent implements OnInit, OnChanges {
 
   search(value?) {
     this.searchModel.pageIndex = 1;
-    this.searchModel.pageSize = 15;
+    this.searchModel.pageSize = 10;
     this.formSearch.get('category').setValue(value);
     this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
     this.update(this.searchModel, true);
@@ -123,15 +123,14 @@ export class HomePostsComponent implements OnInit, OnChanges {
 
   changePage() {
     this.searchModel.pageIndex = this.curPage;
-    this.searchModel.pageSize = 15;
+    this.searchModel.pageSize = 10;
     // this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
     this.update(this.searchModel, false);
-
   }
 
   handleMoreBtn(item?: any) {
     this.idPosts = item.id;
-    this.isEditPosts = false;
+    // this.isEditPosts = false;
     this.isEditPosts = !this.isEditPosts;
   }
 

@@ -30,8 +30,17 @@
     </div>
 
     <div class="mt-3 mb-2">
-      <div class="mb-2">Giới thiệu</div>
-      <input style="width: 100%;" formControlName="contentPost">
+      <nz-form-item>
+        <div style="width: 100%;">
+          <nz-form-label style="height: 30px" nzRequired>Giới thiệu</nz-form-label>
+        </div>
+        <nz-form-control style="width: 100%" [nzSpan]="24" nzErrorTip="Giới thiệu không được để trống!">
+          <input formControlName="contentPost" style="width: 100%;" nz-input name="required" required
+                 placeholder="Tiêu đề"/>
+        </nz-form-control>
+      </nz-form-item>
+<!--      <div class="mb-2">Giới thiệu</div>-->
+<!--      <input style="width: 100%;" formControlName="contentPost">-->
     </div>
     <div class="mb-3">
       <div class="mb-2">
@@ -54,12 +63,19 @@
 
         </nz-upload>
       </div>
-
     </div>
 
-    <div class="my-2">Nội dung</div>
-    <ckeditor formControlName="contentDetail" [editor]="Editor"></ckeditor>
-    <!--        <ckeditor formControlName="content1" [editor]="Editor" data="<p>Hello, world!</p>"></ckeditor>-->
+    <nz-form-item>
+      <div style="width: 100%;">
+        <nz-form-label style="height: 30px" nzRequired>Nội dung</nz-form-label>
+      </div>
+      <nz-form-control style="width: 100%" [nzSpan]="24" nzErrorTip="Giới thiệu không được để trống!">
+        <ckeditor formControlName="contentDetail" [editor]="Editor" required></ckeditor>
+      </nz-form-control>
+    </nz-form-item>
+
+<!--    <div class="my-2">Nội dung</div>-->
+<!--    <ckeditor formControlName="contentDetail" [editor]="Editor"></ckeditor>-->
     <div class="d-flex justify-content-end mt-5">
       <button class="mr-4" (click)="handleOk()" nz-button nzType="primary">Ok</button>
       <button (click)="handleCancel(false)" nz-button nzType="primary">Cancel</button>

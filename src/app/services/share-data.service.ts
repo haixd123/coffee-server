@@ -9,10 +9,13 @@ export class ShareDataService {
   private dataSubjectCategory = new BehaviorSubject<any>('');
   private dataSubjectEditPosts = new BehaviorSubject<any>('');
   private dataSubjectIdPost = new BehaviorSubject<any>('');
+  private isResetFormCreatePost = new BehaviorSubject<any>('');
+
   dataSearch$ = this.dataSubjectSearch.asObservable();
   dataCategory$ = this.dataSubjectCategory.asObservable();
   dataEditPosts$ = this.dataSubjectEditPosts.asObservable();
   dataIdPost$ = this.dataSubjectIdPost.asObservable();
+  isResetFormCreatePost$ = this.isResetFormCreatePost.asObservable();
 
   sendDataSearch(data: string) {
     this.dataSubjectSearch.next(data);
@@ -27,6 +30,10 @@ export class ShareDataService {
   }
 
   sendDataIdPost(data: any) {
+    this.dataSubjectIdPost.next(data);
+  }
+
+  sendDataResetFormCreatePost(data: any) {
     this.dataSubjectIdPost.next(data);
   }
 }

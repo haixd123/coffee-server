@@ -43,6 +43,12 @@ export class BaseService {
     );
   }
 
+  public postRequestFile1(data?: any): Observable<any> {
+    return this.httpClient.post('http://localhost:8080/api/authors/bill/export', data, {responseType: 'blob'}).pipe(
+      catchError(this.handleError)
+    );
+  }
+
   public handleError(error: any) {
     return throwError(error.error);
   }

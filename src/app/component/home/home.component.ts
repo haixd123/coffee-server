@@ -19,6 +19,8 @@ export class HomeComponent implements OnInit {
   formSearch: FormGroup;
   formSearchNotify: FormGroup;
 
+  isReset: boolean;
+
 
   isCoffee = 0;
 
@@ -99,7 +101,6 @@ export class HomeComponent implements OnInit {
     });
     this.http.get('http://localhost:8080/api/authors/notify/search-list-isComment-post').subscribe((res: any) => {
       this.dataCommentPost = res.data;
-
       for (const item of this.dataCommentPost) {
         if (item.commentId == null) {
           if (item.userName == this.userLocalstorage.userName) {
@@ -161,6 +162,11 @@ export class HomeComponent implements OnInit {
     this.router.navigate(['/auth/login']);
   }
 
+  linkToAdmin() {
+    this.router.navigate(['/admin']);
+  }
+
+
   linkToCoffee() {
     this.isCoffee = 1;
     this.router.navigate(['/home/coffee-bean']);
@@ -219,5 +225,10 @@ export class HomeComponent implements OnInit {
 
   openChatBot() {
     this.isOpenChatBot = !this.isOpenChatBot;
+  }
+
+  changeToCreatePost() {
+    this.shareDataService.sendDataEditPosts('1');
+    this.router.navigate(['/home/write']);
   }
 }
