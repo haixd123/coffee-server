@@ -81,6 +81,8 @@
               <!--              style="width: 400px;"-->
               <div *ngFor="let item of dataCommentPost">
                 <div *ngFor="let item1 of dataFromUser">
+
+                  <!--                  //??? item.id == item1.id thừa        -->
                   <div *ngIf="item.id == item1.id && item.commentId == null && item.userId == userLocalstorage.id">
                     <div class="row item-noti"
                          (click)="linkToPostDetail(item)">
@@ -88,11 +90,11 @@
                         <img style="max-width: 120%; height: 50px; width: 50px; object-fit: cover; border-radius: 50%"
                              [src]="item.imagePath"/>
                       </a>
-                      <div style="font-size: 15px; margin-left: -10px;" class="col-9">
+                      <div style="font-size: 15px; margin-left: -22px; padding: 0 !important;" class="col-9">
                         <div>
                           <div class="d-flex ml-2" style="margin-top: -17px; height: 35px">
                             <a style="color: #000" class="mr-2">{{item1.name}}</a>
-                            <a style="">Đã nhắc đến bạn</a>
+                            <a style="">Đã nhắc đến bạn 2</a>
                           </div>
                           <div class="ml-2" style="height: 20px">
                             <a>{{item.createAt}}</a>
@@ -103,7 +105,10 @@
                     </div>
                   </div>
 
-                  <div *ngIf="item.id == item1.id && item.commentId != null">
+                  <!--                  //??? item.id == item1.id thừa        -->
+                  <div *ngIf="item.id == item1.id && item.commentId != null && item.userId == userLocalstorage.id">
+                    item.id {{item.id}}
+                    item1.id {{item1.id}}
                     <div class="row item-noti"
                          (click)="linkToPostDetail(item)">
                       <a class="col-3">
@@ -112,10 +117,9 @@
                       </a>
                       <div style="font-size: 15px; margin-left: -10px;" class="col-9 d-flex">
                         <div>
-                          <div style="margin-top: -17px" class="ml-2">
+                          <div style="margin-top: -17px" class="ml-2" style="margin-top: -17px; height: 35px">
                             <a style="color: #000" class="mr-2">{{item1.name}}</a>
-                            <a style="color: #000" class="mr-2">{{item1.name}}</a>
-                            <a>Đã nhắc đến bạn</a>
+                            <a>Đã nhắc đến bạn 1</a>
                           </div>
                           <div class="ml-2">
                             <a>{{item.createAt}}</a>
@@ -264,7 +268,10 @@
     </div>
   </nz-header>
   <div style="background-color: #fff">
-    <router-outlet></router-outlet>
+
+    <div style="min-height: 500px">
+      <router-outlet ></router-outlet>
+    </div>
 
     <div style="position: relative">
       <div style="position: fixed; top: 505px; right: 20px; cursor: pointer" (click)="openChatBot()">

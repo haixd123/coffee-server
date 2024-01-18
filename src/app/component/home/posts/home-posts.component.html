@@ -9,9 +9,9 @@
          class="d-flex my-4 pb-5 col-8 ">
       <div style="cursor: pointer" (click)="PostsDetail(item)">
         <a>
-          <img *ngIf="item.imagePath" style="max-width: 252px" [src]="item.imagePath"/>
+          <img *ngIf="item.imagePath" style="max-width: 252px; width: 217px; height: 145px; object-fit: cover" [src]="item.imagePath"/>
 
-          <img *ngIf="!item.imagePath" style="max-width: 252px; max-height: 145px"
+          <img *ngIf="!item.imagePath" style="max-width: 252px; max-height: 145px; width: 217px; height: 145px; object-fit: cover"
                src="https://cdnphoto.dantri.com.vn/7Ay2bMHqImHAgbQN5gvn_3JJp-Q=/zoom/378_252/2023/10/23/rocketphongtugazaveisraelreuters-crop-1698024802873.jpeg"/>
         </a>
       </div>

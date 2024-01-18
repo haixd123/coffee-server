@@ -92,15 +92,19 @@ export class HomeComponent implements OnInit {
   async handleUpdate(searchModel?: SearchModelEntity) {
     this.http.get('http://localhost:8080/api/authors/notify/search-list-from-user').subscribe((res: any) => {
       // this.dataFromUser = res.data;
+      console.log('this.dataFromUser1: ', res.data)
       this.dataFromUser = res.data.filter((item: any) => item.userid != this.userLocalstorage.id);
       // for (const item of res.data) {
       //   if (item.userid != this.userLocalstorage.id) {
       //     this.dataFromUser.push(item);
       //   }
       // }
+      console.log('this.dataFromUser2: ', this.dataFromUser)
     });
+
     this.http.get('http://localhost:8080/api/authors/notify/search-list-isComment-post').subscribe((res: any) => {
       this.dataCommentPost = res.data;
+      console.log('this.dataCommentPost: ', this.dataCommentPost)
       for (const item of this.dataCommentPost) {
         if (item.commentId == null) {
           if (item.userName == this.userLocalstorage.userName) {
@@ -228,7 +232,8 @@ export class HomeComponent implements OnInit {
   }
 
   changeToCreatePost() {
-    this.shareDataService.sendDataEditPosts('1');
+    this.shareDataService.sendDataEditPosts(null);
+    // this.shareDataService.sendDataEditPosts('1');
     this.router.navigate(['/home/write']);
   }
 }

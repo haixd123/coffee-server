@@ -1,3 +1,6 @@
+Step 1: Run npm install to create folder node_modules
+Step 2: run ng serve to run project
+
 # CoffeeClient
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.13.

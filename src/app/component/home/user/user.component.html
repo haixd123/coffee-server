@@ -23,15 +23,15 @@
       </div>
       <div class="py-2" style="border-bottom: 1px solid #c3c3c3; border-top: 1px solid #c3c3c3">
         <span>Tổng số bài viết</span><br/>
-        <span>{{totalPosts}}</span>
+        <span>{{totalPosts ? totalPosts : 0}}</span>
       </div>
       <div class="py-2" style="border-bottom: 1px solid #c3c3c3">
         <span>Tổng số like</span><br/>
-        <span>{{totalLike}}</span>
+        <span>{{totalLike ? totalLike : 0}}</span>
       </div>
       <div class="py-2" style="border-bottom: 1px solid #c3c3c3">
         <span>Tổng số comment</span><br/>
-        <span>{{totalComment}}</span>
+        <span>{{totalComment ? totalComment : 0}}</span>
       </div>
 <!--      <div class="py-2" style="border-bottom: 1px solid #c3c3c3">-->
 <!--        <span>Danh hiệu</span><br/>-->
