@@ -28,6 +28,7 @@ import {TableProductComponent} from './component/admin/table-product/table-produ
 import {ProductComponent} from './component/home/product/product.component';
 import {CheckoutComponent} from './component/home/checkout/checkout.component';
 import {BillComponent} from './component/admin/table-bill/bill.component';
+import { PaymentResultComponent } from './component/home/payment-result/paymen-result.component';
 
 
 const routes: Routes = [
@@ -120,6 +121,10 @@ const routes: Routes = [
       {
         path: 'checkout',
         component: CheckoutComponent,
+      },
+      {
+        path: 'payment-result',
+        component: PaymentResultComponent,
       },
       {
         path: 'user',

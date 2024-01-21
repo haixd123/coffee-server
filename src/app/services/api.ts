@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {SearchModelEntity} from '../component/admin/search-model-entiry';
 import {BaseService} from '../shared/base-service/base-service.service';
 
@@ -183,6 +183,16 @@ export class Api extends BaseService {
 
   exportBill(searchModel: SearchModelEntity) {
     return this.postRequestFile1(searchModel)
+  }
+
+  // payment online
+
+  createPaymentWithVnPay(searchModel: SearchModelEntity){
+    return this.post("/payment/authors/create-payment",searchModel);
+  }
+
+  getVnPaymentInfo(params : HttpParams){
+    return this.get("/payment/payment-info",params);
   }
 
   // User

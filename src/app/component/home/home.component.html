@@ -76,96 +76,27 @@
           <a class="d-flex align-items-center px-3" style="color: #fff">
             <!--            (click)="linkToContact()">-->
             <i nz-icon nzType="bell" nzTheme="outline"></i>Thông báo</a>
-          <div class="notify" style="color: #000; width: 400px;">
+            <div class="notify" style="color: #000; width: 400px;">
             <div class="mx-3">
               <!--              style="width: 400px;"-->
-              <div *ngFor="let item of dataCommentPost">
-                <div *ngFor="let item1 of dataFromUser">
-
-                  <!--                  //??? item.id == item1.id thừa        -->
-                  <div *ngIf="item.id == item1.id && item.commentId == null && item.userId == userLocalstorage.id">
-                    <div class="row item-noti"
-                         (click)="linkToPostDetail(item)">
-                      <a class="col-3">
-                        <img style="max-width: 120%; height: 50px; width: 50px; object-fit: cover; border-radius: 50%"
-                             [src]="item.imagePath"/>
-                      </a>
-                      <div style="font-size: 15px; margin-left: -22px; padding: 0 !important;" class="col-9">
-                        <div>
-                          <div class="d-flex ml-2" style="margin-top: -17px; height: 35px">
-                            <a style="color: #000" class="mr-2">{{item1.name}}</a>
-                            <a style="">Đã nhắc đến bạn 2</a>
-                          </div>
-                          <div class="ml-2" style="height: 20px">
-                            <a>{{item.createAt}}</a>
-                          </div>
-                        </div>
-                      </div>
-                      <!--                </div>-->
+              <div *ngFor="let item of notificationReceiver">
+                <div class="row py-2"
+                      (click)="linkToPostDetail(item)">
+                  <a class="col-3 d-flex flex-column justify-content-start">
+                    <img style="max-width: 120%; height: 50px; width: 50px; object-fit: cover; border-radius: 50%"
+                          src="/assets/user.png"/>
+                  </a>
+                  <div class="col-9 notifi-content d-flex justify-content-start flex-column">
+                    <div style="line-height: 1.5;">
+                      <p style="margin-bottom: 10px;"><b>{{item?.fromUser}} </b>{{item?.content}}</p>
                     </div>
-                  </div>
-
-                  <!--                  //??? item.id == item1.id thừa        -->
-                  <div *ngIf="item.id == item1.id && item.commentId != null && item.userId == userLocalstorage.id">
-                    item.id {{item.id}}
-                    item1.id {{item1.id}}
-                    <div class="row item-noti"
-                         (click)="linkToPostDetail(item)">
-                      <a class="col-3">
-                        <img style="max-width: 120%; height: 50px; width: 50px; object-fit: cover; border-radius: 50%"
-                             [src]="item.imagePath"/>
-                      </a>
-                      <div style="font-size: 15px; margin-left: -10px;" class="col-9 d-flex">
-                        <div>
-                          <div style="margin-top: -17px" class="ml-2" style="margin-top: -17px; height: 35px">
-                            <a style="color: #000" class="mr-2">{{item1.name}}</a>
-                            <a>Đã nhắc đến bạn 1</a>
-                          </div>
-                          <div class="ml-2">
-                            <a>{{item.createAt}}</a>
-                          </div>
-                        </div>
-                      </div>
-                      <!--                </div>-->
-                    </div>
+                    <span style="margin-bottom: 0;line-height: 0;">{{item?.createdAt}}</span>
                   </div>
                 </div>
               </div>
-              <!--              <div *ngFor="let item of dataReceiveNotifyFromPost">-->
-              <!--                <div *ngFor="let item1 of dataFromUser">-->
-              <!--                  <div *ngIf="item.id == item1.id">-->
-
-
-              <!--                    &lt;!&ndash;                <div *ngFor="let itemPost of dataPost">&ndash;&gt;-->
-              <!--                    &lt;!&ndash;                  <div *ngIf="item.postId == itemPost.id" class="row"&ndash;&gt;-->
-              <!--                    <div class="row item-noti"-->
-              <!--                         (click)="linkToPostDetail(item)">-->
-              <!--                      <a class="col-3">-->
-              <!--                        <img style="max-width: 120%; height: 70%; object-fit: cover; border-radius: 50%"-->
-              <!--                             [src]="item.image"/>-->
-              <!--                      </a>-->
-              <!--                      <div style="font-size: 15px; margin-left: -10px;" class="col-9 d-flex">-->
-              <!--                        <div>-->
-              <!--                          <div style="margin-top: -17px; height: 33px;" class="ml-2">-->
-              <!--                            <a style="color: #000" class="mr-2">{{item1.name}}</a>-->
-              <!--                            <a style="height: 25px">Đã nhắc đến bạn</a>-->
-              <!--                          </div>-->
-              <!--                          <div class="ml-2">-->
-              <!--                            <a>{{item.createAt}}</a>-->
-              <!--                          </div>-->
-              <!--                        </div>-->
-              <!--                      </div>-->
-              <!--                      &lt;!&ndash;                </div>&ndash;&gt;-->
-              <!--                    </div>-->
-              <!--                  </div>-->
-              <!--                </div>-->
-              <!--              </div>-->
-              <!--              <div style="font-size: 15px" class="d-flex justify-content-center">-->
-              <!--                <a>Xem tất cả</a>-->
-              <!--              </div>-->
+            </div>
             </div>
           </div>
-        </div>
         <div style="margin: 0 5px 5px">
           <a style="color: #fff" [routerLink]="['/home/checkout']"><span style="font-size: 18px" nz-icon
                                                                          nzType="shopping-cart"
@@ -238,7 +169,6 @@
         <div class="ml-5" *ngIf="userLocalstorage == null" style="color: #fff">
           <a style="color: #fff" class="mr-3" [routerLink]="['/auth/login']">Đăng nhập</a>
           <a style="color: #fff" [routerLink]="['/auth/register']">Đăng ký</a>
-
         </div>
       </div>
     </div>

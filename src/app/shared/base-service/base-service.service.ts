@@ -1,4 +1,4 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 import {AppConfigService} from '../../../app-config.service';
@@ -17,6 +17,12 @@ export class BaseService {
     return this.httpClient.post('http://localhost:8080/api' + url, data, {
       headers: this.createHeaders().set('skipLoading', 'true') || {},
     });
+  }
+  get(url: string, params: HttpParams):Observable<any>{
+    return this.httpClient.get('http://localhost:8080/api' + url,{
+      headers: this.createHeaders().set('skipLoading', 'true') || {},
+      params: params
+    })
   }
 
   export(url: string, data: any, params?: {}, responseType?: string, partnerUrl?: boolean): Observable<any> {

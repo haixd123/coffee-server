@@ -1,13 +1,14 @@
-import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {SearchModelEntity} from '../admin/search-model-entiry';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {Router} from '@angular/router';
-import {ShareDataService} from '../../services/share-data.service';
-import {log} from 'ng-zorro-antd';
-import {newArray} from '@angular/compiler/src/util';
-import {Api} from '../../services/api';
-import {WebsocketService} from '../../services/Websocket.service';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { SearchModelEntity } from '../admin/search-model-entiry';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ShareDataService } from '../../services/share-data.service';
+import { log } from 'ng-zorro-antd';
+import { newArray } from '@angular/compiler/src/util';
+import { Api } from '../../services/api';
+import { WebsocketService } from '../../services/Websocket.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-home',
@@ -48,6 +49,7 @@ export class HomeComponent implements OnInit {
   dataReceiveNotifyFromPost: any[] = [];
   dataReceiveNotifyFromReplyComment: any[] = [];
   userReceiveNotifyFromReplyComment: any[] = [];
+  notificationReceiver: any[] = [];
   totalNotify: any[] = [];
 
 
@@ -57,6 +59,7 @@ export class HomeComponent implements OnInit {
     private http: HttpClient,
     private shareDataService: ShareDataService,
     private api: Api,
+    private notificationService: NotificationService,
     private websocketService: WebsocketService,
   ) {
     this.formSearch = this.fb.group({
@@ -71,12 +74,19 @@ export class HomeComponent implements OnInit {
     this.websocketService.receiveComment().subscribe((comment: any) => {
       this.handleUpdate();
     });
+    this.websocketService.receiveNotification().subscribe((notification: any) => {
+      notificationService.showMessage('success', 'Bạn vừa có một thông báo mới')
+      this.handleUpdate();
+    })
   }
-
   ngOnInit(): void {
     this.http.get('http://localhost:8080/api/authors/posts/search-list-category').toPromise().then((data: any) => {
       this.dataCategory = data.data;
       this.total = data.optional;
+    });
+    this.http.get('http://localhost:8080/api/authors/notifications/' + this.userLocalstorage?.id).subscribe((res: any) => {
+      console.log(res)
+      this.notificationReceiver = res;
     });
     // console.log('this.userReceiveNotifyFromReplyComment: ', this.userReceiveNotifyFromReplyComment);
     //
@@ -90,18 +100,18 @@ export class HomeComponent implements OnInit {
 
 
   async handleUpdate(searchModel?: SearchModelEntity) {
-    this.http.get('http://localhost:8080/api/authors/notify/search-list-from-user').subscribe((res: any) => {
-      // this.dataFromUser = res.data;
-      console.log('this.dataFromUser1: ', res.data)
-      this.dataFromUser = res.data.filter((item: any) => item.userid != this.userLocalstorage.id);
-      // for (const item of res.data) {
-      //   if (item.userid != this.userLocalstorage.id) {
-      //     this.dataFromUser.push(item);
-      //   }
-      // }
-      console.log('this.dataFromUser2: ', this.dataFromUser)
+    // this.http.get('http://localhost:8080/api/authors/notify/search-list-from-user').subscribe((res: any) => {
+    //   // this.dataFromUser = res.data;
+    //   this.dataFromUser = res.data.filter((item: any) => item.userid != this.userLocalstorage.id);
+    //   // for (const item of res.data) {
+    //   //   if (item.userid != this.userLocalstorage.id) {
+    //   //     this.dataFromUser.push(item);
+    //   //   }
+    //   // }
+    // });
+    this.http.get('http://localhost:8080/api/authors/notifications/' + this.userLocalstorage?.id).subscribe((res: any) => {
+      this.notificationReceiver = res;
     });
-
     this.http.get('http://localhost:8080/api/authors/notify/search-list-isComment-post').subscribe((res: any) => {
       this.dataCommentPost = res.data;
       console.log('this.dataCommentPost: ', this.dataCommentPost)
@@ -208,7 +218,7 @@ export class HomeComponent implements OnInit {
 
 
   handleSubmitChat() {
-    this.dataChat.push({user: this.inputChatAsk});
+    this.dataChat.push({ user: this.inputChatAsk });
     this.autoFocus = true;
     this.isDisabledInputChat = true;
     this.isWaitingReply = true;
@@ -216,15 +226,15 @@ export class HomeComponent implements OnInit {
     }, error => {
       this.isDisabledInputChat = false;
       this.isWaitingReply = false;
-      return this.dataChat.push({bot: error.error.text});
+      return this.dataChat.push({ bot: error.error.text });
     });
     this.inputChatAsk = '';
   }
 
   linkToPostDetail(item: any) {
-    localStorage.setItem('postsCategory', item.postscategory);
-    this.shareDataService.sendDataCategory(item.postscategory);
-    this.router.navigate([`/home/detail/posts/${item.postscategory}/${item.postsid}`]);
+    localStorage.setItem('postsCategory', item?.postCategory);
+    this.shareDataService.sendDataCategory(item?.postCategory);
+    this.router.navigate([`/home/detail/posts/${item?.postCategory}/${item.postId}`]);
   }
 
   openChatBot() {

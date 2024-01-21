@@ -1,13 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {Api} from '../../../services/api';
-import {Router} from '@angular/router';
-import {DatePipe} from "@angular/common";
+import { Component, OnInit, Renderer2 } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Api } from '../../../services/api';
+import { Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
-  styleUrls: ['./checkout.component.scss']
+  styleUrls: ['./checkout.component.scss'],
 })
 export class CheckoutComponent implements OnInit {
   cartItem: any;
@@ -21,6 +21,7 @@ export class CheckoutComponent implements OnInit {
     private api: Api,
     private router: Router,
     public datePipe: DatePipe,
+    private renderer: Renderer2
   ) {
     this.formAdd = this.fb.group({
       name: [null, [Validators.required]],
@@ -34,13 +35,13 @@ export class CheckoutComponent implements OnInit {
     });
   }
 
-
   ngOnInit(): void {
     this.cartItem = JSON.parse(localStorage.getItem('cartItems'));
     // this.formAdd.get('payments').setValue(1);
     for (const item of this.cartItem) {
       this.totalQuantity += item.quantity;
-      this.totalPrice += (item.price - item.price * item.discount / 100) * item.quantity;
+      this.totalPrice +=
+        (item.price - (item.price * item.discount) / 100) * item.quantity;
     }
   }
 
@@ -53,6 +54,7 @@ export class CheckoutComponent implements OnInit {
   }
 
   handleCheckout() {
+    
     if (this.formAdd.valid) {
       //handle checkout
       const dataCart: any[] = [];
@@ -61,17 +63,39 @@ export class CheckoutComponent implements OnInit {
         itemCart = 'name: ' + item.name + ',quantity: ' + item.quantity + ',price: ' + item.price + ',discount: ' + item.discount + '% ';
         dataCart.push(itemCart);
       }
+
       this.formAdd.get('detail').setValue(dataCart?.toString());
       this.formAdd.get('createDate').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
-      this.formAdd.get('total').setValue(this.totalPrice);
+      this.formAdd.get('total').setValue(this.totalPrice);      
 
-      this.api.createBill(this.formAdd.value).subscribe((res: any) => {
-        alert('Bạn đã đặt hàng thành công');
-        localStorage.removeItem('cartItems');
-        this.router.navigate(['/home/product']);
-      });
-
+      if (this.radioValue == 1) {
+        this.api.createBill(this.formAdd.value).subscribe((res: any) => {
+          alert('Bạn đã đặt hàng thành công');
+          localStorage.removeItem('cartItems');
+          this.router.navigate(['/home/product']);
+        });
+      } else {
+        const total = {
+          total: this.totalPrice,
+        };
+      this.formAdd.get('createDate').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
+        this.formAdd.patchValue(total);
+        this.api.createPaymentWithVnPay(this.formAdd.value).subscribe({
+          next: (res) => {
+            localStorage.setItem('billId', res.billId);
+            const newTab = this.renderer.createElement('a');
+            this.renderer.setProperty(newTab, 'href', res.url);
+  
+            const body = this.renderer.selectRootElement('body');
+            this.renderer.appendChild(body, newTab);
+  
+            newTab.click();
+  
+            this.renderer.removeChild(body, newTab);
+          },
+          error: (err) => {},
+        });
+      }
     }
   }
-
 }

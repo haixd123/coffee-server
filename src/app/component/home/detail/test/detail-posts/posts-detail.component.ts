@@ -1,14 +1,14 @@
-import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {FormBuilder, FormGroup} from '@angular/forms';
-import {SearchModelEntity} from '../../../../admin/search-model-entiry';
-import {ShareDataService} from '../../../../../services/share-data.service';
-import {Subscription} from 'rxjs';
-import {ActivatedRoute} from '@angular/router';
-import {Api} from '../../../../../services/api';
-import {WebsocketService} from '../../../../../services/Websocket.service';
-import {DatePipe} from '@angular/common';
-import {NotificationService} from '../../../../../services/notification.service';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { SearchModelEntity } from '../../../../admin/search-model-entiry';
+import { ShareDataService } from '../../../../../services/share-data.service';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { Api } from '../../../../../services/api';
+import { WebsocketService } from '../../../../../services/Websocket.service';
+import { DatePipe } from '@angular/common';
+import { NotificationService } from '../../../../../services/notification.service';
 
 @Component({
   selector: 'app-posts-detail',
@@ -83,6 +83,7 @@ export class PostsDetailComponent implements OnInit {
     this.formAdd = this.fb.group({
       id: null,
       userId: null,
+      replyCommentId: null,
       postId: null,
       isLikeNumber: null,
       contentCoffee: null,
@@ -244,6 +245,7 @@ export class PostsDetailComponent implements OnInit {
     const commentId = Math.floor(Math.random() * 10000000);
     if (this.dataEdit) {
       this.formAdd.get('id').setValue(this.dataEdit?.id);
+      this.formAdd.get('replyCommentId').setValue(this.dataInfoCommentNotification?.id || null)
       this.formAdd.get('commentId').setValue(this.dataEdit?.commentId);
       this.formAdd.get('userId').setValue(this.dataEdit?.userId);
       this.formAdd.get('postId').setValue(this.dataEdit?.postId);
@@ -253,15 +255,16 @@ export class PostsDetailComponent implements OnInit {
       this.formAdd.get('updateAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
       this.api.updateComment(this.formAdd.value).toPromise().then((res: any) => {
         if (res.errorCode == '00') {
-          this.notificationService.showMessage('success', 'Sửa  luận thành công');
+          this.notificationService.showMessage('success', 'Sửa bình luận thành công');
         } else {
-          this.notificationService.showMessage('error', 'Sửa luận thất bại');
+          this.notificationService.showMessage('error', 'Sửa bình luận thất bại');
         }
       });
     }
 
     if (!this.dataEdit) {
       this.formAdd.get('userId').setValue(null);
+      this.formAdd.get('replyCommentId').setValue(this.dataInfoCommentNotification?.id || null)
       this.formAdd.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
       this.formAdd.get('postId').setValue(this.idPostsLocalstorage);
       this.formAdd.get('commentId').setValue(commentId);
@@ -275,7 +278,7 @@ export class PostsDetailComponent implements OnInit {
         }
       });
     }
-//a
+    //a
     if (this.dataInfoCommentNotification) {
       // this.formNotify.get('userId').setValue(this.dataInfoCommentNotification.userId);
       this.formNotify.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
