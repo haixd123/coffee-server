@@ -76,27 +76,29 @@
           <a class="d-flex align-items-center px-3" style="color: #fff">
             <!--            (click)="linkToContact()">-->
             <i nz-icon nzType="bell" nzTheme="outline"></i>Thông báo</a>
-            <div class="notify" style="color: #000; width: 400px;">
+          <div class="notify" style="color: #000; width: 400px;">
             <div class="mx-3">
               <!--              style="width: 400px;"-->
               <div *ngFor="let item of notificationReceiver">
-                <div class="row py-2"
-                      (click)="linkToPostDetail(item)">
+                <div class="row py-2" style="cursor: pointer"
+                     (click)="linkToPostDetail(item)">
                   <a class="col-3 d-flex flex-column justify-content-start">
                     <img style="max-width: 120%; height: 50px; width: 50px; object-fit: cover; border-radius: 50%"
-                          src="/assets/user.png"/>
+                         [src]="item?.imagePost"/>
+                    <!--                    src="/assets/user.png"/>-->
                   </a>
                   <div class="col-9 notifi-content d-flex justify-content-start flex-column">
                     <div style="line-height: 1.5;">
                       <p style="margin-bottom: 10px;"><b>{{item?.fromUser}} </b>{{item?.content}}</p>
                     </div>
-                    <span style="margin-bottom: 0;line-height: 0;">{{item?.createdAt}}</span>
+                    <span
+                      style="margin-bottom: 0;line-height: 0;">{{item?.createdAt | date:'dd/MM/yyyy HH:mm:ss'}}</span>
                   </div>
                 </div>
               </div>
             </div>
-            </div>
           </div>
+        </div>
         <div style="margin: 0 5px 5px">
           <a style="color: #fff" [routerLink]="['/home/checkout']"><span style="font-size: 18px" nz-icon
                                                                          nzType="shopping-cart"
@@ -116,9 +118,9 @@
                        [src]="userLocalstorage.image"/>
                 </div>
                 <!--                <div style="width: 180px;" class="">-->
-                <div class="col-9">
-                  <div style="height: 20px; font-size: 17px">Xin chào</div>
-                  <span style="height: 20px; font-size: 17px">{{userLocalstorage.name}}</span>
+                <div class="col-9 notifi-content d-flex justify-content-start flex-column mt-2">
+                  <div style="height: 20px; font-size: 17px; line-height: 1.5">Xin chào</div>
+                  <span style="height: 20px; font-size: 17px; line-height: 1.5">{{userLocalstorage.name}}</span>
                 </div>
 
 
@@ -200,7 +202,7 @@
   <div style="background-color: #fff">
 
     <div style="min-height: 500px">
-      <router-outlet ></router-outlet>
+      <router-outlet></router-outlet>
     </div>
 
     <div style="position: relative">

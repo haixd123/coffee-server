@@ -1,6 +1,6 @@
 <div class="login-container">
   <div class="form-container">
-    <h2>Sign In</h2>
+    <h2>Đăng nhập</h2>
     <nz-alert
       *ngIf="error"
       nzShowIcon
@@ -10,7 +10,7 @@
     ></nz-alert>
     <form (ngSubmit)="onSubmit()">
       <div class="input-container">
-        <label for="email">Username</label>
+        <label for="email">Tên đăng nhập</label>
         <input
           nz-input
           type="email"
@@ -21,7 +21,7 @@
 <!--        <label style="color: red">exist</label>-->
       </div>
       <div class="input-container">
-        <label for="password">Password</label>
+        <label for="password">Mật khẩu</label>
         <input
           nz-input
           type="password"
@@ -37,9 +37,9 @@
           [disabled]="!canSubmit()"
           [nzLoading]="loading"
         >
-          Sign in
+          Đăng nhập
         </button>
-        <div><a [routerLink]="['/auth/register']">Create a new account</a></div>
+        <div><a [routerLink]="['/auth/register']">Đăng ký tài khoản</a></div>
       </div>
 
     </form>

@@ -1,14 +1,14 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { SearchModelEntity } from '../admin/search-model-entiry';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { ShareDataService } from '../../services/share-data.service';
-import { log } from 'ng-zorro-antd';
-import { newArray } from '@angular/compiler/src/util';
-import { Api } from '../../services/api';
-import { WebsocketService } from '../../services/Websocket.service';
-import { NotificationService } from 'src/app/services/notification.service';
+import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {SearchModelEntity} from '../admin/search-model-entiry';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {Router} from '@angular/router';
+import {ShareDataService} from '../../services/share-data.service';
+import {log} from 'ng-zorro-antd';
+import {newArray} from '@angular/compiler/src/util';
+import {Api} from '../../services/api';
+import {WebsocketService} from '../../services/Websocket.service';
+import {NotificationService} from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-home',
@@ -75,17 +75,19 @@ export class HomeComponent implements OnInit {
       this.handleUpdate();
     });
     this.websocketService.receiveNotification().subscribe((notification: any) => {
-      notificationService.showMessage('success', 'Bạn vừa có một thông báo mới')
+      notificationService.showMessage('success', 'Bạn vừa có một thông báo mới');
       this.handleUpdate();
-    })
+    });
   }
+
   ngOnInit(): void {
+    this.userLocalstorage = JSON.parse(localStorage.getItem('user'));
     this.http.get('http://localhost:8080/api/authors/posts/search-list-category').toPromise().then((data: any) => {
       this.dataCategory = data.data;
       this.total = data.optional;
     });
     this.http.get('http://localhost:8080/api/authors/notifications/' + this.userLocalstorage?.id).subscribe((res: any) => {
-      console.log(res)
+      console.log(res);
       this.notificationReceiver = res;
     });
     // console.log('this.userReceiveNotifyFromReplyComment: ', this.userReceiveNotifyFromReplyComment);
@@ -109,12 +111,13 @@ export class HomeComponent implements OnInit {
     //   //   }
     //   // }
     // });
+    this.userLocalstorage = JSON.parse(localStorage.getItem('user'));
     this.http.get('http://localhost:8080/api/authors/notifications/' + this.userLocalstorage?.id).subscribe((res: any) => {
       this.notificationReceiver = res;
     });
     this.http.get('http://localhost:8080/api/authors/notify/search-list-isComment-post').subscribe((res: any) => {
       this.dataCommentPost = res.data;
-      console.log('this.dataCommentPost: ', this.dataCommentPost)
+      console.log('this.dataCommentPost: ', this.dataCommentPost);
       for (const item of this.dataCommentPost) {
         if (item.commentId == null) {
           if (item.userName == this.userLocalstorage.userName) {
@@ -218,7 +221,7 @@ export class HomeComponent implements OnInit {
 
 
   handleSubmitChat() {
-    this.dataChat.push({ user: this.inputChatAsk });
+    this.dataChat.push({user: this.inputChatAsk});
     this.autoFocus = true;
     this.isDisabledInputChat = true;
     this.isWaitingReply = true;
@@ -226,7 +229,7 @@ export class HomeComponent implements OnInit {
     }, error => {
       this.isDisabledInputChat = false;
       this.isWaitingReply = false;
-      return this.dataChat.push({ bot: error.error.text });
+      return this.dataChat.push({bot: error.error.text});
     });
     this.inputChatAsk = '';
   }

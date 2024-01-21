@@ -45,7 +45,8 @@ export class RegisterComponent implements OnInit {
             email: this.email,
             password: this.password,
             userName: this.userName,
-            name: this.name
+            name: this.name,
+            image: 'https://cdn.sforum.vn/sforum/wp-content/uploads/2023/10/avatar-trang-4.jpg',
           })
           .subscribe(
             (res) => {

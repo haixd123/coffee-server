@@ -41,12 +41,12 @@ export class WebsocketService {
         this.commentSubject.next(comment.body);
       });
       this.stompClient.subscribe("/notifications", (resp) => {
-        this.handleNotification(resp.body)
-      })
+        this.handleNotification(resp.body);
+      });
     });
   }
   handleNotification(notification: any) {
-    console.log(this.currentUser.userName)
+    console.log(this.currentUser.userName);
     if (notification?.username == this.currentUser.userName) {
       this.notificationSubject.next(notification);
     }

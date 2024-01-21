@@ -5,8 +5,8 @@ import {Api} from '../../../services/api';
 import {HttpClient} from '@angular/common/http';
 import {ValidateService} from '../../../services/validate-service';
 import {NotificationService} from '../../../services/notification.service';
-import {DatePipe} from "@angular/common";
-import {saveAs} from "file-saver";
+import {DatePipe} from '@angular/common';
+import {saveAs} from 'file-saver';
 
 
 @Component({
@@ -43,7 +43,7 @@ export class BillComponent implements OnInit {
   trimXAxisTicks: boolean = false;
   trimYAxisTicks: boolean = false;
   rotateXAxisTicks: boolean = false;
-  yAxisTicks: any[] = [1000, 100000, 500000, 1500000, 2500000, 3500000]
+  yAxisTicks: any[] = [100000, 500000, 1500000, 2500000, 3500000];
   animations: boolean = true; // animations on load
   showGridLines: boolean = true; // grid lines
   showDataLabel: boolean = true; // numbers on bars
@@ -52,7 +52,7 @@ export class BillComponent implements OnInit {
     domain: ['#704FC4', '#4B852C', '#B67A3D', '#5B6FC8', '#25706F', '#0067EB']
   };
   schemeType: string = 'ordinal'; // 'ordinal' or 'linear'
-  barPadding: number = 5
+  barPadding: number = 5;
   tooltipDisabled: boolean = false;
   roundEdges: boolean = false;
   dataChart: any;
@@ -62,41 +62,41 @@ export class BillComponent implements OnInit {
 
   productSales1 = [
     {
-      "name": "Tháng 1",
-      "value": `${this.test}`
+      'name': 'Tháng 1',
+      'value': `${this.test}`
     }, {
-      "name": "Tháng 2",
-      "value": 14322
+      'name': 'Tháng 2',
+      'value': 14322
     }, {
-      "name": "Tháng 3",
-      "value": 1726
+      'name': 'Tháng 3',
+      'value': 1726
     }, {
-      "name": "Tháng 4",
-      "value": 2599
+      'name': 'Tháng 4',
+      'value': 2599
     }, {
-      "name": "Tháng 5",
-      "value": 705
+      'name': 'Tháng 5',
+      'value': 705
     }, {
-      "name": "Tháng 6",
-      "value": 7050
+      'name': 'Tháng 6',
+      'value': 7050
     }, {
-      "name": "Tháng 7",
-      "value": 705
+      'name': 'Tháng 7',
+      'value': 705
     }, {
-      "name": "Tháng 8",
-      "value": 705
+      'name': 'Tháng 8',
+      'value': 705
     }, {
-      "name": "Tháng 9",
-      "value": 705
+      'name': 'Tháng 9',
+      'value': 705
     }, {
-      "name": "Tháng 10",
-      "value": 705
+      'name': 'Tháng 10',
+      'value': 705
     }, {
-      "name": "Tháng 11",
-      "value": 705
+      'name': 'Tháng 11',
+      'value': 705
     }, {
-      "name": "Tháng 12",
-      "value": 705
+      'name': 'Tháng 12',
+      'value': 705
     }
   ];
 
@@ -120,23 +120,26 @@ export class BillComponent implements OnInit {
   }
 
   formatString(input: string): string {
-    return input.toUpperCase()
+    return input.toUpperCase();
   }
 
   formatNumber(input: number): number {
-    return input
+    return input;
   }
 
   handleUpdate(searchModel: SearchModelEntity, reset = false) {
+    this.searchModel.pageSize = 999;
     this.api.getListBill(this.searchModel).toPromise().then((data: any) => {
-      console.log('data: ', data.data)
+      console.log('data: ', data.data);
       this.data = data.data;
       this.total = data.optional;
 
       const totalByMonth = {};
       data.data.forEach(purchase => {
-        const month = purchase.createDate.split('-')[1];
-
+        // this.datePipe.transform(purchase.createDate, 'dd/MM/yyyy');
+        // console.log('month: ', purchase.createDate);
+        const month = this.datePipe.transform(purchase.createDate, 'dd/MM/yyyy').split('/').splice(1, 2).join('/');
+        // month = purchase.createDate.split('-')[1];
         if (!totalByMonth[month]) {
           totalByMonth[month] = 0;
         }
@@ -151,10 +154,10 @@ export class BillComponent implements OnInit {
       console.log('newArray: ', newArray);
       console.log('dataChart: ', this.dataChart);
       this.dataChart = this.dataChart.map(item => {
-        console.log('this.dataChart: ', item)
+        console.log('this.dataChart: ', item);
         return {
-          "name": `${item.month}`,
-          "value": `${item.total}`
+          'name': `${item.month}`,
+          'value': `${item.total}`
         };
       });
       // const numberToRound = 5665151;
@@ -197,7 +200,7 @@ export class BillComponent implements OnInit {
     this.searchModel.pageIndex = this.curPage;
     this.searchModel.pageSize = this.pageSize;
     this.api.exportBill(this.searchModel).subscribe((res: any) => {
-      console.log('res: ', res)
+      console.log('res: ', res);
       const reportFile = new Blob([res], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
       let fileName = 'BAO_CAO_TONG_HOP_VIETQR';
       let date = '';
@@ -209,7 +212,7 @@ export class BillComponent implements OnInit {
       // } else {
       //   this.notificationService.showMessage('error', 'error');
       // }
-    }, error => console.log('err: ', error))
+    }, error => console.log('err: ', error));
   }
 
 

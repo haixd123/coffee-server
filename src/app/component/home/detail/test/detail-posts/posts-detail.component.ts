@@ -116,10 +116,10 @@ export class PostsDetailComponent implements OnInit {
       this.api.getListComment(this.searchModel).toPromise().then((data: any) => {
         this.dataComment = data.data;
       });
-
-      this.api.getListComment(this.searchModel).toPromise().then((data: any) => {
-        this.dataComment = data.data;
-      });
+    });
+    this.api.getListComment(this.searchModel).toPromise().then((data: any) => {
+      console.log('comment: ', data);
+      this.dataComment = data.data;
     });
   }
 
@@ -143,6 +143,7 @@ export class PostsDetailComponent implements OnInit {
 
     this.api.getListUser(this.searchModel).toPromise().then((data: any) => {
       this.dataUser = data.data;
+      console.log('this.dataUser: ', this.dataUser);
     });
 
     this.api.getListPosts(this.searchModel).toPromise().then((data: any) => {
@@ -190,7 +191,6 @@ export class PostsDetailComponent implements OnInit {
   }
 
   handleLike() {
-    this.isLike = true;
     // this.isLike0 = true;
     this.formAdd = this.fb.group({
       userId: JSON.parse(localStorage.getItem('user')).id,
@@ -198,23 +198,23 @@ export class PostsDetailComponent implements OnInit {
       isLike: 1
     }, {});
     this.api.isLike(this.formAdd.value).subscribe(res => {
+      this.isLike = true;
     });
   }
 
   handleUnLike() {
     // this.isLike0 = false;
-    this.isLike = false;
     this.formAdd = this.fb.group({
       userId: JSON.parse(localStorage.getItem('user')).id,
       postId: localStorage.getItem('postsId'),
       isLike: 0
     });
     this.api.isLike(this.formAdd.value).subscribe(res => {
+      this.isLike = false;
     });
   }
 
   handleSave() {
-    this.isSave = true;
     // this.isLike0 = true;
     this.formAdd = this.fb.group({
       userId: JSON.parse(localStorage.getItem('user')).id,
@@ -222,18 +222,19 @@ export class PostsDetailComponent implements OnInit {
       isSave: 1
     }, {});
     this.api.isSave(this.formAdd.value).subscribe(res => {
+      this.isSave = true;
     });
   }
 
   handleUnSave() {
     // this.isLike0 = false;
-    this.isSave = false;
     this.formAdd = this.fb.group({
       userId: JSON.parse(localStorage.getItem('user')).id,
       postId: localStorage.getItem('postsId'),
       isSave: 0
     });
     this.api.isSave(this.formAdd.value).subscribe(res => {
+      this.isSave = false;
     });
   }
 
@@ -245,7 +246,7 @@ export class PostsDetailComponent implements OnInit {
     const commentId = Math.floor(Math.random() * 10000000);
     if (this.dataEdit) {
       this.formAdd.get('id').setValue(this.dataEdit?.id);
-      this.formAdd.get('replyCommentId').setValue(this.dataInfoCommentNotification?.id || null)
+      this.formAdd.get('replyCommentId').setValue(this.dataInfoCommentNotification?.id || null);
       this.formAdd.get('commentId').setValue(this.dataEdit?.commentId);
       this.formAdd.get('userId').setValue(this.dataEdit?.userId);
       this.formAdd.get('postId').setValue(this.dataEdit?.postId);
@@ -264,7 +265,7 @@ export class PostsDetailComponent implements OnInit {
 
     if (!this.dataEdit) {
       this.formAdd.get('userId').setValue(null);
-      this.formAdd.get('replyCommentId').setValue(this.dataInfoCommentNotification?.id || null)
+      this.formAdd.get('replyCommentId').setValue(this.dataInfoCommentNotification?.id || null);
       this.formAdd.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
       this.formAdd.get('postId').setValue(this.idPostsLocalstorage);
       this.formAdd.get('commentId').setValue(commentId);

@@ -1,6 +1,6 @@
 <div class="register-container">
   <div class="form-container">
-    <h2>Sign Up</h2>
+    <h2>Đăng ký</h2>
     <nz-alert
       *ngIf="errorMessage"
       nzShowIcon
@@ -17,49 +17,49 @@
           type="email"
           name="email"
           [(ngModel)]="email"
-          placeholder="Enter email"
+          placeholder="Nhập email"
         />
       </div>
       <div class="🤪">
         <div class="input-container">
-          <label for="password">Password</label>
+          <label for="password">Mật khẩu</label>
           <input
             nz-input
             type="password"
             name="password"
             [(ngModel)]="password"
-            placeholder="Enter a strong password"
+            placeholder="Nhập mật khẩu"
           />
         </div>
         <div class="input-container">
-          <label for="confirmPassword">Confirm password</label>
+          <label for="confirmPassword">Xác nhận mật khẩu</label>
           <input
             nz-input
             type="password"
             name="confirmPassword"
             [(ngModel)]="confirmPassword"
-            placeholder="Repeat your password"
+            placeholder="Xác nhận mật khẩu"
           />
         </div>
       </div>
       <div class="input-container">
-        <label for="username">Username</label>
+        <label for="username">Tài khoản</label>
         <input
           nz-input
           type="text"
           name="username"
           [(ngModel)]="userName"
-          placeholder="Enter username"
+          placeholder="nguyenvana"
         />
       </div>
       <div class="input-container">
-        <label for="name">Name</label>
+        <label for="name">Họ và tên</label>
         <input
           nz-input
           type="text"
           name="name"
           [(ngModel)]="name"
-          placeholder="Enter your first name"
+          placeholder="Nguyễn Văn A"
         />
       </div>
 
@@ -82,10 +82,10 @@
           [nzLoading]="loading"
           (click)="onSubmit()"
         >
-          Sign up
+          Đăng ký
         </button>
         <div>
-          <div><a [routerLink]="['/auth/login']">Sign in with an existing user</a></div>
+          <div><a [routerLink]="['/auth/login']">Đăng nhập</a></div>
         </div>
       </div>
     </form>
