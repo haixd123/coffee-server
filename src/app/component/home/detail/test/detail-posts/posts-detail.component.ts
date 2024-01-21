@@ -1,14 +1,14 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { SearchModelEntity } from '../../../../admin/search-model-entiry';
-import { ShareDataService } from '../../../../../services/share-data.service';
-import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
-import { Api } from '../../../../../services/api';
-import { WebsocketService } from '../../../../../services/Websocket.service';
-import { DatePipe } from '@angular/common';
-import { NotificationService } from '../../../../../services/notification.service';
+import {Component, ElementRef, Input, OnInit, ViewChild} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {SearchModelEntity} from '../../../../admin/search-model-entiry';
+import {ShareDataService} from '../../../../../services/share-data.service';
+import {Subscription} from 'rxjs';
+import {ActivatedRoute} from '@angular/router';
+import {Api} from '../../../../../services/api';
+import {WebsocketService} from '../../../../../services/Websocket.service';
+import {DatePipe} from '@angular/common';
+import {NotificationService} from '../../../../../services/notification.service';
 
 @Component({
   selector: 'app-posts-detail',
@@ -278,25 +278,26 @@ export class PostsDetailComponent implements OnInit {
         }
       });
     }
-    //a
-    if (this.dataInfoCommentNotification) {
-      // this.formNotify.get('userId').setValue(this.dataInfoCommentNotification.userId);
-      this.formNotify.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
-      // this.formNotify.get('userId').setValue(this.dataInfoCommentNotification.userId);
-      this.formNotify.get('postId').setValue(this.dataInfoCommentNotification.postId);
-      this.formNotify.get('commentId').setValue(commentId);
-      this.formNotify.get('createAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
-      this.api.createNotify(this.formNotify.value).toPromise().then((res: any) => {
-      });
-    }
-    if (!this.dataInfoCommentNotification) {
-      this.formNotify.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
-      this.formNotify.get('postId').setValue(localStorage.getItem('postsId'));
-      this.formNotify.get('commentId').setValue(null);
-      this.formNotify.get('createAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
-      this.api.createNotify(this.formNotify.value).toPromise().then((res: any) => {
-      });
-    }
+
+    //??? code cu
+    // if (this.dataInfoCommentNotification) {
+    //   // this.formNotify.get('userId').setValue(this.dataInfoCommentNotification.userId);
+    //   this.formNotify.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
+    //   // this.formNotify.get('userId').setValue(this.dataInfoCommentNotification.userId);
+    //   this.formNotify.get('postId').setValue(this.dataInfoCommentNotification.postId);
+    //   this.formNotify.get('commentId').setValue(commentId);
+    //   this.formNotify.get('createAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
+    //   this.api.createNotify(this.formNotify.value).toPromise().then((res: any) => {
+    //   });
+    // }
+    // if (!this.dataInfoCommentNotification) {
+    //   this.formNotify.get('userId').setValue(JSON.parse(localStorage.getItem('user')).id);
+    //   this.formNotify.get('postId').setValue(localStorage.getItem('postsId'));
+    //   this.formNotify.get('commentId').setValue(null);
+    //   this.formNotify.get('createAt').setValue(this.datePipe.transform(new Date(), 'dd/MM/yyyy HH:mm:ss'));
+    //   this.api.createNotify(this.formNotify.value).toPromise().then((res: any) => {
+    //   });
+    // }
 
 
     this.websocketService.sendComment('1', '2');
@@ -361,9 +362,9 @@ export class PostsDetailComponent implements OnInit {
       }
     });
 
-
-    this.api.deleteNotify(item).toPromise().then(res => {
-    });
+    //??? code cu
+    // this.api.deleteNotify(item).toPromise().then(res => {
+    // });
     this.websocketService.sendComment('1', '2');
   }
 

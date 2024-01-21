@@ -3,7 +3,6 @@ import {Routes, RouterModule} from '@angular/router';
 import {AdminComponent} from './component/admin/admin.component';
 import {HomeComponent} from './component/home/home.component';
 import {HomePostsComponent} from './component/home/posts/home-posts.component';
-import {TestCkeditorComponent} from './component/home/test-ckeditor/test-ckeditor.component';
 import {TableEquipmentComponent} from './component/admin/table-equipment/table-equipment.component';
 import {TablePostsComponent} from './component/admin/table-posts/table-posts.component';
 import {TableCoffeeBeanComponent} from './component/admin/table-coffee-bean/table-coffee-bean.component';
@@ -23,7 +22,7 @@ import {DetailComponent} from './component/home/detail/detail.component';
 import {SavePostsComponent} from './component/home/user/save-posts/save-posts.component';
 import {UnauthorizedComponent} from './unauthorized/unauthorized.component';
 import {RoleGuard} from './role.guard';
-import {ContactComponent} from './component/home/contact/contact.component';
+// import {ContactComponent} from './component/home/contact/contact.component';
 import {TableProductComponent} from './component/admin/table-product/table-product.component';
 import {ProductComponent} from './component/home/product/product.component';
 import {CheckoutComponent} from './component/home/checkout/checkout.component';
@@ -114,10 +113,10 @@ const routes: Routes = [
         path: 'equipment',
         component: EquipmentComponent,
       },
-      {
-        path: 'contact',
-        component: ContactComponent,
-      },
+      // {
+      //   path: 'contact',
+      //   component: ContactComponent,
+      // },
       {
         path: 'checkout',
         component: CheckoutComponent,

@@ -182,17 +182,17 @@ export class Api extends BaseService {
   }
 
   exportBill(searchModel: SearchModelEntity) {
-    return this.postRequestFile1(searchModel)
+    return this.postRequestFile1(searchModel);
   }
 
   // payment online
 
   createPaymentWithVnPay(searchModel: SearchModelEntity){
-    return this.post("/payment/authors/create-payment",searchModel);
+    return this.post('/payment/authors/create-payment', searchModel);
   }
 
-  getVnPaymentInfo(params : HttpParams){
-    return this.get("/payment/payment-info",params);
+  getVnPaymentInfo(params: HttpParams){
+    return this.get('/payment/payment-info', params);
   }
 
   // User
