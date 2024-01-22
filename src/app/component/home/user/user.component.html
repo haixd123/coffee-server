@@ -6,11 +6,15 @@
 
       </div>
       <div style="font-size: 18px; font-weight: 500; cursor: pointer; color: #000" class="py-3">
-        <a [routerLink]="['/home/user/myPosts']">Bài viết cá nhân</a>
+        <a [routerLink]="['/home/user/myPosts']">Bài viết đã đăng</a>
       </div>
       <div style="font-size: 18px; font-weight: 500; cursor: pointer; color: #000" class="py-3">
-        <a [routerLink]="['/home/user/savePosts']">Bài viết yêu thích</a>
+        <a [routerLink]="['/home/user/waittingPosts']">Bài viết chờ duyệt</a>
       </div>
+      <div style="font-size: 18px; font-weight: 500; cursor: pointer; color: #000" class="py-3">
+        <a [routerLink]="['/home/user/savePosts']">Bài viết đã lưu</a>
+      </div>
+
     </div>
   </div>
   <div class="col-8">
@@ -33,10 +37,10 @@
         <span>Tổng số comment</span><br/>
         <span>{{totalComment ? totalComment : 0}}</span>
       </div>
-<!--      <div class="py-2" style="border-bottom: 1px solid #c3c3c3">-->
-<!--        <span>Danh hiệu</span><br/>-->
-<!--        <span>test</span>-->
-<!--      </div>-->
+      <!--      <div class="py-2" style="border-bottom: 1px solid #c3c3c3">-->
+      <!--        <span>Danh hiệu</span><br/>-->
+      <!--        <span>test</span>-->
+      <!--      </div>-->
       <!--      <div class="py-2" style="border-bottom: 1px solid #c3c3c3">-->
       <!--        <span>Thành tích</span><br/>-->
       <!--        <span>test</span>-->

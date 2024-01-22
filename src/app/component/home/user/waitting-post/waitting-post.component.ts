@@ -6,11 +6,11 @@ import {Api} from '../../../../services/api';
 import {FormBuilder, FormGroup} from '@angular/forms';
 
 @Component({
-  selector: 'app-save-posts',
-  templateUrl: './save-posts.component.html',
-  styleUrls: ['./save-posts.component.scss']
+  selector: 'app-waitting-post',
+  templateUrl: './waitting-post.component.html',
+  styleUrls: ['./waitting-post.component.scss']
 })
-export class SavePostsComponent implements OnInit {
+export class WaittingPostComponent implements OnInit {
   searchModel: SearchModelEntity = new SearchModelEntity();
   formSearch: FormGroup;
 
@@ -20,6 +20,8 @@ export class SavePostsComponent implements OnInit {
   p = 1; // Trang hiện tại
   PostsId: any;
   savePostsUserId: any;
+  myPostsUserId: any;
+  data: any[];
 
   constructor(
     private http: HttpClient,
@@ -30,7 +32,7 @@ export class SavePostsComponent implements OnInit {
     this.formSearch = this.fb.group({
       status: 1,
     });
-
+    this.myPostsUserId = JSON.parse(localStorage.getItem('user')).id;
     this.handleSearch();
     this.savePostsUserId = JSON.parse(localStorage.getItem('user')).id;
   }
@@ -39,34 +41,11 @@ export class SavePostsComponent implements OnInit {
   }
 
   handleUpdate(searchModel: SearchModelEntity, reset = false) {
-    let a = [];
-    this.api.getListSavePosts(this.searchModel).toPromise().then((data: any) => {
-      for (const i of data.data) {
-        if (i.userId == this.savePostsUserId) {
-          this.dataSavePost.push(i.postId);
-        }
-      }
-      console.log('data.data: ', data);
+    this.api.getListPosts(this.searchModel).toPromise().then((data: any) => {
+      // const a = data.data.filter((item: any) => item.userId == this.myPostsUserId);
+      this.data = data.data;
       this.total = data.optional;
     });
-    this.searchModel.pageSize = 200;
-    this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
-    this.api.getListPosts(this.searchModel).toPromise().then((data: any) => {
-      a = [];
-      this.dataDetailPost = [];
-      for (const i of data.data) {
-        for (const item of this.dataSavePost) {
-          if (i.id == item) {
-            a.push(i);
-          }
-        }
-      }
-      console.log('a: ', a);
-      this.dataDetailPost = a;
-      // this.dataDetailPost = data.data;
-      // this.total = this.dataSavePost.length;
-    });
-
   }
 
   handleSearch() {
@@ -76,19 +55,19 @@ export class SavePostsComponent implements OnInit {
     }
     this.searchModel.pageSize = 4;
     this.formSearch = this.fb.group({
-      status: 1,
+      userId: this.myPostsUserId,
+      status: 0,
     });
     this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
     this.handleUpdate(this.searchModel, true);
   }
 
-  PostsDetail(item: any) {
-    this.PostsId = item.id;
-    localStorage.setItem('postsId', item.id);
-    localStorage.setItem('postsCategory', item.category);
-
-    // setTimeout(() => {
-    this.router.navigate([`/home/detail/posts/${item.category}/${item.id}`]);
-  }
+  // PostsDetail(item: any) {
+  //   this.PostsId = item.id;
+  //   localStorage.setItem('postsId', item.id);
+  //   localStorage.setItem('postsCategory', item.category);
+  //   // setTimeout(() => {
+  //   this.router.navigate([`/home/detail/posts/${item.category}/${item.id}`]);
+  // }
 
 }

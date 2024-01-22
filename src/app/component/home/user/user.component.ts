@@ -29,7 +29,6 @@ export class UserComponent implements OnInit {
     private fb: FormBuilder,
     private http: HttpClient,
     private api: Api,
-
   ) {
     this.idUserLocalstorage = JSON.parse(localStorage.getItem('user')).id;
     this.handleSearch();
@@ -48,10 +47,11 @@ export class UserComponent implements OnInit {
       this.total = data.optional;
     });
 
-    await this.api.getListPosts(this.searchModel).toPromise().then((data: any) => {
-      this.dataPosts = data.data;
-      this.total = data.optional;
-    });
+    //???
+    // await this.api.getListPosts(this.searchModel).toPromise().then((data: any) => {
+    //   this.dataPosts = data.data;
+    //   this.total = data.optional;
+    // });
 
 
     this.formSearch = this.fb.group({

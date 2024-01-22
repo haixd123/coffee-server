@@ -2,7 +2,7 @@
   <div style="font-size: 22px; font-weight: 600; padding-left: 15px; color: #000">Bài viết đã lưu</div>
   <div style="padding-left: 15px">
     <!--    <div style="padding-left: 15px" *ngFor="let item1 of dataSavePost, let i = index">-->
-    <div *ngFor="let item of dataDetailPost  | slice:(p-1)*4 : p*4" style="cursor: pointer" (click)="PostsDetail(item)">
+    <div *ngFor="let item of dataDetailPost" (click)="PostsDetail(item)">
       <div style="display: flex; background-color: #fff">
         <!--        <div *ngIf=" item1.postId == item.id" style="display: flex; background-color: #fff">-->
         <div style="display: flex; background-color: #fff" class="mb-5 mt-5">
@@ -10,9 +10,9 @@
           <!--               *ngIf="item1.userId == savePostsUserId">-->
           <div style="cursor: pointer">
             <a>
-              <img *ngIf="item.imagePath" style="max-width: 200px" [src]="item.imagePath"/>
+              <img *ngIf="item.imagePath" style="max-width: 252px; width: 217px; height: 145px; object-fit: cover" [src]="item.imagePath"/>
 
-              <img *ngIf="!item.imagePath" style="max-width: 200px"
+              <img *ngIf="!item.imagePath" style="max-width: 252px; width: 217px; height: 145px; object-fit: cover"
                    src="https://cdnphoto.dantri.com.vn/7Ay2bMHqImHAgbQN5gvn_3JJp-Q=/zoom/378_252/2023/10/23/rocketphongtugazaveisraelreuters-crop-1698024802873.jpeg"/>
             </a>
           </div>
@@ -37,5 +37,9 @@
       </div>
     </div>
   </div>
-
-  <nz-pagination style="text-align: end" class="pb-4"  [(nzPageIndex)]="p" [nzTotal]="total" [nzPageSize]="4"></nz-pagination>
+  <nz-pagination style="text-align: end" class="pb-4"
+                 [(nzPageIndex)]="p"
+                 [nzTotal]="total"
+                 [nzPageSize]="4"
+                 (click)="handleSearch()"></nz-pagination>
+</div>

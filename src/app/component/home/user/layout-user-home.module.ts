@@ -7,9 +7,10 @@ import {InfoComponent} from './info/info.component';
 import { MyPostsComponent } from './my-posts/my-posts.component';
 import { SavePostsComponent } from './save-posts/save-posts.component';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { WaittingPostComponent } from './waitting-post/waitting-post.component';
 
 @NgModule({
-  declarations: [InfoComponent, MyPostsComponent, SavePostsComponent],
+  declarations: [InfoComponent, MyPostsComponent, SavePostsComponent, WaittingPostComponent],
     imports: [NzFormModule, NgZorroAntdModule, SharedModule,
         RouterModule.forChild([]), NgxPaginationModule],
   providers: []

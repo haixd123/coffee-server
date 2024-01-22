@@ -17,7 +17,7 @@ export class MyPostsComponent implements OnInit {
 
   data: any[];
   total: number;
-  p = 1; // Trang hiện tại
+  p: number; // Trang hiện tại
   PostsId: any;
   myPostsUserId: any;
 
@@ -26,8 +26,10 @@ export class MyPostsComponent implements OnInit {
     private router: Router,
     private fb: FormBuilder,
     private api: Api,
-
   ) {
+    // this.formSearch = this.fb.group({
+    //   status: 1,
+    // });
     this.myPostsUserId = JSON.parse(localStorage.getItem('user')).id;
     this.handleSearch();
   }
@@ -37,17 +39,23 @@ export class MyPostsComponent implements OnInit {
 
   handleUpdate(searchModel: SearchModelEntity, reset = false) {
     this.api.getListPosts(this.searchModel).toPromise().then((data: any) => {
+      // const a = data.data.filter((item: any) => item.userId == this.myPostsUserId);
       this.data = data.data;
       this.total = data.optional;
+      // console.log('this.data2: ', a);
     });
   }
 
 
   handleSearch() {
     this.searchModel.pageIndex = 1;
-    this.searchModel.pageSize = 100;
+    if (this.p != null) {
+      this.searchModel.pageIndex = this.p;
+    }
+    this.searchModel.pageSize = 4;
     this.formSearch = this.fb.group({
       userId: this.myPostsUserId,
+      status: 1,
     });
     this.searchModel = Object.assign({}, this.searchModel, this.formSearch.value);
     this.handleUpdate(this.searchModel, true);
