@@ -26,6 +26,7 @@ public interface Constants {
     Integer NOTIFICATION_POST_ACCEPT = 2;
 
     Integer NOTIFICATION_COMMENT_HIDE_TYPE = 12;
+    Integer MAX_DELINE_POST_PUSH_COUNT = 5;
 
     Long POST_STATUS_DELINE = -2L;
     Long POST_STATUS_ACCEPT = 1l;

@@ -3,12 +3,14 @@ package com.example.coffee2.service.posts.impl;
 import com.example.coffee2.entity.CoffeeBeanEntity;
 import com.example.coffee2.entity.PostsEntity;
 import com.example.coffee2.entity.Report;
+import com.example.coffee2.entity.UserEntity;
 import com.example.coffee2.event.PostAcceptEvent;
 import com.example.coffee2.event.PostDelineEvent;
 import com.example.coffee2.event.PostHideEvent;
 import com.example.coffee2.pusher.PostPusher;
 import com.example.coffee2.reponsitory.PostsRepository;
 import com.example.coffee2.reponsitory.ReportRepository;
+import com.example.coffee2.reponsitory.UserRespository;
 import com.example.coffee2.request.LikePostsRequest;
 import com.example.coffee2.request.PostsRequest;
 import com.example.coffee2.response.PostsResponse;
@@ -47,6 +49,9 @@ public class PostsServiceImpl implements PostsService {
     @Autowired
     private PostsRepository repository;
 
+    @Autowired
+    UserRespository userRespository;
+
     @Override
     public List<PostsResponse> getListPosts(PostsRequest request) {
         return postsRespositoryCustomer.getListPosts(request);
@@ -72,6 +77,14 @@ public class PostsServiceImpl implements PostsService {
                 log.error("create | Tài khoản đã tồn tại");
                 return false;
             }
+            UserEntity user = userRespository.findById(request.getUserId()).orElse(null);
+            if (user == null) {
+                return false;
+            }
+            if (user.getDelineCount() >= Constants.MAX_DELINE_POST_PUSH_COUNT) {
+                return false;
+            }
+
             PostsEntity obj = new PostsEntity();
             obj.setLike1(request.getLike1());
             obj.setComment(request.getComment());
@@ -104,6 +117,13 @@ public class PostsServiceImpl implements PostsService {
                 log.error("Loại cafe đã tồn tại!");
                 return false;
             }
+            UserEntity user = userRespository.findById(request.getUserId()).orElse(null);
+            if (user == null) {
+                return false;
+            }
+            if (user.getDelineCount() >= Constants.MAX_DELINE_POST_PUSH_COUNT) {
+                return false;
+            }
             obj.setLike1(request.getLike1());
             obj.setComment(request.getComment());
             obj.setContentPost(request.getContentPost());
@@ -116,8 +136,10 @@ public class PostsServiceImpl implements PostsService {
 //            obj.setTotalComment(request.getTotalComment());
             obj.setCategory(request.getCategory());
             obj.setReason_deline(request.getReason_deline());
-            repository.save(obj);
             if (request.getStatus() == Constants.POST_STATUS_DELINE) {
+                UserEntity user1 = userRespository.findById(request.getUserId()).orElse(null);
+                user1.setDelineCount(user1.getDelineCount() + 1);
+                userRespository.save(user1);
                 PostDelineEvent.PostDelineReq postDelineReq = new PostDelineEvent.PostDelineReq();
                 postDelineReq.setPostId(request.getId());
                 postDelineReq.setReasonDeline(request.getReason_deline());
@@ -128,9 +150,11 @@ public class PostsServiceImpl implements PostsService {
                 postPusher.postAcceptEvent(postAcceptEventReq);
             } else if (request.getStatus() == Constants.POST_STATUS_HIDE) {
                 PostHideEvent.PostHideReq postHideReq = new PostHideEvent.PostHideReq();
+                obj.setReason_deline("Bài viết của bạn đã bị gỡ do vi phạm nguyên tắc cộng đồng");
                 postHideReq.setPostId(request.getId());
                 postPusher.postHideEvent(postHideReq);
             }
+            repository.save(obj);
             return true;
         } catch (Exception e) {
             log.info("not success: " + e.getMessage());
