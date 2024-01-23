@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +26,7 @@ public class PostRatingController {
 
     private final PostsRepository postsRepository;
 
+    @PostMapping()
     public ResponseEntity<?> ratePost(PostRatingRequest request) {
         try {
             PostsEntity postsEntity = postsRepository.findById(request.getPostId()).orElse(null);
