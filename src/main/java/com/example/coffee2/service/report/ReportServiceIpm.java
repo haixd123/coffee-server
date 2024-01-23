@@ -3,6 +3,8 @@ package com.example.coffee2.service.report;
 import com.example.coffee2.entity.CommentEntity;
 import com.example.coffee2.entity.PostsEntity;
 import com.example.coffee2.entity.Report;
+import com.example.coffee2.event.PostReportEvent;
+import com.example.coffee2.pusher.PostPusher;
 import com.example.coffee2.reponsitory.CommentRepository;
 import com.example.coffee2.reponsitory.PostsRepository;
 import com.example.coffee2.reponsitory.ReportRepository;
@@ -34,6 +36,7 @@ import java.util.stream.Collectors;
 public class ReportServiceIpm implements ReportService {
     private final ReportRepository reportRepository;
 
+    private final PostPusher postPusher;
     private final PostsRepository postsRepository;
 
     private final CommentRepository commentRepository;
@@ -51,6 +54,10 @@ public class ReportServiceIpm implements ReportService {
     public ResponseEntity<?> create(ReportRequest request) {
         if (Objects.equals(request.getDataReportId(), Constants.REPORT_TYPE_POST)) {
             PostsEntity postsEntity = postsRepository.findByIdAndStatus(request.getDataReportId(), 1l).orElse(null);
+            List<Report> reports = reportRepository.findAllByDataReportIdAndUserReportId(postsEntity.getId(), request.getUserReportId());
+            if (reports.size() >= 3) {
+                return ApiBaseResponse.fail("Một bài viết bạn chỉ được báo cáo tối đa 3 lần");
+            }
             if (postsEntity == null) {
                 return ApiBaseResponse.fail("Bài viết bạn báo cáo không tồn tại trên hệ thống");
             }
@@ -65,6 +72,11 @@ public class ReportServiceIpm implements ReportService {
 
     public ResponseEntity<?> processToAddReport(ReportRequest request) {
         reportRepository.save(new ModelMapper().map(request, Report.class));
+        if (request.getReportType() == Constants.REPORT_TYPE_POST) {
+            PostReportEvent.PostReportReq postReportReq = new PostReportEvent.PostReportReq();
+            postReportReq.setPostId(request.getDataReportId());
+            postPusher.postReportEvent(postReportReq);
+        }
         return ApiBaseResponse.done("Đã báo cáo bài viết đợi admin kiểm tra", new HashMap<>());
     }
 

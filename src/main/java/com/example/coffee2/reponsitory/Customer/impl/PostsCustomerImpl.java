@@ -91,7 +91,7 @@ public class PostsCustomerImpl implements PostsRespositoryCustomer {
     private void createSqlGetListPosts(PostsRequest request, StringBuilder sql, Map<String, Object> params, boolean isCount) {
         log.info("request: " + request);
         if (isCount) {
-            sql.append("select count(*) ");
+//            sql.append("select count(*) ");
         } else {
 //            sql.append("select f.* ");
             sql.append("select ");

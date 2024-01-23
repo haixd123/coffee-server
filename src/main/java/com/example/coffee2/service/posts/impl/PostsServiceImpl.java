@@ -18,6 +18,8 @@ import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -144,5 +146,10 @@ public class PostsServiceImpl implements PostsService {
             log.info("not success: " + e.getMessage());
             return false;
         }
+    }
+
+    @Override
+    public ResponseEntity<?> getAllPostByStatus(Pageable pageable, long status) {
+        return null;
     }
 }

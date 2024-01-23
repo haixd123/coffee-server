@@ -2,6 +2,8 @@ package com.example.coffee2.reponsitory;
 
 import com.example.coffee2.entity.PostsEntity;
 import com.example.coffee2.response.PostsResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -51,8 +53,5 @@ public interface PostsRepository extends JpaRepository<PostsEntity, Long> {
     )
     PostsEntity getPostsName(String title);
 
-
-//    List<String> findAllByName(@RequestParam String name);
-
-
+    Page<PostsEntity> findAllByStatus(Pageable pageable, long status);
 }

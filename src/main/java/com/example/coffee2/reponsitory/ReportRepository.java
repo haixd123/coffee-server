@@ -11,4 +11,8 @@ import java.util.List;
 @Repository
 public interface ReportRepository extends JpaRepository<Report, Long> {
     Page<Report> findAllByReasonContaining(Pageable pageable, String reason);
+
+    List<Report> findAllByDataReportIdAndReportType(long dataReportId, long type);
+
+    List<Report> findAllByDataReportIdAndUserReportId(long dataReportId, long userReportId);
 }

@@ -6,6 +6,7 @@ import com.example.coffee2.entity.UserEntity;
 import com.example.coffee2.event.PostAcceptEvent;
 import com.example.coffee2.event.PostDelineEvent;
 import com.example.coffee2.event.PostHideEvent;
+import com.example.coffee2.event.PostReportEvent;
 import com.example.coffee2.reponsitory.NotificationRepository;
 import com.example.coffee2.reponsitory.PostsRepository;
 import com.example.coffee2.reponsitory.UserRespository;
@@ -102,6 +103,31 @@ public class PostListener {
         notification.setNotificationType(Constants.NOTIFICATION_POST_ACCEPT);
         notification.setFromUser("Admin");
         notification.setContent("Bài viết của bạn đã được duyệt.");
+        notification.setImagePost(user.getImage() != null ? user.getImage() : postsEntity.getImagePath());
+        Notification savedNotification = notificationRepository.save(notification);
+        simpMessagingTemplate.convertAndSend("/notifications", NotificationResponse.mapTo(savedNotification));
+    }
+
+    @EventListener
+    public void listenPostReport(PostReportEvent postReportEvent) {
+        PostReportEvent.PostReportReq req = postReportEvent.getPostReportReq();
+        Notification notification = new Notification();
+        PostsEntity postsEntity = postsRepository.findById(req.getPostId()).orElse(null);
+        if (postsEntity == null) {
+            log.error("post not found");
+            return;
+        }
+        UserEntity user = userRespository.findById(postsEntity.getUserId()).orElse(null);
+        if (user == null) {
+            log.error("author not found");
+            return;
+        }
+        notification.setPostId(postsEntity.getId());
+        notification.setUser(user);
+        notification.setReaded(false);
+        notification.setNotificationType(Constants.NOTIFICATION_POST_ACCEPT);
+        notification.setFromUser("Admin");
+        notification.setContent("Bài viết của bạn đã bị báo cáo.");
         notification.setImagePost(user.getImage() != null ? user.getImage() : postsEntity.getImagePath());
         Notification savedNotification = notificationRepository.save(notification);
         simpMessagingTemplate.convertAndSend("/notifications", NotificationResponse.mapTo(savedNotification));
