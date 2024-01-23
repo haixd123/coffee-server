@@ -141,15 +141,15 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public ResponseEntity<?> getCommentByPostId(Pageable pageable, long postId) {
-        Page<CommentEntity> comments = commentRepository.findAllByPostId(pageable, postId);
+    public ResponseEntity<?> getCommentByPostId(Pageable pageable, long postId,long status) {
+        Page<CommentEntity> comments = commentRepository.findAllByPostIdAndStatus(pageable, postId,status);
         Page<CommentResponse> commentResponses = new PageImpl<>(mapTo(comments), pageable, comments.getTotalElements());
         return ApiBaseResponse.done("Success", commentResponses);
     }
 
     @Override
-    public ResponseEntity<?> getCommentByUserId(Pageable pageable, long userId) {
-        Page<CommentEntity> comments = commentRepository.findAllByUserId(pageable, userId);
+    public ResponseEntity<?> getCommentByUserId(Pageable pageable, long userId,long status) {
+        Page<CommentEntity> comments = commentRepository.findAllByUserIdAndStatus(pageable, userId,status);
         Page<CommentResponse> commentResponses = new PageImpl<>(mapTo(comments), pageable, comments.getTotalElements());
         return ApiBaseResponse.done("Success", commentResponses);
     }

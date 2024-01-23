@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -134,18 +135,18 @@ public class CommentController {
     }
 
     @GetMapping("/comment/by-post/{postId}")
-    public ResponseEntity<?> getAllCommentByPost(@PathVariable(name = "postId") long postId, Pageable pageable) {
+    public ResponseEntity<?> getAllCommentByPost(@PathVariable(name = "postId") long postId, @RequestParam(name = "status") long status, Pageable pageable) {
         try {
-            return commentService.getCommentByPostId(pageable, postId);
+            return commentService.getCommentByPostId(pageable, postId, status);
         } catch (Exception e) {
             return ApiBaseResponse.fail(e.getMessage());
         }
     }
 
     @GetMapping("/comment/by-user/{userId}")
-    public ResponseEntity<?> getAllCommentByUser(@PathVariable(name = "userId") long userId, Pageable pageable) {
+    public ResponseEntity<?> getAllCommentByUser(@PathVariable(name = "userId") long userId, @RequestParam(name = "status") long status, Pageable pageable) {
         try {
-            return commentService.getCommentByUserId(pageable, userId);
+            return commentService.getCommentByUserId(pageable, userId, status);
         } catch (Exception e) {
             return ApiBaseResponse.fail(e.getMessage());
         }
