@@ -2,10 +2,8 @@ package com.example.coffee2.controller;
 
 import com.example.coffee2.entity.CommentEntity;
 import com.example.coffee2.pusher.UserCommentPusher;
-import com.example.coffee2.reponsitory.ReportRepository;
 import com.example.coffee2.request.*;
 import com.example.coffee2.response.CommentResponse;
-import com.example.coffee2.response.LikePostsResponse;
 import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.comment.CommentService;
 import com.example.coffee2.utils.Constants;
@@ -17,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -137,6 +134,11 @@ public class CommentController {
         apiBaseResponse.setData(request);
         apiBaseResponse.setOptional(1L);
         return apiBaseResponse;
+    }
+
+    @PostMapping("/comment/{commentId}/change-status/{status}")
+    public boolean changeStatus(@PathVariable Long commentId, @PathVariable Long status){
+        return commentService.changeStatus(commentId,status);
     }
 
     @GetMapping("/comment/by-status/{status}")

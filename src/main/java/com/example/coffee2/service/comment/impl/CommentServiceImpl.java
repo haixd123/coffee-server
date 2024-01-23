@@ -125,6 +125,23 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public boolean changeStatus(Long id, Long status) {
+        try {
+            CommentEntity obj = commentRepository.findById(id).orElse(null);
+
+            obj.setStatus(status);
+            if (status == Constants.COMMENT_HIDE) {
+                commentPusher.pushCommentHide(obj.getPostId());
+            }
+            commentRepository.save(obj);
+            return true;
+        } catch (Exception e) {
+            log.error("error: " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
     public CommentEntity getById(Long commentId) {
         return commentRepository.findById(commentId).orElse(null);
     }

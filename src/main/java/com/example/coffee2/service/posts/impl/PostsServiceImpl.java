@@ -1,6 +1,7 @@
 package com.example.coffee2.service.posts.impl;
 
 import com.example.coffee2.entity.CoffeeBeanEntity;
+import com.example.coffee2.entity.CommentEntity;
 import com.example.coffee2.entity.PostsEntity;
 import com.example.coffee2.event.PostAcceptEvent;
 import com.example.coffee2.event.PostDelineEvent;
@@ -144,6 +145,25 @@ public class PostsServiceImpl implements PostsService {
             return true;
         } catch (Exception e) {
             log.info("not success: " + e.getMessage());
+            return false;
+        }
+    }
+
+    @Override
+    public boolean changeStatus(Long postId, Long status) {
+        try {
+            PostsEntity obj = repository.findById(postId).orElse(null);
+
+            obj.setStatus(status);
+            if (status == Constants.POST_STATUS_HIDE) {
+                PostHideEvent.PostHideReq postHideReq = new PostHideEvent.PostHideReq();
+                postHideReq.setPostId(obj.getId());
+                postPusher.postHideEvent(postHideReq);
+            }
+            repository.save(obj);
+            return true;
+        } catch (Exception e) {
+            log.error("error: " + e.getMessage());
             return false;
         }
     }
