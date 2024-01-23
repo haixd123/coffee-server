@@ -136,20 +136,27 @@ public class CommentServiceImpl implements CommentService {
         return ApiBaseResponse.done("Success", commentResponses);
     }
 
+    @Override
+    public ResponseEntity<?> getCommentByContent(Pageable pageable, String text) {
+        Page<CommentEntity> comments = commentRepository.findAllByCommentTextContainingAndStatus(pageable, text, 1l);
+        Page<CommentResponse> commentResponses = new PageImpl<>(mapTo(comments), pageable, comments.getTotalElements());
+        return ApiBaseResponse.done("Success", commentResponses);
+    }
+
     public List<CommentResponse> mapTo(Page<CommentEntity> entities) {
         return entities.getContent().stream().map((cm) -> new ModelMapper().map(cm, CommentResponse.class)).collect(Collectors.toList());
     }
 
     @Override
-    public ResponseEntity<?> getCommentByPostId(Pageable pageable, long postId,long status) {
-        Page<CommentEntity> comments = commentRepository.findAllByPostIdAndStatus(pageable, postId,status);
+    public ResponseEntity<?> getCommentByPostId(Pageable pageable, long postId, long status) {
+        Page<CommentEntity> comments = commentRepository.findAllByPostIdAndStatus(pageable, postId, status);
         Page<CommentResponse> commentResponses = new PageImpl<>(mapTo(comments), pageable, comments.getTotalElements());
         return ApiBaseResponse.done("Success", commentResponses);
     }
 
     @Override
-    public ResponseEntity<?> getCommentByUserId(Pageable pageable, long userId,long status) {
-        Page<CommentEntity> comments = commentRepository.findAllByUserIdAndStatus(pageable, userId,status);
+    public ResponseEntity<?> getCommentByUserId(Pageable pageable, long userId, long status) {
+        Page<CommentEntity> comments = commentRepository.findAllByUserIdAndStatus(pageable, userId, status);
         Page<CommentResponse> commentResponses = new PageImpl<>(mapTo(comments), pageable, comments.getTotalElements());
         return ApiBaseResponse.done("Success", commentResponses);
     }

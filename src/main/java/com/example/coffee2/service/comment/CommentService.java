@@ -25,6 +25,8 @@ public interface CommentService {
 
     ResponseEntity<?> getCommentByStatus(Pageable pageable, long status);
 
+    ResponseEntity<?> getCommentByContent(Pageable pageable, String text);
+
     ResponseEntity<?> getCommentByPostId(Pageable pageable, long postId, long status);
 
     ResponseEntity<?> getCommentByUserId(Pageable pageable, long userId, long status);
