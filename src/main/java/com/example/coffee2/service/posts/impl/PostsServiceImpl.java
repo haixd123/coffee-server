@@ -40,6 +40,7 @@ public class PostsServiceImpl implements PostsService {
     @Autowired
     private PostsRespositoryCustomer postsRespositoryCustomer;
 
+    @Autowired
     private ReportRepository reportRepository;
     @Autowired
     private PostPusher postPusher;
@@ -146,10 +147,13 @@ public class PostsServiceImpl implements PostsService {
                 log.error("delete | không tìm thấy bản ghi");
                 return false;
             }
-            List<Report> reports = reportRepository.findAllByDataReportId(request.getId());
+            List<Report> reports = reportRepository.findAllByDataReportIdAndReportType(request.getId(), Constants.REPORT_TYPE_POST);
             reportRepository.deleteAll(reports);
             obj.setStatus(-1L);
             repository.save(obj);
+            PostHideEvent.PostHideReq postHideReq = new PostHideEvent.PostHideReq();
+            postHideReq.setPostId(request.getId());
+            postPusher.postHideEvent(postHideReq);
             return true;
         } catch (Exception e) {
             log.info("not success: " + e.getMessage());
