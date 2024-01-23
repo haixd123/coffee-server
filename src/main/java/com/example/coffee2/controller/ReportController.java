@@ -45,7 +45,7 @@ public class ReportController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable(name = "id") Long id) {
         try {
-            return reportService.delete(id);
+            return reportService.getById(id);
         } catch (Exception e) {
             return ApiBaseResponse.fail(e.getMessage());
         }
@@ -60,7 +60,7 @@ public class ReportController {
         }
     }
 
-    @GetMapping("/{reason}")
+    @GetMapping("/search/{reason}")
     public ResponseEntity<?> searchByReason(@PathVariable(name = "reason") String reason, Pageable pageable) {
         try {
             return reportService.searchReportByReason(pageable, reason);
