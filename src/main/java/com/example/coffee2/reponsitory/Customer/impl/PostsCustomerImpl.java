@@ -91,7 +91,7 @@ public class PostsCustomerImpl implements PostsRespositoryCustomer {
     private void createSqlGetListPosts(PostsRequest request, StringBuilder sql, Map<String, Object> params, boolean isCount) {
         log.info("request: " + request);
         if (isCount) {
-//            sql.append("select count(*) ");
+            sql.append("select count(*) ");
         } else {
 //            sql.append("select f.* ");
             sql.append("select ");
@@ -114,7 +114,7 @@ public class PostsCustomerImpl implements PostsRespositoryCustomer {
             sql.append("f.rating, ");
             sql.append("f.reason_deline ");
         }
-        sql.append("from ");
+        sql.append(" from ");
         sql.append("posts f ");
         sql.append("where f.status != -1 ");
         if (request.getUserId() != null) {
