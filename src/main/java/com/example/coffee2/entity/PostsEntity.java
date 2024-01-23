@@ -49,6 +49,7 @@ public class PostsEntity {
     @Column(name = "category")
     private String category;
 
+    private Integer rating;
     @Column(nullable = true)
     private String reason_deline;
 

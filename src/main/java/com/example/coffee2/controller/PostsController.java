@@ -110,7 +110,7 @@ public class PostsController {
 //    }
 
     @PreAuthorize("hasRole('USER')")
-    @PostMapping("/posts/create")
+    @PostMapping("/authors/posts/create")
     public ApiBaseResponse create(@RequestBody PostsRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
         List<String> list = repository.findByTitle(request.getTitle());

@@ -9,7 +9,7 @@ public class MemoriesStorage {
     public static boolean contain(String str) {
         boolean isContain = false;
         for (String s : offensive_words) {
-            if (str.contains(s)) {
+            if (str.contains(s) && s.length() > 1) {
                 isContain = true;
                 break;
             }
