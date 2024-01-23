@@ -33,12 +33,16 @@ public class PostRatingController {
             if (postsEntity == null) {
                 return ApiBaseResponse.fail("Không tìm thấy bài viết trên hệ thống");
             }
-            PostRating postRating = new ModelMapper().map(request, PostRating.class);
+            PostRating postRating = postRatingRepository.findByPostIdAndUserId(request.getPostId(), request.getUserId()).orElse(null);
+            if (postRating != null) {
+                postRating.setRating(request.getRating());
+            } else {
+                postRating = new ModelMapper().map(request, PostRating.class);
+            }
             postRatingRepository.save(postRating);
             // process to calc post rating
             List<PostRating> postRatings = postRatingRepository.findAllByPostId(request.getPostId());
             int totalRating = 0;
-
             for (PostRating postRating1 : postRatings) {
                 totalRating += postRating1.getRating();
             }
