@@ -40,7 +40,7 @@ public class UserEntity {
     @Column(name = "image")
     private String image;
 
-    private long delineCount;
+    private Long delineCount;
 //
 //    @Column(name = "image_data")
 //    @Lob

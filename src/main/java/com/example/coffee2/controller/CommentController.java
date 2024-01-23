@@ -9,6 +9,7 @@ import com.example.coffee2.response.LikePostsResponse;
 import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.comment.CommentService;
 import com.example.coffee2.utils.Constants;
+import com.example.coffee2.utils.MemoriesStorage;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -53,7 +54,13 @@ public class CommentController {
     @PostMapping("/authors/comment/create")
     public ApiBaseResponse create(@RequestBody CommentRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
-
+        if (MemoriesStorage.contain(request.getCommentText())) {
+            apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
+            apiBaseResponse.setErrorDescription("Nội dung bình luận không phù hợp hãy xem lại");
+            apiBaseResponse.setData(request);
+            apiBaseResponse.setOptional(1L);
+            return apiBaseResponse;
+        }
         boolean rs = commentService.create(request);
         if (!rs) {
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
@@ -91,6 +98,13 @@ public class CommentController {
     @PostMapping("/comment/update")
     public ApiBaseResponse update(@RequestBody CommentRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
+        if (MemoriesStorage.contain(request.getCommentText())) {
+            apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
+            apiBaseResponse.setErrorDescription("Nội dung bình luận không phù hợp hãy xem lại");
+            apiBaseResponse.setData(request);
+            apiBaseResponse.setOptional(1L);
+            return apiBaseResponse;
+        }
         boolean rs = commentService.update(request);
         if (!rs) {
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);

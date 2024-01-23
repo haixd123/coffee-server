@@ -9,6 +9,7 @@ import com.example.coffee2.request.PostsRequest;
 import com.example.coffee2.response.PostsResponse;
 import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.posts.PostsService;
+import com.example.coffee2.utils.MemoriesStorage;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -36,9 +37,7 @@ public class PostsController {
     ResponseEntity<ResponseObject> findAllPosts() {
         List<PostsEntity> foundProduct = repository.findAllPosts();
         log.info("foundProduct: " + foundProduct);
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "get full product successfully", foundProduct)
-        );
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("ok", "get full product successfully", foundProduct));
     }
 
     @GetMapping("/authors/posts/by-status/{status}")
@@ -53,18 +52,14 @@ public class PostsController {
     @GetMapping("/authors/posts/like-post")
     ResponseEntity<ResponseObject> findLikePost() {
         List<PostsEntity> foundProduct = repository.findLikePost();
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "get full product successfully", foundProduct)
-        );
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("ok", "get full product successfully", foundProduct));
     }
 
     @GetMapping("/authors/posts/comment-post")
     ResponseEntity<ResponseObject> findCommentPost() {
         List<PostsEntity> foundProduct = repository.findCommentPost();
         log.info("foundProduct: " + foundProduct);
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ResponseObject("ok", "get full product successfully", foundProduct)
-        );
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("ok", "get full product successfully", foundProduct));
     }
 
     @GetMapping("/authors/posts/search-list-category")
@@ -119,6 +114,7 @@ public class PostsController {
     public ApiBaseResponse create(@RequestBody PostsRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
         List<String> list = repository.findByTitle(request.getTitle());
+        if (checkOffisentive(request, apiBaseResponse)) return apiBaseResponse;
         if (list.size() > 0) {
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
             apiBaseResponse.setErrorDescription("Bài viết đã tồn tại trong hệ thống");
@@ -145,6 +141,7 @@ public class PostsController {
     @PostMapping("/posts/update")
     public ApiBaseResponse updatePosts(@RequestBody PostsRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
+        if (checkOffisentive(request, apiBaseResponse)) return apiBaseResponse;
 //        List<String> list = repository.findByTitle(request.getTitle());
 //        if (list.size() > 0) {
 //            apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
@@ -167,6 +164,31 @@ public class PostsController {
         apiBaseResponse.setData(request);
         apiBaseResponse.setOptional(1l);
         return apiBaseResponse;
+    }
+
+    private boolean checkOffisentive(@RequestBody PostsRequest request, ApiBaseResponse apiBaseResponse) {
+        if (MemoriesStorage.contain(request.getTitle())) {
+            apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
+            apiBaseResponse.setErrorDescription("Tiêu đề bài viết chứa từ ngữ thô tục không thể tạo");
+            apiBaseResponse.setData(request);
+            apiBaseResponse.setOptional(1l);
+            return true;
+        }
+        if (MemoriesStorage.contain(request.getContentPost())) {
+            apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
+            apiBaseResponse.setErrorDescription("Nội dung bài viết chứa từ ngữ thô tục không thể tạo");
+            apiBaseResponse.setData(request);
+            apiBaseResponse.setOptional(1l);
+            return true;
+        }
+        if (MemoriesStorage.contain(request.getContentDetail())) {
+            apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
+            apiBaseResponse.setErrorDescription("Nội dung bài viết chứa từ ngữ thô tục không thể tạo");
+            apiBaseResponse.setData(request);
+            apiBaseResponse.setOptional(1l);
+            return true;
+        }
+        return false;
     }
 
     @PreAuthorize("hasRole('USER')")
