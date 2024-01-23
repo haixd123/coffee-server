@@ -86,14 +86,19 @@ public class SavePostsCustomerImpl implements SavePostsCustomer {
             sql.append("f.id, \n");
             sql.append("f.user_id, \n");
             sql.append("f.post_id, \n");
-            sql.append("f.is_save \n");
+            sql.append("f.is_save, \n");
+            sql.append("p.title, \n");
+            sql.append("p.created_at, \n");
+            sql.append("p.category, \n");
+            sql.append("p.content_post, \n");
+            sql.append("p.image_path \n");
             sql.append("from \n");
             sql.append("save_posts f \n");
             if (request.getUserId() != null) {
                 sql.append(" and userId = :userId \n");
                 params.put("userId", request.getUserId());
             }
-
+            sql.append("join posts p on f.post_id = p.id");
         }
     }
 }

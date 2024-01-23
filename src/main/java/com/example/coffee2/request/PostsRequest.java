@@ -23,7 +23,7 @@ public class PostsRequest {
     private int sortCommentUp;
     private int rating;
 
-    private String reason_deline;
+    private String reasonDeline;
     private int pageIndex;
     private int pageSize;
 }

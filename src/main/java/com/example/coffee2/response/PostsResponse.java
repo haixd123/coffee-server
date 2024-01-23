@@ -18,5 +18,7 @@ public class PostsResponse {
     private String createdAt;
     private String updatedAt;
     private String category;
+    private String rating;
+    private String reasonDeline;
 
 }

@@ -111,7 +111,8 @@ public class PostsCustomerImpl implements PostsRespositoryCustomer {
             sql.append("f.created_at, ");
             sql.append("f.updated_at, ");
             sql.append("f.category, ");
-            sql.append("f.rating ");
+            sql.append("f.rating, ");
+            sql.append("f.reason_deline ");
         }
         sql.append("from ");
         sql.append("posts f ");

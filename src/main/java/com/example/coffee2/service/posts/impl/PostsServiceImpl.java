@@ -73,6 +73,7 @@ public class PostsServiceImpl implements PostsService {
             obj.setCreatedAt(now);
             obj.setUpdatedAt(null);
             obj.setCategory(request.getCategory());
+
             repository.save(obj);
             return true;
         } catch (Exception e) {
@@ -104,12 +105,12 @@ public class PostsServiceImpl implements PostsService {
             obj.setUpdatedAt(now);
 //            obj.setTotalComment(request.getTotalComment());
             obj.setCategory(request.getCategory());
-            obj.setReason_deline(request.getReason_deline());
+            obj.setReason_deline(request.getReasonDeline());
             repository.save(obj);
             if (request.getStatus() == Constants.POST_STATUS_DELINE) {
                 PostDelineEvent.PostDelineReq postDelineReq = new PostDelineEvent.PostDelineReq();
                 postDelineReq.setPostId(request.getId());
-                postDelineReq.setReasonDeline(request.getReason_deline());
+                postDelineReq.setReasonDeline(request.getReasonDeline());
                 postPusher.postDelineEvent(postDelineReq);
             } else if (request.getStatus() == Constants.POST_STATUS_ACCEPT) {
                 PostAcceptEvent.PostAcceptEventReq postAcceptEventReq = new PostAcceptEvent.PostAcceptEventReq();
