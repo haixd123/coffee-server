@@ -2,28 +2,37 @@ package com.example.coffee2.service.posts.impl;
 
 import com.example.coffee2.entity.CoffeeBeanEntity;
 import com.example.coffee2.entity.PostsEntity;
+import com.example.coffee2.entity.Report;
 import com.example.coffee2.event.PostAcceptEvent;
 import com.example.coffee2.event.PostDelineEvent;
 import com.example.coffee2.event.PostHideEvent;
 import com.example.coffee2.pusher.PostPusher;
 import com.example.coffee2.reponsitory.PostsRepository;
+import com.example.coffee2.reponsitory.ReportRepository;
 import com.example.coffee2.request.LikePostsRequest;
 import com.example.coffee2.request.PostsRequest;
 import com.example.coffee2.response.PostsResponse;
 import com.example.coffee2.reponsitory.Customer.PostsRespositoryCustomer;
+import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.posts.PostsService;
 import com.example.coffee2.utils.Constants;
 import com.example.coffee2.utils.DateProc;
 import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.RandomUtils;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -31,6 +40,7 @@ public class PostsServiceImpl implements PostsService {
     @Autowired
     private PostsRespositoryCustomer postsRespositoryCustomer;
 
+    private ReportRepository reportRepository;
     @Autowired
     private PostPusher postPusher;
     @Autowired
@@ -136,6 +146,8 @@ public class PostsServiceImpl implements PostsService {
                 log.error("delete | không tìm thấy bản ghi");
                 return false;
             }
+            List<Report> reports = reportRepository.findAllByDataReportId(request.getId());
+            reportRepository.deleteAll(reports);
             obj.setStatus(-1L);
             repository.save(obj);
             return true;
@@ -143,5 +155,16 @@ public class PostsServiceImpl implements PostsService {
             log.info("not success: " + e.getMessage());
             return false;
         }
+    }
+
+    @Override
+    public ResponseEntity<?> getAllPostByStatus(Pageable pageable, long status) {
+        Page<PostsEntity> postsEntities = repository.findAllByStatus(pageable, status);
+        Page<PostsResponse> postsResponses = new PageImpl<>(mapTo(postsEntities), pageable, postsEntities.getTotalElements());
+        return ApiBaseResponse.done("Success", postsResponses);
+    }
+
+    public List<PostsResponse> mapTo(Page<PostsEntity> postsEntities) {
+        return postsEntities.getContent().stream().map((p) -> new ModelMapper().map(p, PostsResponse.class)).collect(Collectors.toList());
     }
 }

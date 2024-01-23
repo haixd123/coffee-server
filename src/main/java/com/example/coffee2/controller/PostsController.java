@@ -11,6 +11,7 @@ import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.posts.PostsService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -38,6 +39,15 @@ public class PostsController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ResponseObject("ok", "get full product successfully", foundProduct)
         );
+    }
+
+    @GetMapping("/authors/posts/by-status/{status}")
+    ResponseEntity<?> getAllPostByStatus(@PathVariable(name = "status") long status, Pageable pageable) {
+        try {
+            return postsService.getAllPostByStatus(pageable, status);
+        } catch (Exception e) {
+            return ApiBaseResponse.fail(e.getMessage());
+        }
     }
 
     @GetMapping("/authors/posts/like-post")
