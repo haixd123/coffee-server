@@ -110,7 +110,7 @@ public class PostsController {
 //    }
 
     @PreAuthorize("hasRole('USER')")
-    @PostMapping("/posts/create")
+    @PostMapping("/authors/posts/create")
     public ApiBaseResponse create(@RequestBody PostsRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
         List<String> list = repository.findByTitle(request.getTitle());
@@ -167,21 +167,21 @@ public class PostsController {
     }
 
     private boolean checkOffisentive(@RequestBody PostsRequest request, ApiBaseResponse apiBaseResponse) {
-        if (MemoriesStorage.contain(request.getTitle())) {
+        if (MemoriesStorage.contain(request.getTitle().toLowerCase())) {
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
             apiBaseResponse.setErrorDescription("Tiêu đề bài viết chứa từ ngữ thô tục không thể tạo");
             apiBaseResponse.setData(request);
             apiBaseResponse.setOptional(1l);
             return true;
         }
-        if (MemoriesStorage.contain(request.getContentPost())) {
+        if (MemoriesStorage.contain(request.getContentPost().toLowerCase())) {
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
             apiBaseResponse.setErrorDescription("Nội dung bài viết chứa từ ngữ thô tục không thể tạo");
             apiBaseResponse.setData(request);
             apiBaseResponse.setOptional(1l);
             return true;
         }
-        if (MemoriesStorage.contain(request.getContentDetail())) {
+        if (MemoriesStorage.contain(request.getContentDetail().toLowerCase())) {
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
             apiBaseResponse.setErrorDescription("Nội dung bài viết chứa từ ngữ thô tục không thể tạo");
             apiBaseResponse.setData(request);

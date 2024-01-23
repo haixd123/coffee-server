@@ -11,6 +11,7 @@ public class MemoriesStorage {
         for (String s : offensive_words) {
             if (str.contains(s)) {
                 isContain = true;
+                break;
             }
         }
         return isContain;

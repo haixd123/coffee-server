@@ -98,7 +98,7 @@ public class CommentController {
     @PostMapping("/comment/update")
     public ApiBaseResponse update(@RequestBody CommentRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
-        if (MemoriesStorage.contain(request.getCommentText())) {
+        if (MemoriesStorage.contain(request.getCommentText().toLowerCase())) {
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
             apiBaseResponse.setErrorDescription("Nội dung bình luận không phù hợp hãy xem lại");
             apiBaseResponse.setData(request);
