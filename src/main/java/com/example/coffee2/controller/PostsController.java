@@ -87,7 +87,6 @@ public class PostsController {
     }
 
 
-
 //    @PostMapping("/search-item-category")
 //    ApiBaseResponse searchItemCategory(@RequestBody PostsRequest request) {
 //        List<PostsResponse> listResult = postsService.getListPosts(request);
@@ -131,7 +130,6 @@ public class PostsController {
         apiBaseResponse.setOptional(1L);
         return apiBaseResponse;
     }
-
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/posts/update")

@@ -49,6 +49,7 @@ public class PostsEntity {
     @Column(name = "category")
     private String category;
 
+    @Column(nullable = true)
     private String reason_deline;
 
 //    @Override

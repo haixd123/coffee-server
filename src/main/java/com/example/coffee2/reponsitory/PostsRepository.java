@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 public interface PostsRepository extends JpaRepository<PostsEntity, Long> {
     @Query(
@@ -14,6 +16,8 @@ public interface PostsRepository extends JpaRepository<PostsEntity, Long> {
             nativeQuery = true
     )
     List<PostsEntity> findAllPosts();
+
+    Optional<PostsEntity> findByIdAndStatus(Long id, Long status);
 
     List<PostsEntity> findAllByUserIdAndStatus(Long userId, Long status);
 

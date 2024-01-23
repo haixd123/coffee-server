@@ -5,6 +5,7 @@ import com.example.coffee2.entity.PostsEntity;
 import com.example.coffee2.entity.UserEntity;
 import com.example.coffee2.event.PostAcceptEvent;
 import com.example.coffee2.event.PostDelineEvent;
+import com.example.coffee2.event.PostHideEvent;
 import com.example.coffee2.reponsitory.NotificationRepository;
 import com.example.coffee2.reponsitory.PostsRepository;
 import com.example.coffee2.reponsitory.UserRespository;
@@ -53,6 +54,30 @@ public class PostListener {
         notification.setFromUser("Admin");
         notification.setContent("Bài viết của bạn đã bị từ chối.");
         notification.setImagePost(user.getImage() != null ? user.getImage() : postsEntity.getImagePath());
+        Notification savedNotification = notificationRepository.save(notification);
+        simpMessagingTemplate.convertAndSend("/notifications", NotificationResponse.mapTo(savedNotification));
+    }
+
+    @EventListener
+    public void listenPostHide(PostHideEvent postHideEvent) {
+        PostsEntity postsEntity = postsRepository.findById(postHideEvent.getPostHideReq().getPostId()).orElse(null);
+        if (postsEntity == null) {
+            log.error("post not found");
+            return;
+        }
+        UserEntity author = userRespository.findById(postsEntity.getUserId()).orElse(null);
+        if (author == null) {
+            log.error("author not found");
+            return;
+        }
+        Notification notification = new Notification();
+        notification.setPostId(postsEntity.getId());
+        notification.setUser(author);
+        notification.setReaded(false);
+        notification.setNotificationType(Constants.NOTIFICATION_POST_HIDE);
+        notification.setFromUser("Admin");
+        notification.setContent("Bài viết của bạn đã bị gỡ.");
+        notification.setImagePost(author.getImage() != null ? author.getImage() : postsEntity.getImagePath());
         Notification savedNotification = notificationRepository.save(notification);
         simpMessagingTemplate.convertAndSend("/notifications", NotificationResponse.mapTo(savedNotification));
     }

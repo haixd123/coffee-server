@@ -2,6 +2,10 @@ package com.example.coffee2.service.posts.impl;
 
 import com.example.coffee2.entity.CoffeeBeanEntity;
 import com.example.coffee2.entity.PostsEntity;
+import com.example.coffee2.event.PostAcceptEvent;
+import com.example.coffee2.event.PostDelineEvent;
+import com.example.coffee2.event.PostHideEvent;
+import com.example.coffee2.pusher.PostPusher;
 import com.example.coffee2.reponsitory.PostsRepository;
 import com.example.coffee2.request.LikePostsRequest;
 import com.example.coffee2.request.PostsRequest;
@@ -27,6 +31,8 @@ public class PostsServiceImpl implements PostsService {
     @Autowired
     private PostsRespositoryCustomer postsRespositoryCustomer;
 
+    @Autowired
+    private PostPusher postPusher;
     @Autowired
     private PostsRepository repository;
 
@@ -98,9 +104,21 @@ public class PostsServiceImpl implements PostsService {
             obj.setUpdatedAt(now);
 //            obj.setTotalComment(request.getTotalComment());
             obj.setCategory(request.getCategory());
+            obj.setReason_deline(request.getReason_deline());
             repository.save(obj);
-            if (request.getStatus() == Constants.POST_STATUS_DELINE){
-
+            if (request.getStatus() == Constants.POST_STATUS_DELINE) {
+                PostDelineEvent.PostDelineReq postDelineReq = new PostDelineEvent.PostDelineReq();
+                postDelineReq.setPostId(request.getId());
+                postDelineReq.setReasonDeline(request.getReason_deline());
+                postPusher.postDelineEvent(postDelineReq);
+            } else if (request.getStatus() == Constants.POST_STATUS_ACCEPT) {
+                PostAcceptEvent.PostAcceptEventReq postAcceptEventReq = new PostAcceptEvent.PostAcceptEventReq();
+                postAcceptEventReq.setPostId(request.getId());
+                postPusher.postAcceptEvent(postAcceptEventReq);
+            } else if (request.getStatus() == Constants.POST_STATUS_HIDE) {
+                PostHideEvent.PostHideReq postHideReq = new PostHideEvent.PostHideReq();
+                postHideReq.setPostId(request.getId());
+                postPusher.postHideEvent(postHideReq);
             }
             return true;
         } catch (Exception e) {

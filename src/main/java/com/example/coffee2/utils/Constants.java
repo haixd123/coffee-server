@@ -25,6 +25,10 @@ public interface Constants {
     Integer NOTIFICATION_POST_DELINE = -1;
     Integer NOTIFICATION_POST_ACCEPT = 2;
     Long POST_STATUS_DELINE = -2L;
-    Integer POST_STATUS_ACCEPT = 1;
+    Long POST_STATUS_ACCEPT = 1l;
     Integer POST_STATUS_DRAFT = 2;
+    Long REPORT_TYPE_POST = 1l;
+    Long POST_STATUS_HIDE = -1l;
+    Long REPORT_TYPE_COMMENT = 2l;
+    Integer NOTIFICATION_POST_HIDE = -2;
 }
