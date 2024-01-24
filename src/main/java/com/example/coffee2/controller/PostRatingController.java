@@ -42,11 +42,11 @@ public class PostRatingController {
             postRatingRepository.save(postRating);
             // process to calc post rating
             List<PostRating> postRatings = postRatingRepository.findAllByPostId(request.getPostId());
-            int totalRating = 0;
+            float totalRating = 0;
             for (PostRating postRating1 : postRatings) {
                 totalRating += postRating1.getRating();
             }
-            int rate = totalRating / 5;
+            float rate = totalRating / postRatings.size();
             postsEntity.setRating(rate);
             postsRepository.save(postsEntity);
             return ApiBaseResponse.done("Rating success", postRating);

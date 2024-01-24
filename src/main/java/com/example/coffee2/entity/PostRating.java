@@ -16,5 +16,5 @@ public class PostRating {
     private Long userId;
     private Long postId;
 
-    private Integer rating;
+    private Float rating;
 }

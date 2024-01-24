@@ -204,7 +204,7 @@ public class PostsServiceImpl implements PostsService {
                 postsEntities.sort(Comparator.comparingLong(PostsEntity::getComment).reversed());
                 break;
             case "rating":
-                postsEntities.sort(Comparator.comparingLong(PostsEntity::getRating).reversed());
+                postsEntities.sort(Comparator.comparing(PostsEntity::getRating).reversed());
                 break;
         }
         return ApiBaseResponse.done("Success", new PageImpl<>(postsEntities, pageable, postsEntities.size()));

@@ -6,5 +6,5 @@ import lombok.Data;
 public class PostRatingRequest {
     private Long postId;
     private Long userId;
-    private Integer rating;
+    private Float rating;
 }
