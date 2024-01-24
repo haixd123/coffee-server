@@ -130,8 +130,8 @@ public class PostsController {
     @PostMapping("/posts/create")
     public ApiBaseResponse create(@RequestBody PostsRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
-        if (checkOffisentive(request, apiBaseResponse)) return apiBaseResponse;
-        if (request.getStatus() != 2) {
+//        if (checkOffisentive(request, apiBaseResponse)) return apiBaseResponse;
+        if (request.getStatus() != 2 || request.getStatus() != 0) {
             List<String> list = repository.findByTitle(request.getTitle());
             if (list.size() > 0) {
                 apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);

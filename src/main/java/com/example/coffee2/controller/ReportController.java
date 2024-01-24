@@ -23,7 +23,6 @@ public class ReportController {
     @PostMapping
     public ResponseEntity<?> store(@RequestBody ReportRequest request) {
         try {
-            log.info("request:" + request);
             return reportService.create(request);
         } catch (Exception e) {
             return ApiBaseResponse.fail(e.getMessage());

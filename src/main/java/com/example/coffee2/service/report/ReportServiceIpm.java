@@ -16,6 +16,7 @@ import com.example.coffee2.utils.Mapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -52,7 +53,7 @@ public class ReportServiceIpm implements ReportService {
 
     @Override
     public ResponseEntity<?> create(ReportRequest request) {
-        if (Objects.equals(request.getDataReportId(), Constants.REPORT_TYPE_POST)) {
+        if (Objects.equals(request.getReportType(), Constants.REPORT_TYPE_POST)) {
             PostsEntity postsEntity = postsRepository.findByIdAndStatus(request.getDataReportId(), 1L).orElse(null);
             if (postsEntity == null) {
                 return ApiBaseResponse.fail("Bài viết bạn báo cáo không tồn tại trên hệ thống");
@@ -62,7 +63,7 @@ public class ReportServiceIpm implements ReportService {
                 return ApiBaseResponse.fail("Một bài viết bạn chỉ được báo cáo tối đa 3 lần");
             }
 
-        } else if (Objects.equals(request.getDataReportId(), Constants.REPORT_TYPE_COMMENT)) {
+        } else if (Objects.equals(request.getReportType(), Constants.REPORT_TYPE_COMMENT)) {
             CommentEntity comment = commentRepository.findById(request.getDataReportId()).orElse(null);
             if (comment == null) {
                 return ApiBaseResponse.fail("Bình luận bạn báo cáo không tồn tại trên hệ thống");
@@ -72,7 +73,13 @@ public class ReportServiceIpm implements ReportService {
     }
 
     public ResponseEntity<?> processToAddReport(ReportRequest request) {
-        reportRepository.save(new ModelMapper().map(request, Report.class));
+        Report report = new Report();
+        report.setDataReportId(request.getDataReportId());
+        report.setReportType(request.getReportType());
+        report.setUserReportId(request.getUserReportId());
+        report.setReason(request.getReason());
+        reportRepository.save(report);
+//        reportRepository.save(new ModelMapper().map(request, Report.class));
         if (request.getReportType() == Constants.REPORT_TYPE_POST) {
             PostReportEvent.PostReportReq postReportReq = new PostReportEvent.PostReportReq();
             postReportReq.setPostId(request.getDataReportId());

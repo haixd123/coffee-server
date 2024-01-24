@@ -47,7 +47,7 @@ public class CommentController {
         return apiBaseResponse;
     }
 
-    //    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/authors/comment/create")
     public ApiBaseResponse create(@RequestBody CommentRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
@@ -136,12 +136,13 @@ public class CommentController {
         return apiBaseResponse;
     }
 
-    @PostMapping("/comment/{commentId}/change-status/{status}")
+    @PostMapping("/authors/comment/{commentId}/change-status/{status}")
     public boolean changeStatus(@PathVariable Long commentId, @PathVariable Long status) {
         return commentService.changeStatus(commentId, status);
     }
 
-    @GetMapping("/comment/by-status/{status}")
+//    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/authors/comment/by-status/{status}")
     public ResponseEntity<?> getAllCommentByStatus(@PathVariable(name = "status") long status, Pageable pageable) {
         try {
             return commentService.getCommentByStatus(pageable, status);
@@ -150,7 +151,8 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/comment/by-post/{postId}")
+//    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/authors/comment/by-post/{postId}")
     public ResponseEntity<?> getAllCommentByPost(@PathVariable(name = "postId") long postId, @RequestParam(name = "status", defaultValue = "1") String status, Pageable pageable) {
         try {
             return commentService.getCommentByPostId(pageable, postId, Long.parseLong(status));
@@ -159,7 +161,8 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/comment/by-content")
+//    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/authors/comment/by-content")
     public ResponseEntity<?> getAllCommentByPost(@RequestParam(name = "text", defaultValue = "") String text, Pageable pageable) {
         try {
             return commentService.getCommentByContent(pageable, text);
@@ -168,7 +171,8 @@ public class CommentController {
         }
     }
 
-    @GetMapping("/comment/by-user/{userId}")
+//    @PreAuthorize("hasRole('USER')")
+    @GetMapping("/authors/comment/by-user/{userId}")
     public ResponseEntity<?> getAllCommentByUser(@PathVariable(name = "userId") long userId, @RequestParam(name = "status", defaultValue = "1") String status, Pageable pageable) {
         try {
             return commentService.getCommentByUserId(pageable, userId, Long.parseLong(status));

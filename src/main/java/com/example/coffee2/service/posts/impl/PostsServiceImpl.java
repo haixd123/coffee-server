@@ -55,7 +55,7 @@ public class PostsServiceImpl implements PostsService {
     public boolean create(PostsRequest request) {
         Date now = new Date();
         try {
-            if (request.getStatus() != 2) {
+            if (request.getStatus() != 2 || request.getStatus() != 0) {
                 List<String> checkNameExist = repository.findByTitle(request.getTitle());
                 if (checkNameExist.contains(request.getTitle())) {
                     log.error("create | Tài khoản đã tồn tại");
