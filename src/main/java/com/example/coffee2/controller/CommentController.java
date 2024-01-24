@@ -117,7 +117,7 @@ public class CommentController {
         return apiBaseResponse;
     }
 
-    @PreAuthorize("hasRole('USER')")
+//    @PreAuthorize("hasRole('USER')")
     @PostMapping("/comment/delete")
     public ApiBaseResponse delete(@RequestBody CommentRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();

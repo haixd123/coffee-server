@@ -4,6 +4,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,12 +34,18 @@ public class JwtService {
     SecretKey key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
     String secretString = Encoders.BASE64.encode(key.getEncoded());
 
+//    @Value("vuaNayLaDoMoiLanRestartServerThiSignSeTaoLaiMotCaiMovuaNayLaDoMoiLanRestartServerThiSignSeTaoLaiMotCaiMovuaNayLaDoMoiLanRestartServerThiSignSeTaoLaiMotCaiMoi")
+//    private String SECRET_KEY;
+//    private Key getSignInKey() {
+//        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+//        return Keys.hmacShaKeyFor(keyBytes);
+//    }
     public String generateAccessToken(String username) {
         return Jwts.builder()
                 .setSubject((username))
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + expiration))
-                .signWith(SignatureAlgorithm.HS512, secretString)
+                .signWith(SignatureAlgorithm.HS512,secretString)
                 .compact();
     }
 
