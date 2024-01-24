@@ -20,7 +20,7 @@ public interface PostsRepository extends JpaRepository<PostsEntity, Long> {
     )
     List<PostsEntity> findAllPosts();
 
-    List<PostsEntity> findAllByCreatedAtBetweenAndOrderByLike1(LocalDateTime start,LocalDateTime end);
+    List<PostsEntity> findAllByCreatedAtBetweenOrderByLike1(LocalDateTime start,LocalDateTime end);
 
     List<PostsEntity> findAllByUserIdAndStatus(Long userId, Long status);
 
@@ -56,4 +56,6 @@ public interface PostsRepository extends JpaRepository<PostsEntity, Long> {
     PostsEntity getPostsName(String title);
 
     Page<PostsEntity> findAllByStatus(Pageable pageable, long status);
+
+    Optional<PostsEntity> findByIdAndStatus(Long postId, Long status);
 }

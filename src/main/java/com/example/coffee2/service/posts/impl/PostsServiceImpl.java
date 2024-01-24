@@ -8,26 +8,19 @@ import com.example.coffee2.event.PostDelineEvent;
 import com.example.coffee2.event.PostHideEvent;
 import com.example.coffee2.pusher.PostPusher;
 import com.example.coffee2.reponsitory.PostsRepository;
-import com.example.coffee2.request.LikePostsRequest;
 import com.example.coffee2.request.PostsRequest;
 import com.example.coffee2.response.PostsResponse;
 import com.example.coffee2.reponsitory.Customer.PostsRespositoryCustomer;
 import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.posts.PostsService;
 import com.example.coffee2.utils.Constants;
-import com.example.coffee2.utils.DateProc;
-import com.sun.tools.javac.util.DefinedBy;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -193,7 +186,7 @@ public class PostsServiceImpl implements PostsService {
                 startDate = endDate.minusYears(1);
                 break;
         }
-        List<PostsEntity> postsEntities = repository.findAllByCreatedAtBetweenAndOrderByLike1(startDate, endDate);
+        List<PostsEntity> postsEntities = repository.findAllByCreatedAtBetweenOrderByLike1(startDate, endDate);
         switch (type) {
             case "comment":
                 postsEntities.sort(Comparator.comparingLong(PostsEntity::getComment).reversed());
