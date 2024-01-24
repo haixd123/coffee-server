@@ -38,10 +38,10 @@ public class ReportController {
         }
     }
 
-    @GetMapping("/by-post/{postId}")
-    public ResponseEntity<?> getReportByPost(@PathVariable(name = "postId") Long postId, Pageable pageable) {
+    @GetMapping("/by-id-and-type")
+    public ResponseEntity<?> getReportByPost(@RequestParam(name = "dataId") Long dataId, @RequestParam(name = "type") Long type, Pageable pageable) {
         try {
-            return reportService.getAllReportByPost(postId, pageable);
+            return reportService.getAllReportByIdAndType(dataId, type, pageable);
         } catch (Exception e) {
             return ApiBaseResponse.fail(e.getMessage());
         }

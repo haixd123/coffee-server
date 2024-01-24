@@ -154,4 +154,11 @@ public class ReportServiceIpm implements ReportService {
         Page<ReportResponse> data = new PageImpl<>(mapTo(reports), pageable, reports.getTotalElements());
         return ApiBaseResponse.done("Success", data);
     }
+
+    @Override
+    public ResponseEntity<?> getAllReportByIdAndType(Long postId, Long type, Pageable pageable) {
+        Page<Report> reports = reportRepository.findAllByDataReportIdAndReportType(pageable, postId, type);
+        Page<ReportResponse> data = new PageImpl<>(mapTo(reports), pageable, reports.getTotalElements());
+        return ApiBaseResponse.done("Success", data);
+    }
 }
