@@ -110,17 +110,19 @@ public class PostsController {
 //    }
 
     @PreAuthorize("hasRole('USER')")
-    @PostMapping("/authors/posts/create")
+    @PostMapping("/posts/create")
     public ApiBaseResponse create(@RequestBody PostsRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
-        List<String> list = repository.findByTitle(request.getTitle());
         if (checkOffisentive(request, apiBaseResponse)) return apiBaseResponse;
-        if (list.size() > 0) {
-            apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
-            apiBaseResponse.setErrorDescription("Bài viết đã tồn tại trong hệ thống");
-            apiBaseResponse.setData(request);
-            apiBaseResponse.setOptional(1l);
-            return apiBaseResponse;
+        if (request.getStatus() != 2) {
+            List<String> list = repository.findByTitle(request.getTitle());
+            if (list.size() > 0) {
+                apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
+                apiBaseResponse.setErrorDescription("Bài viết đã tồn tại trong hệ thống");
+                apiBaseResponse.setData(request);
+                apiBaseResponse.setOptional(1l);
+                return apiBaseResponse;
+            }
         }
         boolean rs = postsService.create(request);
         if (!rs) {

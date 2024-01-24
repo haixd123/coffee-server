@@ -185,7 +185,7 @@ public class PostsCustomerImpl implements PostsRespositoryCustomer {
     }
 
     private void createSqlGetTotalPosts(PostsRequest request, StringBuilder sql, Map<String, Object> params) {
-        sql.append("select sum(status) from posts  ");
+        sql.append("select count(*) from posts  ");
         sql.append("where 1 = 1 ");
         sql.append("and user_id = :userId ");
         params.put("userId", request.getUserId());

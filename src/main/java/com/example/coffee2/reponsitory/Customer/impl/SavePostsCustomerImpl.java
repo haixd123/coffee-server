@@ -73,13 +73,14 @@ public class SavePostsCustomerImpl implements SavePostsCustomer {
             sql.append("select count(*) \n");
             sql.append("from \n");
             sql.append("save_posts f \n");
+            sql.append(" where 1 = 1 \n");
             if (request.getUserId() != null) {
-                sql.append(" and userId = :userId \n");
+                sql.append(" and f.user_id = :userId \n");
                 params.put("userId", request.getUserId());
             }
 //            if (request.getStatus() != null) {
-//                sql.append(" and status = :userId \n");
-//                params.put("userId", request.getUserId());
+//                sql.append(" and status = :status \n");
+//                params.put("status", request.getStatus());
 //            }
         } else {
             sql.append("select \n");
@@ -94,11 +95,16 @@ public class SavePostsCustomerImpl implements SavePostsCustomer {
             sql.append("p.image_path \n");
             sql.append("from \n");
             sql.append("save_posts f \n");
+            sql.append(" join posts p on f.post_id = p.id ");
+            sql.append(" where 1= 1 \n");
             if (request.getUserId() != null) {
-                sql.append(" and userId = :userId \n");
+                sql.append(" and f.user_id = :userId \n");
                 params.put("userId", request.getUserId());
             }
-            sql.append("join posts p on f.post_id = p.id");
+//            if (request.getStatus() != null) {
+//                sql.append(" and status = :status \n");
+//                params.put("status", request.getStatus());
+//            }
         }
     }
 }

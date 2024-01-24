@@ -78,13 +78,13 @@ public class CommentCustomerImpl implements CommentCustomer {
             sql.append("from \n");
             sql.append("comment f \n");
 //            sql.append("where f.status = 1 \n");
-            if (request.getPostId() != null) {
-                sql.append(" where 1=1 ");
-                sql.append(" and f.post_id = :postId \n");
-                params.put("postId", request.getPostId());
-                sql.append("update dbo.posts set total_comment = (select count(comment_id) from comment where post_id= :postId ) where id= :postId");
-                params.put("postId", request.getPostId());
-            }
+//            if (request.getPostId() != null) {
+//                sql.append(" where 1=1 ");
+//                sql.append(" and f.post_id = :postId \n");
+//                params.put("postId", request.getPostId());
+//                sql.append("update dbo.posts set total_comment = (select count(comment_id) from comment where post_id= :postId ) where id= :postId");
+//                params.put("postId", request.getPostId());
+//            }
         } else {
             sql.append("select \n");
             sql.append("f.id, \n");
@@ -97,8 +97,12 @@ public class CommentCustomerImpl implements CommentCustomer {
             sql.append("f.like_comment, \n");
             sql.append("f.status \n");
             sql.append("from \n");
-            sql.append("comment f \n");
-            sql.append("where f.status = 1 \n");
+            sql.append(" comment f \n");
+            sql.append(" where 1 = 1 \n");
+            if (request.getStatus() != null) {
+                sql.append(" and f.status = :status \n");
+                params.put("status", request.getStatus());
+            }
             sql.append(" order by create_at desc \n");
         }
 
@@ -125,9 +129,13 @@ public class CommentCustomerImpl implements CommentCustomer {
     }
 
     private void createSqlGetTotalCommentPosts(CommentRequest request, StringBuilder sql, Map<String, Object> params) {
-        sql.append("select sum(total_comment) from posts  \n");
-        sql.append("where 1 = 1 \n");
-        sql.append("and user_id = :userId \n");
+        sql.append("select count(*) " +
+                " from comment c " +
+                " join posts p " +
+                " on c.post_id=p.id " +
+                " where 1=1 and p.user_id = :userId  \n");
+//        sql.append("where 1 = 1 \n");
+//        sql.append("and user_id = :userId \n");
         params.put("userId", request.getUserId());
     }
 }

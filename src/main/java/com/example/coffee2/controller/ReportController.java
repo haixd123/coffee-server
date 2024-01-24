@@ -4,20 +4,26 @@ import com.example.coffee2.request.ReportRequest;
 import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.report.ReportService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("api/authors/reports")
 public class ReportController {
 
     private final ReportService reportService;
 
+
+//    @PreAuthorize("hasRole('USER')")
     @PostMapping
     public ResponseEntity<?> store(@RequestBody ReportRequest request) {
         try {
+            log.info("request:" + request);
             return reportService.create(request);
         } catch (Exception e) {
             return ApiBaseResponse.fail(e.getMessage());

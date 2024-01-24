@@ -3,6 +3,7 @@ package com.example.coffee2.reponsitory.Customer.impl;
 import com.example.coffee2.reponsitory.Customer.LikePostsCustomer;
 import com.example.coffee2.reponsitory.LikePostsRepository;
 import com.example.coffee2.request.CoffeeBeanRequest;
+import com.example.coffee2.request.CommentRequest;
 import com.example.coffee2.request.LikePostsRequest;
 import com.example.coffee2.response.CoffeeBeanResponse;
 import com.example.coffee2.response.LikePostsResponse;
@@ -112,10 +113,21 @@ public class LikePostsCustomerImpl implements LikePostsCustomer {
         return null;
     }
 
+//    private void createSqlGetTotalLikePosts(LikePostsRequest request, StringBuilder sql, Map<String, Object> params) {
+//        sql.append("select sum(total_like) from posts  \n");
+//        sql.append("where 1 = 1 \n");
+//        sql.append("and user_id = :userId \n");
+//        params.put("userId", request.getUserId());
+//    }
+
     private void createSqlGetTotalLikePosts(LikePostsRequest request, StringBuilder sql, Map<String, Object> params) {
-        sql.append("select sum(total_like) from posts  \n");
-        sql.append("where 1 = 1 \n");
-        sql.append("and user_id = :userId \n");
+        sql.append("select count(*) " +
+                " from like_posts lp " +
+                " join posts p " +
+                " on lp.post_id = p.id " +
+                " where 1=1 and p.user_id = :userId  \n");
+//        sql.append("where 1 = 1 \n");
+//        sql.append("and user_id = :userId \n");
         params.put("userId", request.getUserId());
     }
 }
