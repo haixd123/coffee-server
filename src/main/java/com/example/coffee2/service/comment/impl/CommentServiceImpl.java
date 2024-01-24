@@ -140,10 +140,14 @@ public class CommentServiceImpl implements CommentService {
     public boolean changeStatus(Long id, Long status) {
         try {
             CommentEntity obj = commentRepository.findById(id).orElse(null);
-
+            if(obj == null){
+                return false;
+            }
             obj.setStatus(status);
             if (status == Constants.COMMENT_HIDE) {
                 commentPusher.pushCommentHide(obj.getPostId());
+                List<Report> reports = reportRepository.findAllByDataReportIdAndReportType(obj.getId(), Constants.REPORT_TYPE_COMMENT);
+                reportRepository.deleteAll(reports);
             }
             commentRepository.save(obj);
 
