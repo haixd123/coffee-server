@@ -167,21 +167,33 @@ public class PostsController {
     }
 
     private boolean checkOffisentive(@RequestBody PostsRequest request, ApiBaseResponse apiBaseResponse) {
+<<<<<<< Updated upstream
         if (MemoriesStorage.contain(request.getTitle().toLowerCase())) {
+=======
+        if (MemoriesStorage.contain(request.getTitle())) {
+>>>>>>> Stashed changes
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
             apiBaseResponse.setErrorDescription("Tiêu đề bài viết chứa từ ngữ thô tục không thể tạo");
             apiBaseResponse.setData(request);
             apiBaseResponse.setOptional(1l);
             return true;
         }
+<<<<<<< Updated upstream
         if (MemoriesStorage.contain(request.getContentPost().toLowerCase())) {
+=======
+        if (MemoriesStorage.contain(request.getContentPost())) {
+>>>>>>> Stashed changes
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
             apiBaseResponse.setErrorDescription("Nội dung bài viết chứa từ ngữ thô tục không thể tạo");
             apiBaseResponse.setData(request);
             apiBaseResponse.setOptional(1l);
             return true;
         }
+<<<<<<< Updated upstream
         if (MemoriesStorage.contain(request.getContentDetail().toLowerCase())) {
+=======
+        if (MemoriesStorage.contain(request.getContentDetail())) {
+>>>>>>> Stashed changes
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
             apiBaseResponse.setErrorDescription("Nội dung bài viết chứa từ ngữ thô tục không thể tạo");
             apiBaseResponse.setData(request);
