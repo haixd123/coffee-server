@@ -10,9 +10,14 @@ public class MemoriesStorage {
         boolean isContain = false;
         for (String s : offensive_words) {
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
             if (str.contains(s) && s.length() > 1) {
                 isContain = true;
                 break;
+=======
+            if (str.contains(s)) {
+                isContain = true;
+>>>>>>> Stashed changes
 =======
             if (str.contains(s)) {
                 isContain = true;

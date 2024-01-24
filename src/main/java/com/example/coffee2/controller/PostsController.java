@@ -4,7 +4,6 @@ package com.example.coffee2.controller;
 import com.example.coffee2.entity.PostsEntity;
 import com.example.coffee2.entity.ResponseObject;
 import com.example.coffee2.reponsitory.PostsRepository;
-import com.example.coffee2.request.LikePostsRequest;
 import com.example.coffee2.request.PostsRequest;
 import com.example.coffee2.response.PostsResponse;
 import com.example.coffee2.response.base.ApiBaseResponse;
@@ -167,33 +166,22 @@ public class PostsController {
     }
 
     private boolean checkOffisentive(@RequestBody PostsRequest request, ApiBaseResponse apiBaseResponse) {
-<<<<<<< Updated upstream
         if (MemoriesStorage.contain(request.getTitle().toLowerCase())) {
-=======
-        if (MemoriesStorage.contain(request.getTitle())) {
->>>>>>> Stashed changes
+
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
             apiBaseResponse.setErrorDescription("Tiêu đề bài viết chứa từ ngữ thô tục không thể tạo");
             apiBaseResponse.setData(request);
             apiBaseResponse.setOptional(1l);
             return true;
         }
-<<<<<<< Updated upstream
         if (MemoriesStorage.contain(request.getContentPost().toLowerCase())) {
-=======
-        if (MemoriesStorage.contain(request.getContentPost())) {
->>>>>>> Stashed changes
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
             apiBaseResponse.setErrorDescription("Nội dung bài viết chứa từ ngữ thô tục không thể tạo");
             apiBaseResponse.setData(request);
             apiBaseResponse.setOptional(1l);
             return true;
         }
-<<<<<<< Updated upstream
         if (MemoriesStorage.contain(request.getContentDetail().toLowerCase())) {
-=======
-        if (MemoriesStorage.contain(request.getContentDetail())) {
->>>>>>> Stashed changes
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
             apiBaseResponse.setErrorDescription("Nội dung bài viết chứa từ ngữ thô tục không thể tạo");
             apiBaseResponse.setData(request);
@@ -224,7 +212,7 @@ public class PostsController {
     }
 
     @PostMapping("/posts/{postId}/change-status/{status}")
-    public boolean changeStatus( @PathVariable Long postId,@PathVariable Long status){
-        return postsService.changeStatus(postId,status);
+    public boolean changeStatus(@PathVariable Long postId, @PathVariable Long status) {
+        return postsService.changeStatus(postId, status);
     }
 }

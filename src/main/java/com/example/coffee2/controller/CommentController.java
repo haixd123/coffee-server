@@ -96,7 +96,11 @@ public class CommentController {
     public ApiBaseResponse update(@RequestBody CommentRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
         if (MemoriesStorage.contain(request.getCommentText().toLowerCase())) {
+=======
+        if (MemoriesStorage.contain(request.getCommentText())) {
+>>>>>>> Stashed changes
 =======
         if (MemoriesStorage.contain(request.getCommentText())) {
 >>>>>>> Stashed changes
