@@ -95,15 +95,7 @@ public class CommentController {
     @PostMapping("/comment/update")
     public ApiBaseResponse update(@RequestBody CommentRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
         if (MemoriesStorage.contain(request.getCommentText().toLowerCase())) {
-=======
-        if (MemoriesStorage.contain(request.getCommentText())) {
->>>>>>> Stashed changes
-=======
-        if (MemoriesStorage.contain(request.getCommentText())) {
->>>>>>> Stashed changes
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
             apiBaseResponse.setErrorDescription("Nội dung bình luận không phù hợp hãy xem lại");
             apiBaseResponse.setData(request);
@@ -145,8 +137,8 @@ public class CommentController {
     }
 
     @PostMapping("/comment/{commentId}/change-status/{status}")
-    public boolean changeStatus(@PathVariable Long commentId, @PathVariable Long status){
-        return commentService.changeStatus(commentId,status);
+    public boolean changeStatus(@PathVariable Long commentId, @PathVariable Long status) {
+        return commentService.changeStatus(commentId, status);
     }
 
     @GetMapping("/comment/by-status/{status}")

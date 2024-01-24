@@ -1,10 +1,12 @@
 package com.example.coffee2.service.comment.impl;
 
 import com.example.coffee2.entity.CommentEntity;
+import com.example.coffee2.entity.PostsEntity;
 import com.example.coffee2.entity.Report;
 import com.example.coffee2.pusher.CommentPusher;
 import com.example.coffee2.reponsitory.CommentRepository;
 import com.example.coffee2.reponsitory.Customer.CommentCustomer;
+import com.example.coffee2.reponsitory.PostsRepository;
 import com.example.coffee2.reponsitory.ReportRepository;
 import com.example.coffee2.request.CommentRequest;
 import com.example.coffee2.response.CommentResponse;
@@ -36,6 +38,9 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private CommentCustomer commentCustomer;
 
+    @Autowired
+    private PostsRepository postsRepository;
+    @Autowired
     private ReportRepository reportRepository;
 
     @Override
@@ -68,6 +73,11 @@ public class CommentServiceImpl implements CommentService {
             obj.setLikeComment(request.getLikeComment());
             obj.setStatus(1L);
             commentRepository.save(obj);
+            PostsEntity postsEntity = postsRepository.findById(request.getPostId()).orElse(null);
+            if (postsEntity != null) {
+                postsEntity.setComment(postsEntity.getComment() + 1);
+                postsRepository.save(postsEntity);
+            }
             return true;
         } catch (Exception e) {
             log.error("error: " + e.getMessage());

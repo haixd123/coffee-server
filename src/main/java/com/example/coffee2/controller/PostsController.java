@@ -48,6 +48,24 @@ public class PostsController {
         }
     }
 
+    @GetMapping("/authors/posts/by-favor")
+    ResponseEntity<?> getAllPostByTypeAndTime(@RequestParam(name = "type", defaultValue = "like") String type, @RequestParam(name = "time", defaultValue = "week") String time, Pageable pageable) {
+        try {
+            return postsService.getPostByTypeAndTime(pageable, type, time);
+        } catch (Exception e) {
+            return ApiBaseResponse.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/authors/posts/by-author/{postId}")
+    ResponseEntity<?> getAllPostByAuthor(@PathVariable(name = "postId") Long postId, Pageable pageable) {
+        try {
+            return postsService.getPostByAuthor(pageable, postId);
+        } catch (Exception e) {
+            return ApiBaseResponse.fail(e.getMessage());
+        }
+    }
+
     @GetMapping("/authors/posts/like-post")
     ResponseEntity<ResponseObject> findLikePost() {
         List<PostsEntity> foundProduct = repository.findLikePost();
