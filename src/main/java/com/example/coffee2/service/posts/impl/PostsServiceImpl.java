@@ -3,11 +3,13 @@ package com.example.coffee2.service.posts.impl;
 import com.example.coffee2.entity.CoffeeBeanEntity;
 import com.example.coffee2.entity.CommentEntity;
 import com.example.coffee2.entity.PostsEntity;
+import com.example.coffee2.entity.Report;
 import com.example.coffee2.event.PostAcceptEvent;
 import com.example.coffee2.event.PostDelineEvent;
 import com.example.coffee2.event.PostHideEvent;
 import com.example.coffee2.pusher.PostPusher;
 import com.example.coffee2.reponsitory.PostsRepository;
+import com.example.coffee2.reponsitory.ReportRepository;
 import com.example.coffee2.request.PostsRequest;
 import com.example.coffee2.response.PostsResponse;
 import com.example.coffee2.reponsitory.Customer.PostsRespositoryCustomer;
@@ -35,6 +37,9 @@ public class PostsServiceImpl implements PostsService {
     private PostPusher postPusher;
     @Autowired
     private PostsRepository repository;
+
+    @Autowired
+    private ReportRepository reportRepository;
 
     @Override
     public List<PostsResponse> getListPosts(PostsRequest request) {
@@ -121,6 +126,8 @@ public class PostsServiceImpl implements PostsService {
                 PostHideEvent.PostHideReq postHideReq = new PostHideEvent.PostHideReq();
                 postHideReq.setPostId(request.getId());
                 postPusher.postHideEvent(postHideReq);
+                List<Report> reports = reportRepository.findAllByDataReportIdAndReportType(request.getId(), Constants.REPORT_TYPE_POST);
+                reportRepository.deleteAll(reports);
             }
             return true;
         } catch (Exception e) {
@@ -140,6 +147,8 @@ public class PostsServiceImpl implements PostsService {
             }
             obj.setStatus(-1L);
             repository.save(obj);
+            List<Report> reports = reportRepository.findAllByDataReportIdAndReportType(request.getId(), Constants.REPORT_TYPE_POST);
+            reportRepository.deleteAll(reports);
             return true;
         } catch (Exception e) {
             log.info("not success: " + e.getMessage());
@@ -159,6 +168,8 @@ public class PostsServiceImpl implements PostsService {
                 postPusher.postHideEvent(postHideReq);
             }
             repository.save(obj);
+            List<Report> reports = reportRepository.findAllByDataReportIdAndReportType(postId, Constants.REPORT_TYPE_POST);
+            reportRepository.deleteAll(reports);
             return true;
         } catch (Exception e) {
             log.error("error: " + e.getMessage());

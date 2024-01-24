@@ -3,11 +3,13 @@ package com.example.coffee2.service.report;
 import com.example.coffee2.entity.CommentEntity;
 import com.example.coffee2.entity.PostsEntity;
 import com.example.coffee2.entity.Report;
+import com.example.coffee2.entity.UserEntity;
 import com.example.coffee2.event.PostReportEvent;
 import com.example.coffee2.pusher.PostPusher;
 import com.example.coffee2.reponsitory.CommentRepository;
 import com.example.coffee2.reponsitory.PostsRepository;
 import com.example.coffee2.reponsitory.ReportRepository;
+import com.example.coffee2.reponsitory.UserRespository;
 import com.example.coffee2.request.ReportRequest;
 import com.example.coffee2.response.ReportResponse;
 import com.example.coffee2.response.base.ApiBaseResponse;
@@ -41,6 +43,8 @@ public class ReportServiceIpm implements ReportService {
     private final PostsRepository postsRepository;
 
     private final CommentRepository commentRepository;
+
+    private final UserRespository userRespository;
 
     @Override
     public ResponseEntity<?> getById(Long id) {
@@ -114,14 +118,15 @@ public class ReportServiceIpm implements ReportService {
     public List<ReportResponse> mapTo(Page<Report> reports) {
         return reports.getContent().stream().map((rp) -> {
             ReportResponse reportResponse = new ModelMapper().map(rp, ReportResponse.class);
+            UserEntity reporter = userRespository.findById(reportResponse.getUserReportId()).orElse(null);
             if (Objects.equals(rp.getReportType(), Constants.REPORT_TYPE_COMMENT)) {
                 reportResponse.setData(commentRepository.findById(rp.getDataReportId()).orElse(null));
             } else if (Objects.equals(rp.getReportType(), Constants.REPORT_TYPE_POST)) {
                 reportResponse.setData(postsRepository.findById(rp.getDataReportId()).orElse(null));
             }
+            reportResponse.setUserReport(reporter);
             return reportResponse;
         }).collect(Collectors.toList());
-
     }
 
     @Override
@@ -129,5 +134,24 @@ public class ReportServiceIpm implements ReportService {
         Page<Report> reports = reportRepository.findAllByReasonContaining(pageable, reason);
         Page<ReportResponse> data = new PageImpl<>(mapTo(reports), pageable, reports.getTotalElements());
         return ApiBaseResponse.done("Get data success", data);
+    }
+
+    @Override
+    public ResponseEntity<?> getAllReportByUser(String username, Pageable pageable) {
+        UserEntity user = userRespository.findByName(username).orElse(null);
+        if (user != null) {
+            Page<Report> reports = reportRepository.findAllByUserReportId(pageable, user.getId());
+            Page<ReportResponse> data = new PageImpl<>(mapTo(reports), pageable, reports.getTotalElements());
+            return ApiBaseResponse.done("Success", data);
+        } else {
+            return ApiBaseResponse.done("Success", new PageImpl<>(new ArrayList<>(), pageable, 0));
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getAllReportByPost(Long postId, Pageable pageable) {
+        Page<Report> reports = reportRepository.findAllByDataReportIdAndReportType(pageable, postId, Constants.REPORT_TYPE_POST);
+        Page<ReportResponse> data = new PageImpl<>(mapTo(reports), pageable, reports.getTotalElements());
+        return ApiBaseResponse.done("Success", data);
     }
 }

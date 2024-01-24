@@ -16,4 +16,8 @@ public interface ReportService {
     ResponseEntity<?> getAllReport(Pageable pageable);
 
     ResponseEntity<?> searchReportByReason(Pageable pageable, String reason);
+
+    ResponseEntity<?> getAllReportByUser(String username, Pageable pageable);
+
+    ResponseEntity<?> getAllReportByPost(Long postId, Pageable pageable);
 }

@@ -19,11 +19,29 @@ public class ReportController {
     private final ReportService reportService;
 
 
-//    @PreAuthorize("hasRole('USER')")
+    //    @PreAuthorize("hasRole('USER')")
     @PostMapping
     public ResponseEntity<?> store(@RequestBody ReportRequest request) {
         try {
             return reportService.create(request);
+        } catch (Exception e) {
+            return ApiBaseResponse.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/by-user")
+    public ResponseEntity<?> getReportByUser(@RequestParam(name = "username", defaultValue = "") String username, Pageable pageable) {
+        try {
+            return reportService.getAllReportByUser(username, pageable);
+        } catch (Exception e) {
+            return ApiBaseResponse.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/by-post/{postId}")
+    public ResponseEntity<?> getReportByPost(@PathVariable(name = "postId") Long postId, Pageable pageable) {
+        try {
+            return reportService.getAllReportByPost(postId, pageable);
         } catch (Exception e) {
             return ApiBaseResponse.fail(e.getMessage());
         }

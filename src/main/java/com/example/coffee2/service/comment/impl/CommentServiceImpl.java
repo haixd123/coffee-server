@@ -106,6 +106,8 @@ public class CommentServiceImpl implements CommentService {
             obj.setStatus(request.getStatus());
             if (request.getStatus() == Constants.COMMENT_HIDE) {
                 commentPusher.pushCommentHide(request.getPostId());
+                List<Report> reports = reportRepository.findAllByDataReportIdAndReportType(request.getId(), Constants.REPORT_TYPE_COMMENT);
+                reportRepository.deleteAll(reports);
             }
             commentRepository.save(obj);
             return true;
@@ -144,6 +146,7 @@ public class CommentServiceImpl implements CommentService {
                 commentPusher.pushCommentHide(obj.getPostId());
             }
             commentRepository.save(obj);
+
             return true;
         } catch (Exception e) {
             log.error("error: " + e.getMessage());

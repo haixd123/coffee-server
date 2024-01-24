@@ -18,7 +18,10 @@ public interface UserRespository extends JpaRepository<UserEntity, Long> {
             nativeQuery = true
     )
     List<UserEntity> findAllUser();
+
     List<UserEntity> findByUserName(@RequestParam String userName);
+
+    Optional<UserEntity> findByName(String name);
 
     @Query(
             value = "select user_name from user1",
@@ -27,5 +30,6 @@ public interface UserRespository extends JpaRepository<UserEntity, Long> {
     List<String> findAllUserName();
 
     Optional<UserEntity> findById(Long id);
+
     Optional<UserEntity> findByUserNameAndStatus(String username, Long status);
 }
