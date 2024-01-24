@@ -2,10 +2,8 @@ package com.example.coffee2.controller;
 
 import com.example.coffee2.entity.CommentEntity;
 import com.example.coffee2.pusher.UserCommentPusher;
-import com.example.coffee2.reponsitory.ReportRepository;
 import com.example.coffee2.request.*;
 import com.example.coffee2.response.CommentResponse;
-import com.example.coffee2.response.LikePostsResponse;
 import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.comment.CommentService;
 import com.example.coffee2.utils.Constants;
@@ -17,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
 import java.util.List;
 
 @RestController
@@ -139,6 +136,11 @@ public class CommentController {
         return apiBaseResponse;
     }
 
+    @PostMapping("/comment/{commentId}/change-status/{status}")
+    public boolean changeStatus(@PathVariable Long commentId, @PathVariable Long status){
+        return commentService.changeStatus(commentId,status);
+    }
+
     @GetMapping("/comment/by-status/{status}")
     public ResponseEntity<?> getAllCommentByStatus(@PathVariable(name = "status") long status, Pageable pageable) {
         try {
@@ -149,18 +151,27 @@ public class CommentController {
     }
 
     @GetMapping("/comment/by-post/{postId}")
-    public ResponseEntity<?> getAllCommentByPost(@PathVariable(name = "postId") long postId, @RequestParam(name = "status") long status, Pageable pageable) {
+    public ResponseEntity<?> getAllCommentByPost(@PathVariable(name = "postId") long postId, @RequestParam(name = "status", defaultValue = "1") String status, Pageable pageable) {
         try {
-            return commentService.getCommentByPostId(pageable, postId, status);
+            return commentService.getCommentByPostId(pageable, postId, Long.parseLong(status));
+        } catch (Exception e) {
+            return ApiBaseResponse.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/comment/by-content")
+    public ResponseEntity<?> getAllCommentByPost(@RequestParam(name = "text", defaultValue = "") String text, Pageable pageable) {
+        try {
+            return commentService.getCommentByContent(pageable, text);
         } catch (Exception e) {
             return ApiBaseResponse.fail(e.getMessage());
         }
     }
 
     @GetMapping("/comment/by-user/{userId}")
-    public ResponseEntity<?> getAllCommentByUser(@PathVariable(name = "userId") long userId, @RequestParam(name = "status") long status, Pageable pageable) {
+    public ResponseEntity<?> getAllCommentByUser(@PathVariable(name = "userId") long userId, @RequestParam(name = "status", defaultValue = "1") String status, Pageable pageable) {
         try {
-            return commentService.getCommentByUserId(pageable, userId, status);
+            return commentService.getCommentByUserId(pageable, userId, Long.parseLong(status));
         } catch (Exception e) {
             return ApiBaseResponse.fail(e.getMessage());
         }

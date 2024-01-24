@@ -212,4 +212,9 @@ public class PostsController {
         apiBaseResponse.setOptional(1l);
         return apiBaseResponse;
     }
+
+    @PostMapping("/posts/{postId}/change-status/{status}")
+    public boolean changeStatus( @PathVariable Long postId,@PathVariable Long status){
+        return postsService.changeStatus(postId,status);
+    }
 }

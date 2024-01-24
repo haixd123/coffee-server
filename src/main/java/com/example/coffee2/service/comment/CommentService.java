@@ -21,9 +21,12 @@ public interface CommentService {
 
     boolean delete(CommentRequest request);
 
+    boolean changeStatus(Long id,Long status);
     CommentEntity getById(Long commentId);
 
     ResponseEntity<?> getCommentByStatus(Pageable pageable, long status);
+
+    ResponseEntity<?> getCommentByContent(Pageable pageable, String text);
 
     ResponseEntity<?> getCommentByPostId(Pageable pageable, long postId, long status);
 
