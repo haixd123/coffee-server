@@ -137,8 +137,8 @@ public class CommentController {
     }
 
     @PostMapping("/comment/{commentId}/change-status/{status}")
-    public boolean changeStatus(@PathVariable Long commentId, @PathVariable Long status){
-        return commentService.changeStatus(commentId,status);
+    public boolean changeStatus(@PathVariable Long commentId, @PathVariable Long status) {
+        return commentService.changeStatus(commentId, status);
     }
 
     @GetMapping("/comment/by-status/{status}")

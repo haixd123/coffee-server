@@ -4,7 +4,6 @@ package com.example.coffee2.controller;
 import com.example.coffee2.entity.PostsEntity;
 import com.example.coffee2.entity.ResponseObject;
 import com.example.coffee2.reponsitory.PostsRepository;
-import com.example.coffee2.request.LikePostsRequest;
 import com.example.coffee2.request.PostsRequest;
 import com.example.coffee2.response.PostsResponse;
 import com.example.coffee2.response.base.ApiBaseResponse;
@@ -44,6 +43,24 @@ public class PostsController {
     ResponseEntity<?> getAllPostByStatus(@PathVariable(name = "status") long status, Pageable pageable) {
         try {
             return postsService.getAllPostByStatus(pageable, status);
+        } catch (Exception e) {
+            return ApiBaseResponse.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/authors/posts/by-favor")
+    ResponseEntity<?> getAllPostByTypeAndTime(@RequestParam(name = "type", defaultValue = "like") String type, @RequestParam(name = "time", defaultValue = "week") String time, Pageable pageable) {
+        try {
+            return postsService.getPostByTypeAndTime(pageable, type, time);
+        } catch (Exception e) {
+            return ApiBaseResponse.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/authors/posts/by-author/{postId}")
+    ResponseEntity<?> getAllPostByAuthor(@PathVariable(name = "postId") Long postId, Pageable pageable) {
+        try {
+            return postsService.getPostByAuthor(pageable, postId);
         } catch (Exception e) {
             return ApiBaseResponse.fail(e.getMessage());
         }
@@ -170,6 +187,7 @@ public class PostsController {
 
     private boolean checkOffisentive(@RequestBody PostsRequest request, ApiBaseResponse apiBaseResponse) {
         if (MemoriesStorage.contain(request.getTitle().toLowerCase())) {
+
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
             apiBaseResponse.setErrorDescription("Tiêu đề bài viết chứa từ ngữ thô tục không thể tạo");
             apiBaseResponse.setData(request);
@@ -214,7 +232,7 @@ public class PostsController {
     }
 
     @PostMapping("/posts/{postId}/change-status/{status}")
-    public boolean changeStatus( @PathVariable Long postId,@PathVariable Long status){
-        return postsService.changeStatus(postId,status);
+    public boolean changeStatus(@PathVariable Long postId, @PathVariable Long status) {
+        return postsService.changeStatus(postId, status);
     }
 }

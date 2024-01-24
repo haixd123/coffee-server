@@ -22,7 +22,11 @@ public interface PostsService {
 
     boolean delete(PostsRequest request);
 
-    boolean changeStatus(Long postId,Long status);
+    boolean changeStatus(Long postId, Long status);
 
     ResponseEntity<?> getAllPostByStatus(Pageable pageable, long status);
+
+    ResponseEntity<?> getPostByTypeAndTime(Pageable pageable, String type, String time);
+
+    ResponseEntity<?> getPostByAuthor(Pageable pageable, Long postId);
 }

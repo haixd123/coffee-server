@@ -8,25 +8,22 @@ import com.example.coffee2.event.PostDelineEvent;
 import com.example.coffee2.event.PostHideEvent;
 import com.example.coffee2.pusher.PostPusher;
 import com.example.coffee2.reponsitory.PostsRepository;
-import com.example.coffee2.request.LikePostsRequest;
 import com.example.coffee2.request.PostsRequest;
 import com.example.coffee2.response.PostsResponse;
 import com.example.coffee2.reponsitory.Customer.PostsRespositoryCustomer;
+import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.posts.PostsService;
 import com.example.coffee2.utils.Constants;
-import com.example.coffee2.utils.DateProc;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.lang3.RandomUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Service
 @Log4j2
@@ -171,6 +168,44 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public ResponseEntity<?> getAllPostByStatus(Pageable pageable, long status) {
-        return null;
+        return ApiBaseResponse.done("Success", repository.findAllByStatus(pageable, status));
+    }
+
+    @Override
+    public ResponseEntity<?> getPostByTypeAndTime(Pageable pageable, String type, String time) {
+        Page<PostsEntity> result = null;
+        LocalDateTime endDate = LocalDateTime.now();
+        LocalDateTime startDate = endDate;
+        switch (time) {
+            case "week":
+                startDate = endDate.minusWeeks(1);
+                break;
+            case "month":
+                startDate = endDate.minusMonths(1);
+                break;
+            case "year":
+                startDate = endDate.minusYears(1);
+                break;
+        }
+        List<PostsEntity> postsEntities = repository.findAllByCreatedAtBetweenOrderByLike1(startDate, endDate);
+        switch (type) {
+            case "comment":
+                postsEntities.sort(Comparator.comparingLong(PostsEntity::getComment).reversed());
+                break;
+            case "rating":
+                postsEntities.sort(Comparator.comparingLong(PostsEntity::getRating).reversed());
+                break;
+        }
+        return ApiBaseResponse.done("Success", new PageImpl<>(postsEntities, pageable, postsEntities.size()));
+    }
+
+    @Override
+    public ResponseEntity<?> getPostByAuthor(Pageable pageable, Long postId) {
+        PostsEntity postsEntity = repository.findById(postId).orElse(null);
+        if (postsEntity != null) {
+            List<PostsEntity> postsEntities = repository.findAllByUserIdAndStatus(postsEntity.getUserId(), 1L);
+            return ApiBaseResponse.done("Success", new PageImpl<>(postsEntities, pageable, postsEntities.size()));
+        }
+        return ApiBaseResponse.fail("Post null with id : " + postId);
     }
 }

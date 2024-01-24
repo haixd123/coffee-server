@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.swing.text.html.Option;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,10 +20,11 @@ public interface PostsRepository extends JpaRepository<PostsEntity, Long> {
     )
     List<PostsEntity> findAllPosts();
 
-    Optional<PostsEntity> findByIdAndStatus(Long id, Long status);
+    List<PostsEntity> findAllByCreatedAtBetweenOrderByLike1(LocalDateTime start,LocalDateTime end);
 
     List<PostsEntity> findAllByUserIdAndStatus(Long userId, Long status);
 
+    Page<PostsEntity> findAllByStatus(Pageable pageable,Long status);
     @Query(
             value = "SELECT top 5 * FROM posts ORDER BY total_like DESC",
             nativeQuery = true
@@ -54,4 +56,6 @@ public interface PostsRepository extends JpaRepository<PostsEntity, Long> {
     PostsEntity getPostsName(String title);
 
     Page<PostsEntity> findAllByStatus(Pageable pageable, long status);
+
+    Optional<PostsEntity> findByIdAndStatus(Long postId, Long status);
 }
