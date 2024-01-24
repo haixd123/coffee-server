@@ -53,14 +53,15 @@ public class ReportServiceIpm implements ReportService {
     @Override
     public ResponseEntity<?> create(ReportRequest request) {
         if (Objects.equals(request.getDataReportId(), Constants.REPORT_TYPE_POST)) {
-            PostsEntity postsEntity = postsRepository.findByIdAndStatus(request.getDataReportId(), 1l).orElse(null);
+            PostsEntity postsEntity = postsRepository.findByIdAndStatus(request.getDataReportId(), 1L).orElse(null);
+            if (postsEntity == null) {
+                return ApiBaseResponse.fail("Bài viết bạn báo cáo không tồn tại trên hệ thống");
+            }
             List<Report> reports = reportRepository.findAllByDataReportIdAndUserReportId(postsEntity.getId(), request.getUserReportId());
             if (reports.size() >= 3) {
                 return ApiBaseResponse.fail("Một bài viết bạn chỉ được báo cáo tối đa 3 lần");
             }
-            if (postsEntity == null) {
-                return ApiBaseResponse.fail("Bài viết bạn báo cáo không tồn tại trên hệ thống");
-            }
+
         } else if (Objects.equals(request.getDataReportId(), Constants.REPORT_TYPE_COMMENT)) {
             CommentEntity comment = commentRepository.findById(request.getDataReportId()).orElse(null);
             if (comment == null) {
