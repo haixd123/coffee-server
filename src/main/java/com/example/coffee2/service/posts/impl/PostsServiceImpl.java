@@ -196,10 +196,10 @@ public class PostsServiceImpl implements PostsService {
         List<PostsEntity> postsEntities = repository.findAllByCreatedAtBetweenAndOrderByLike1(startDate, endDate);
         switch (type) {
             case "comment":
-                postsEntities.sort(Comparator.comparingLong(PostsEntity::getComment));
+                postsEntities.sort(Comparator.comparingLong(PostsEntity::getComment).reversed());
                 break;
             case "rating":
-                postsEntities.sort(Comparator.comparingLong(PostsEntity::getRating));
+                postsEntities.sort(Comparator.comparingLong(PostsEntity::getRating).reversed());
                 break;
         }
         return ApiBaseResponse.done("Success", new PageImpl<>(postsEntities, pageable, postsEntities.size()));
