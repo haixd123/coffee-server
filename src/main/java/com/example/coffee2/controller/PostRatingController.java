@@ -10,9 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,8 +24,15 @@ public class PostRatingController {
 
     private final PostsRepository postsRepository;
 
+    @PostMapping(value = "/getListRating")
+//    public ResponseEntity<?> getListRating(@RequestParam("userId") Long userId) {
+    public ResponseEntity<?> getListRating(@RequestBody PostRatingRequest request) {
+        List<PostRating> listResult = postRatingRepository.findAllByUserId(request.getUserId());
+        return ApiBaseResponse.done("get Rating Success", listResult);
+    }
+
     @PostMapping()
-    public ResponseEntity<?> ratePost(PostRatingRequest request) {
+    public ResponseEntity<?> ratePost(@RequestBody PostRatingRequest request) {
         try {
             PostsEntity postsEntity = postsRepository.findById(request.getPostId()).orElse(null);
             if (postsEntity == null) {
@@ -36,10 +41,15 @@ public class PostRatingController {
             PostRating postRating = postRatingRepository.findByPostIdAndUserId(request.getPostId(), request.getUserId()).orElse(null);
             if (postRating != null) {
                 postRating.setRating(request.getRating());
+                postRatingRepository.save(postRating);
             } else {
-                postRating = new ModelMapper().map(request, PostRating.class);
+                PostRating obj = new PostRating();
+                obj.setPostId(request.getPostId());
+                obj.setUserId(request.getUserId());
+                obj.setRating(request.getRating());
+//                postRating = new ModelMapper().map(request, PostRating.class);
+                postRatingRepository.save(obj);
             }
-            postRatingRepository.save(postRating);
             // process to calc post rating
             List<PostRating> postRatings = postRatingRepository.findAllByPostId(request.getPostId());
             float totalRating = 0;
