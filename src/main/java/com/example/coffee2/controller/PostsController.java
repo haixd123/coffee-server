@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import com.example.coffee2.utils.Constants;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @Log4j2
@@ -90,6 +91,19 @@ public class PostsController {
         Long count = postsService.getTotalPosts(request);
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
         apiBaseResponse.setOptional(count);
+        return apiBaseResponse;
+    }
+
+    @PostMapping("/authors/posts/searchDetail")
+//    public ResponseEntity<?> getListPosts(@RequestBody PostsRequest request) {
+    public ApiBaseResponse getDetailPosts(@RequestBody PostsRequest request) {
+        Optional<PostsEntity> listResult = repository.findById(request.getId());
+        ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
+        apiBaseResponse.setData(listResult);
+//        ApiBaseResponse response = ApiBaseResponse.success(listResult, count);
+//        log.info("response: " + listResult);
+//        return new ResponseEntity<>(listResult, HttpStatus.OK);
+//        return new ResponseEntity<> (HttpStatus.OK);
         return apiBaseResponse;
     }
 

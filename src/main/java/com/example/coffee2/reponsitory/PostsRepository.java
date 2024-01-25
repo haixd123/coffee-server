@@ -58,4 +58,6 @@ public interface PostsRepository extends JpaRepository<PostsEntity, Long> {
     Page<PostsEntity> findAllByStatus(Pageable pageable, long status);
 
     Optional<PostsEntity> findByIdAndStatus(Long postId, Long status);
+
+    Optional<PostsEntity> findById(Long postId);
 }
