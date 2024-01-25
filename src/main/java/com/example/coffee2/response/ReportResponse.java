@@ -31,6 +31,10 @@ public class ReportResponse extends Report {
         return data;
     }
 
+    public UserEntity getUserReport() {
+        return userReport;
+    }
+
     public void setUserReport(UserEntity userReport) {
         this.userReport = userReport;
     }
