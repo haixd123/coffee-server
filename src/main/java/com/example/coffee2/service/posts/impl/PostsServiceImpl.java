@@ -70,8 +70,8 @@ public class PostsServiceImpl implements PostsService {
                 }
             }
             PostsEntity obj = new PostsEntity();
-            obj.setLike1(request.getLike1());
-            obj.setComment(request.getComment());
+            obj.setLike1(0L);
+            obj.setComment(0L);
             obj.setContentPost(request.getContentPost());
             obj.setContentDetail(request.getContentDetail());
             obj.setTitle(request.getTitle());
@@ -208,6 +208,9 @@ public class PostsServiceImpl implements PostsService {
         }
         List<PostsEntity> postsEntities = repository.findAllByCreatedAtBetweenOrderByLike1(Date.from(startDate.atZone(ZoneId.systemDefault()).toInstant()), Date.from(endDate.atZone(ZoneId.systemDefault()).toInstant()));
         switch (type) {
+            case "like":
+                postsEntities.sort(Comparator.comparingLong(PostsEntity::getLike1).reversed());
+                break;
             case "comment":
                 postsEntities.sort(Comparator.comparingLong(PostsEntity::getComment).reversed());
                 break;

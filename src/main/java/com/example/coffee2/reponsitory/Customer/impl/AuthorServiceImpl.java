@@ -44,6 +44,7 @@ public class AuthorServiceImpl implements AuthorCustomer {
             user.setStatus(1L);
             user.setRole("USER");
             user.setImage(userDto.getImage());
+            user.setDelineCount(0L);
             // Lưu user vào cơ sở dữ liệu và trả về user đã được lưu
             userRepository.save(user);
             return true;

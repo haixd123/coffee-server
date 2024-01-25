@@ -4,6 +4,7 @@ package com.example.coffee2.controller;
 import com.example.coffee2.entity.PostsEntity;
 import com.example.coffee2.entity.ResponseObject;
 import com.example.coffee2.entity.UserEntity;
+import com.example.coffee2.reponsitory.Customer.impl.PostsCustomerImpl;
 import com.example.coffee2.reponsitory.PostsRepository;
 import com.example.coffee2.reponsitory.UserRespository;
 import com.example.coffee2.request.PostsRequest;
@@ -32,7 +33,11 @@ public class PostsController {
     private PostsRepository repository;
 
     @Autowired
+    private PostsCustomerImpl repositoryCustomer;
+
+    @Autowired
     private UserRespository userRespository;
+
     @Autowired
     private PostsService postsService;
 
@@ -111,6 +116,21 @@ public class PostsController {
         return apiBaseResponse;
     }
 
+    @PostMapping("/authors/posts/searchAdmin")
+//    public ResponseEntity<?> getListPosts(@RequestBody PostsRequest request) {
+    public ApiBaseResponse getListPostsAdmin(@RequestBody PostsRequest request) {
+        List<PostsResponse> listResult = repositoryCustomer.getListPostsAdmin(request);
+        Long count = repositoryCustomer.getCountListPostsAdmin(request);
+        ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
+        apiBaseResponse.setData(listResult);
+        apiBaseResponse.setOptional(count);
+//        ApiBaseResponse response = ApiBaseResponse.success(listResult, count);
+//        log.info("response: " + listResult);
+//        return new ResponseEntity<>(listResult, HttpStatus.OK);
+//        return new ResponseEntity<> (HttpStatus.OK);
+        return apiBaseResponse;
+    }
+
     @PostMapping("/authors/posts/search")
 //    public ResponseEntity<?> getListPosts(@RequestBody PostsRequest request) {
     public ApiBaseResponse getListPosts(@RequestBody PostsRequest request) {
@@ -148,9 +168,8 @@ public class PostsController {
     @PostMapping("/posts/create")
     public ApiBaseResponse create(@RequestBody PostsRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
-//        if (checkOffisentive(request, apiBaseResponse)) return apiBaseResponse;
-
-        if (request.getStatus() != 2 || request.getStatus() != 0) {
+        if (checkOffisentive(request, apiBaseResponse)) return apiBaseResponse;
+        if (request.getStatus() != 2 && request.getStatus() != 0) {
             List<String> list = repository.findByTitle(request.getTitle());
             if (list.size() > 0) {
                 apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);

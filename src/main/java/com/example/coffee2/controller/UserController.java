@@ -19,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.websocket.server.PathParam;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Blob;
@@ -71,6 +72,14 @@ public class UserController {
     @PostMapping("api/authors/user/search/{id}")
     ResponseEntity<ResponseObject> findByIdUser(@PathVariable Long id) {
         Optional<UserEntity> foundAccountNumber = repository.findById(id);
+        log.info("foundAccountNumber: " + foundAccountNumber);
+        return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("ok", "get AccountNumber successfully", foundAccountNumber));
+    }
+
+    @PostMapping("api/authors/user/deline/{id}")
+    ResponseEntity<ResponseObject> delineUser(@PathVariable Long id) {
+        UserEntity foundAccountNumber = repository.findById(id).orElse(null);
+        foundAccountNumber.setDelineCount(foundAccountNumber.getDelineCount() + 1);
         log.info("foundAccountNumber: " + foundAccountNumber);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseObject("ok", "get AccountNumber successfully", foundAccountNumber));
     }
