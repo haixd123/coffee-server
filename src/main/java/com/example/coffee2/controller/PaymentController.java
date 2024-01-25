@@ -32,12 +32,12 @@ public class PaymentController {
     @PostMapping("/authors/create-payment")
     public ResponseEntity<?> createPayment(@RequestBody BillRequest billRequest) throws UnsupportedEncodingException, ParseException {
 
-        BillEntity bill = billService.create(billRequest,false);
+        BillEntity bill = billService.create(billRequest, false);
 
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
         String orderType = "other";
-        long amount = Integer.parseInt(billRequest.getTotal())*100;
+        long amount = billRequest.getTotal() * 100;
         String bankCode = "NCB";
 
         String vnp_TxnRef = Config.getRandomNumber(8);
@@ -110,7 +110,7 @@ public class PaymentController {
     public ResponseEntity<?> transaction(
             @RequestParam("billId") String billId
 
-    ){
+    ) {
         TransactionResponse transactionResponse = new TransactionResponse();
         billService.updateBillPayed(Long.parseLong(billId));
         transactionResponse.setStatus("OK");

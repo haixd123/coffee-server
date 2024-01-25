@@ -67,6 +67,11 @@ public class BillServiceImpl implements BillService {
     }
 
     @Override
+    public ResponseEntity<?> getByUserEmail(Pageable pageable, String email) {
+        return ApiBaseResponse.done("Success", respository.findAllByEmail(pageable, email));
+    }
+
+    @Override
     public ResponseEntity<?> sortByPriceOrDate(Pageable pageable, boolean isPrice) {
         Page<BillEntity> billEntities = respository.findAll(pageable);
         List<BillEntity> list = billEntities.getContent();

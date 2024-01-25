@@ -54,7 +54,7 @@ public class BillController {
         }
     }
 
-    @GetMapping("/authors/bill")
+    @GetMapping("/authors/bill/by-user")
     public ResponseEntity<?> getAllByUser(@RequestParam(name = "name", defaultValue = "") String name, Pageable pageable) {
         try {
             return billService.getByUser(pageable, name);
@@ -62,6 +62,16 @@ public class BillController {
             return ApiBaseResponse.fail(e.getMessage());
         }
     }
+
+    @GetMapping("/authors/bill/by-user/{email}")
+    public ResponseEntity<?> getAllByUserEmail(@PathVariable(name = "email") String email, Pageable pageable) {
+        try {
+            return billService.getByUserEmail(pageable, email);
+        } catch (Exception e) {
+            return ApiBaseResponse.fail(e.getMessage());
+        }
+    }
+
 
     @GetMapping("/authors/bill/sort")
     public ResponseEntity<?> sortByPriceOrDate(@RequestParam(name = "sortBy", defaultValue = "price") String sortBy, Pageable pageable) {

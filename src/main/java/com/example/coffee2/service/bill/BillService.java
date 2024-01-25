@@ -20,6 +20,8 @@ public interface BillService {
     ResponseEntity<?> getById(Long id);
 
     ResponseEntity<?> getByUser(Pageable pageable,String name);
+    ResponseEntity<?> getByUserEmail(Pageable pageable,String email);
+
 
     ResponseEntity<?> sortByPriceOrDate(Pageable pageable, boolean isPrice);
 
