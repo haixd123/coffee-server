@@ -23,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -205,7 +206,7 @@ public class PostsServiceImpl implements PostsService {
                 startDate = endDate.minusYears(1);
                 break;
         }
-        List<PostsEntity> postsEntities = repository.findAllByCreatedAtBetweenOrderByLike1(startDate, endDate);
+        List<PostsEntity> postsEntities = repository.findAllByCreatedAtBetweenOrderByLike1(Date.from(startDate.atZone(ZoneId.systemDefault()).toInstant()), Date.from(endDate.atZone(ZoneId.systemDefault()).toInstant()));
         switch (type) {
             case "comment":
                 postsEntities.sort(Comparator.comparingLong(PostsEntity::getComment).reversed());

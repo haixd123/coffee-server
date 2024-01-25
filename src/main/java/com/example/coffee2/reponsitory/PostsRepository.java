@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ public interface PostsRepository extends JpaRepository<PostsEntity, Long> {
     )
     List<PostsEntity> findAllPosts();
 
-    List<PostsEntity> findAllByCreatedAtBetweenOrderByLike1(LocalDateTime start,LocalDateTime end);
+    List<PostsEntity> findAllByCreatedAtBetweenOrderByLike1(Date start, Date end);
 
     List<PostsEntity> findAllByUserIdAndStatus(Long userId, Long status);
 
