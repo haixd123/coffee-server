@@ -123,10 +123,17 @@ public class CommentServiceImpl implements CommentService {
     public boolean delete(CommentRequest request) {
         try {
             CommentEntity obj = commentRepository.findById(request.getId()).orElse(null);
-            obj.setStatus(-1L);
-            commentRepository.save(obj);
-            List<Report> reports = reportRepository.findAllByDataReportIdAndReportType(request.getId(), Constants.REPORT_TYPE_COMMENT);
-            reportRepository.deleteAll(reports);
+            if (obj != null) {
+                if (obj.getStatus() == -1) {
+                    commentRepository.delete(obj);
+                } else {
+                    obj.setStatus(-1L);
+                    commentRepository.save(obj);
+                    List<Report> reports = reportRepository.findAllByDataReportIdAndReportType(request.getId(), Constants.REPORT_TYPE_COMMENT);
+                    reportRepository.deleteAll(reports);
+                }
+            }
+
             return true;
         } catch (Exception e) {
             log.error("error: " + e.getMessage());

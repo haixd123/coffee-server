@@ -53,7 +53,7 @@ public class PostListener {
         notification.setReaded(false);
         notification.setNotificationType(Constants.NOTIFICATION_POST_DELINE);
         notification.setFromUser("Admin");
-        notification.setContent("Bài viết của bạn đã bị từ chối.");
+        notification.setContent("Đã từ chối bài viết của bạn.");
         notification.setImagePost(user.getImage() != null ? user.getImage() : postsEntity.getImagePath());
         Notification savedNotification = notificationRepository.save(notification);
         simpMessagingTemplate.convertAndSend("/notifications", NotificationResponse.mapTo(savedNotification));
@@ -77,7 +77,7 @@ public class PostListener {
         notification.setReaded(false);
         notification.setNotificationType(Constants.NOTIFICATION_POST_HIDE);
         notification.setFromUser("Admin");
-        notification.setContent("Bài viết của bạn đã bị gỡ.");
+        notification.setContent("Đã gỡ bài viết của bạn.");
         notification.setImagePost(author.getImage() != null ? author.getImage() : postsEntity.getImagePath());
         Notification savedNotification = notificationRepository.save(notification);
         simpMessagingTemplate.convertAndSend("/notifications", NotificationResponse.mapTo(savedNotification));
@@ -102,7 +102,7 @@ public class PostListener {
         notification.setReaded(false);
         notification.setNotificationType(Constants.NOTIFICATION_POST_ACCEPT);
         notification.setFromUser("Admin");
-        notification.setContent("Bài viết của bạn đã được duyệt.");
+        notification.setContent("Đã duyệt bài viết của bạn.");
         notification.setImagePost(user.getImage() != null ? user.getImage() : postsEntity.getImagePath());
         Notification savedNotification = notificationRepository.save(notification);
         simpMessagingTemplate.convertAndSend("/notifications", NotificationResponse.mapTo(savedNotification));

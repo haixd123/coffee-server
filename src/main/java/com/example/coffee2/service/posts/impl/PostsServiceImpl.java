@@ -151,11 +151,16 @@ public class PostsServiceImpl implements PostsService {
             if (obj == null) {
                 log.error("delete | không tìm thấy bản ghi");
                 return false;
+            } else {
+                if (obj.getStatus() == -1 || obj.getStatus() == -2) {
+                    repository.delete(obj);
+                } else {
+                    obj.setStatus(-1L);
+                    repository.save(obj);
+                    List<Report> reports = reportRepository.findAllByDataReportIdAndReportType(request.getId(), Constants.REPORT_TYPE_POST);
+                    reportRepository.deleteAll(reports);
+                }
             }
-            obj.setStatus(-1L);
-            repository.save(obj);
-            List<Report> reports = reportRepository.findAllByDataReportIdAndReportType(request.getId(), Constants.REPORT_TYPE_POST);
-            reportRepository.deleteAll(reports);
             return true;
         } catch (Exception e) {
             log.info("not success: " + e.getMessage());
