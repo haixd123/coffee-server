@@ -2,6 +2,7 @@ package com.example.coffee2.controller;
 
 
 import com.example.coffee2.request.BillRequest;
+import com.example.coffee2.request.ChangeStatusBillRequest;
 import com.example.coffee2.request.CoffeeBeanRequest;
 import com.example.coffee2.response.BillResponse;
 import com.example.coffee2.response.CoffeeBeanResponse;
@@ -77,6 +78,15 @@ public class BillController {
     public ResponseEntity<?> sortByPriceOrDate(@RequestParam(name = "sortBy", defaultValue = "price") String sortBy, Pageable pageable) {
         try {
             return billService.sortByPriceOrDate(pageable, sortBy.equals("price"));
+        } catch (Exception e) {
+            return ApiBaseResponse.fail(e.getMessage());
+        }
+    }
+
+    @PostMapping("/authors/bill/change-status")
+    public ResponseEntity<?> changeStatus(@RequestBody ChangeStatusBillRequest request) {
+        try {
+            return billService.updateBillStatus(request.getStatus(), request.getBillId());
         } catch (Exception e) {
             return ApiBaseResponse.fail(e.getMessage());
         }
