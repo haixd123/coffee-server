@@ -184,7 +184,6 @@ public class PostsServiceImpl implements PostsService {
 
     @Override
     public ResponseEntity<?> getPostByTypeAndTime(Pageable pageable, String type, String time) {
-        Page<PostsEntity> result = null;
         LocalDateTime endDate = LocalDateTime.now();
         LocalDateTime startDate = endDate;
         switch (time) {
