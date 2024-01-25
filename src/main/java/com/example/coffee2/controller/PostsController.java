@@ -3,7 +3,9 @@ package com.example.coffee2.controller;
 
 import com.example.coffee2.entity.PostsEntity;
 import com.example.coffee2.entity.ResponseObject;
+import com.example.coffee2.entity.UserEntity;
 import com.example.coffee2.reponsitory.PostsRepository;
+import com.example.coffee2.reponsitory.UserRespository;
 import com.example.coffee2.request.PostsRequest;
 import com.example.coffee2.response.PostsResponse;
 import com.example.coffee2.response.base.ApiBaseResponse;
@@ -29,6 +31,8 @@ public class PostsController {
     @Autowired
     private PostsRepository repository;
 
+    @Autowired
+    private UserRespository userRespository;
     @Autowired
     private PostsService postsService;
 
@@ -145,6 +149,7 @@ public class PostsController {
     public ApiBaseResponse create(@RequestBody PostsRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
 //        if (checkOffisentive(request, apiBaseResponse)) return apiBaseResponse;
+
         if (request.getStatus() != 2 || request.getStatus() != 0) {
             List<String> list = repository.findByTitle(request.getTitle());
             if (list.size() > 0) {
@@ -154,6 +159,22 @@ public class PostsController {
                 apiBaseResponse.setOptional(1l);
                 return apiBaseResponse;
             }
+        }
+        UserEntity user = userRespository.findById(request.getUserId()).orElse(null);
+        if (user != null) {
+            if (user.getDelineCount() >= Constants.MAX_DELINE_POST_PUSH_COUNT) {
+                apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
+                apiBaseResponse.setErrorDescription("Bạn đã bị khóa chức năng viết bài do bị từ chối quá nhiều lần");
+                apiBaseResponse.setData(request);
+                apiBaseResponse.setOptional(1l);
+                return apiBaseResponse;
+            }
+        } else {
+            apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
+            apiBaseResponse.setErrorDescription("Có lỗi xảy ra hãy thử lại sau.");
+            apiBaseResponse.setData(request);
+            apiBaseResponse.setOptional(1l);
+            return apiBaseResponse;
         }
         boolean rs = postsService.create(request);
         if (!rs) {

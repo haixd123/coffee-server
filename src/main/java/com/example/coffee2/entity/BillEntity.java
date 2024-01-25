@@ -4,6 +4,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -25,16 +27,14 @@ public class BillEntity {
 
     @Column(name = "address")
     private String address;
-
-    @Column(name = "detail")
-    private String detail;
-
     @Column(name = "create_date")
     private Date createDate;
 
-    @Column(name = "payed")
-    private boolean payed;
+    private Integer status;
+
+    @OneToMany(mappedBy = "bill")
+    private Set<BillDetail> details = new HashSet<>();
 
     @Column(name = "total")
-    private String total;
+    private Long total;
 }

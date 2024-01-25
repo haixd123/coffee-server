@@ -10,10 +10,9 @@ import com.example.coffee2.service.bill.BillService;
 import com.example.coffee2.utils.Constants;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -36,6 +35,43 @@ public class BillController {
         apiBaseResponse.setOptional(count);
         return apiBaseResponse;
     }
+
+    @GetMapping("/authors/bill")
+    public ResponseEntity<?> getAllBill(Pageable pageable) {
+        try {
+            return billService.getAll(pageable);
+        } catch (Exception e) {
+            return ApiBaseResponse.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/authors/bill/{id}")
+    public ResponseEntity<?> getById(@PathVariable(name = "id") Long id) {
+        try {
+            return billService.getById(id);
+        } catch (Exception e) {
+            return ApiBaseResponse.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/authors/bill")
+    public ResponseEntity<?> getAllByUser(@RequestParam(name = "name", defaultValue = "") String name, Pageable pageable) {
+        try {
+            return billService.getByUser(pageable, name);
+        } catch (Exception e) {
+            return ApiBaseResponse.fail(e.getMessage());
+        }
+    }
+
+    @GetMapping("/authors/bill/sort")
+    public ResponseEntity<?> sortByPriceOrDate(@RequestParam(name = "sortBy", defaultValue = "price") String sortBy, Pageable pageable) {
+        try {
+            return billService.sortByPriceOrDate(pageable, sortBy.equals("price"));
+        } catch (Exception e) {
+            return ApiBaseResponse.fail(e.getMessage());
+        }
+    }
+
 
     @PostMapping("/authors/bill/create")
     public ApiBaseResponse create(@RequestBody BillRequest request) {

@@ -5,6 +5,8 @@ import lombok.Data;
 import javax.persistence.*;
 import java.sql.Blob;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -41,6 +43,14 @@ public class UserEntity {
     private String image;
 
     private Long delineCount;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "users_vouchers",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "voucher_id")
+    )
+    private Set<Voucher> vouchers = new HashSet<>();
 //
 //    @Column(name = "image_data")
 //    @Lob

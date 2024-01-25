@@ -1,15 +1,13 @@
 package com.example.coffee2.service.posts.impl;
 
-import com.example.coffee2.entity.CoffeeBeanEntity;
-import com.example.coffee2.entity.CommentEntity;
-import com.example.coffee2.entity.PostsEntity;
-import com.example.coffee2.entity.Report;
+import com.example.coffee2.entity.*;
 import com.example.coffee2.event.PostAcceptEvent;
 import com.example.coffee2.event.PostDelineEvent;
 import com.example.coffee2.event.PostHideEvent;
 import com.example.coffee2.pusher.PostPusher;
 import com.example.coffee2.reponsitory.PostsRepository;
 import com.example.coffee2.reponsitory.ReportRepository;
+import com.example.coffee2.reponsitory.UserRespository;
 import com.example.coffee2.request.PostsRequest;
 import com.example.coffee2.response.PostsResponse;
 import com.example.coffee2.reponsitory.Customer.PostsRespositoryCustomer;
@@ -40,6 +38,9 @@ public class PostsServiceImpl implements PostsService {
 
     @Autowired
     private ReportRepository reportRepository;
+
+    @Autowired
+    private UserRespository userRespository;
 
     @Override
     public List<PostsResponse> getListPosts(PostsRequest request) {
@@ -113,16 +114,21 @@ public class PostsServiceImpl implements PostsService {
             obj.setCategory(request.getCategory());
             obj.setReason_deline(request.getReasonDeline());
             repository.save(obj);
-            if (request.getStatus() == Constants.POST_STATUS_DELINE) {
+            if (Objects.equals(request.getStatus(), Constants.POST_STATUS_DELINE)) {
+                UserEntity user = userRespository.findById(request.getUserId()).orElse(null);
+                if (user != null) {
+                    user.setDelineCount(user.getDelineCount() + 1);
+                    userRespository.save(user);
+                }
                 PostDelineEvent.PostDelineReq postDelineReq = new PostDelineEvent.PostDelineReq();
                 postDelineReq.setPostId(request.getId());
                 postDelineReq.setReasonDeline(request.getReasonDeline());
                 postPusher.postDelineEvent(postDelineReq);
-            } else if (request.getStatus() == Constants.POST_STATUS_ACCEPT) {
+            } else if (Objects.equals(request.getStatus(), Constants.POST_STATUS_ACCEPT)) {
                 PostAcceptEvent.PostAcceptEventReq postAcceptEventReq = new PostAcceptEvent.PostAcceptEventReq();
                 postAcceptEventReq.setPostId(request.getId());
                 postPusher.postAcceptEvent(postAcceptEventReq);
-            } else if (request.getStatus() == Constants.POST_STATUS_HIDE) {
+            } else if (Objects.equals(request.getStatus(), Constants.POST_STATUS_HIDE)) {
                 PostHideEvent.PostHideReq postHideReq = new PostHideEvent.PostHideReq();
                 postHideReq.setPostId(request.getId());
                 postPusher.postHideEvent(postHideReq);
@@ -160,9 +166,11 @@ public class PostsServiceImpl implements PostsService {
     public boolean changeStatus(Long postId, Long status) {
         try {
             PostsEntity obj = repository.findById(postId).orElse(null);
-
+            if (obj == null) {
+                return false;
+            }
             obj.setStatus(status);
-            if (status == Constants.POST_STATUS_HIDE) {
+            if (Objects.equals(status, Constants.POST_STATUS_HIDE)) {
                 PostHideEvent.PostHideReq postHideReq = new PostHideEvent.PostHideReq();
                 postHideReq.setPostId(obj.getId());
                 postPusher.postHideEvent(postHideReq);

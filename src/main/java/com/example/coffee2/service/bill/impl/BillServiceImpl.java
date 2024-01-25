@@ -1,14 +1,24 @@
 package com.example.coffee2.service.bill.impl;
 
+import com.example.coffee2.entity.BillDetail;
 import com.example.coffee2.entity.BillEntity;
+import com.example.coffee2.entity.ProductEntity;
+import com.example.coffee2.reponsitory.BillDetailRepository;
 import com.example.coffee2.reponsitory.BillRepository;
 import com.example.coffee2.reponsitory.Customer.BillCustomer;
+import com.example.coffee2.reponsitory.ProductRepository;
+import com.example.coffee2.request.BillDetailRequest;
 import com.example.coffee2.request.BillRequest;
 import com.example.coffee2.response.BillResponse;
+import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.bill.BillService;
 import com.example.coffee2.utils.DateProc;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -20,7 +30,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Log4j2
@@ -29,11 +39,39 @@ public class BillServiceImpl implements BillService {
     private BillRepository respository;
 
     @Autowired
+    private BillDetailRepository billDetailRepository;
+    @Autowired
     private BillCustomer billCustomer;
+
+    @Autowired
+    private ProductRepository productRepository;
 
     @Override
     public List<BillResponse> getListBill(BillRequest request) {
         return billCustomer.getListBill(request);
+    }
+
+    @Override
+    public ResponseEntity<?> getAll(Pageable pageable) {
+        return ApiBaseResponse.done("Success", respository.findAll(pageable));
+    }
+
+    @Override
+    public ResponseEntity<?> getById(Long id) {
+        return ApiBaseResponse.done("Success", respository.findById(id).orElse(null));
+    }
+
+    @Override
+    public ResponseEntity<?> getByUser(Pageable pageable, String name) {
+        return ApiBaseResponse.done("Success", respository.findAllByNameContaining(pageable, name));
+    }
+
+    @Override
+    public ResponseEntity<?> sortByPriceOrDate(Pageable pageable, boolean isPrice) {
+        Page<BillEntity> billEntities = respository.findAll(pageable);
+        List<BillEntity> list = billEntities.getContent();
+        list.sort(isPrice ? Comparator.comparingLong(BillEntity::getTotal).reversed() : Comparator.comparing(BillEntity::getCreateDate).reversed());
+        return ApiBaseResponse.done("Success", new PageImpl<>(list, pageable, billEntities.getTotalElements()));
     }
 
     @Override
@@ -49,11 +87,10 @@ public class BillServiceImpl implements BillService {
             obj.setEmail(request.getEmail());
             obj.setPhone(request.getPhone());
             obj.setAddress(request.getAddress());
-            obj.setDetail(request.getDetail());
             obj.setCreateDate(DateProc.stringToDateDDMMYYYY(request.getCreateDate()));
             obj.setTotal(request.getTotal());
-            obj.setPayed(false);
-            respository.save(obj);
+            BillEntity savedBill = respository.save(obj);
+            savedBill.setDetails(createBillDetail(request.getBillDetails(), savedBill));
             return true;
         } catch (Exception e) {
             log.error("error: " + e.getMessage());
@@ -61,32 +98,52 @@ public class BillServiceImpl implements BillService {
         }
     }
 
+    public Set<BillDetail> createBillDetail(Set<BillDetailRequest> requests, BillEntity bill) {
+        Set<BillDetail> billDetails = new HashSet<>();
+        for (BillDetailRequest billDetailRequest : requests) {
+            BillDetail billDetail = new BillDetail();
+            ProductEntity productEntity = productRepository.findById(billDetailRequest.getProductId()).orElse(null);
+            if (productEntity != null) {
+                billDetail.setAmount(productEntity.getPrice() * billDetailRequest.getQuantity());
+            }
+            billDetail.setQuantity(billDetailRequest.getQuantity());
+            billDetail.setProduct(productEntity);
+            billDetail.setBill(bill);
+            billDetails.add(billDetail);
+        }
+        return billDetails;
+    }
+
     @Override
-    public BillEntity create(BillRequest request, boolean payed){
+    public BillEntity create(BillRequest request, boolean payed) {
         BillEntity obj = new BillEntity();
         obj.setName(request.getName());
         obj.setEmail(request.getEmail());
         obj.setPhone(request.getPhone());
         obj.setAddress(request.getAddress());
-        obj.setDetail(request.getDetail());
         try {
             obj.setCreateDate(DateProc.stringToDateDDMMYYYY(request.getCreateDate()));
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
         obj.setTotal(request.getTotal());
-        obj.setPayed(payed);
         return respository.save(obj);
     }
 
     @Override
     public void updateBillPayed(Long id) {
-
         BillEntity bill = respository.findById(id).orElseThrow(() -> new RuntimeException("Not found bill"));
         log.info(id);
         log.info(bill);
-        bill.setPayed(true);
         respository.save(bill);
+    }
+
+    @Override
+    public ResponseEntity<?> updateBillStatus(Integer status, Long billId) {
+        BillEntity bill = respository.findById(billId).orElseThrow(() -> new RuntimeException("Not found bill"));
+        bill.setStatus(status);
+        respository.save(bill);
+        return ApiBaseResponse.done("Success", new HashMap<>());
     }
 
 

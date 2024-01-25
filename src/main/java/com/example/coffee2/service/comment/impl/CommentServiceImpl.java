@@ -140,7 +140,7 @@ public class CommentServiceImpl implements CommentService {
     public boolean changeStatus(Long id, Long status) {
         try {
             CommentEntity obj = commentRepository.findById(id).orElse(null);
-            if(obj == null){
+            if (obj == null) {
                 return false;
             }
             obj.setStatus(status);
@@ -150,7 +150,6 @@ public class CommentServiceImpl implements CommentService {
                 reportRepository.deleteAll(reports);
             }
             commentRepository.save(obj);
-
             return true;
         } catch (Exception e) {
             log.error("error: " + e.getMessage());
