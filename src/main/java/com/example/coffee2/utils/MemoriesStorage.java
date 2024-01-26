@@ -11,11 +11,10 @@ public class MemoriesStorage {
 
     public static boolean contain(String str) {
         boolean isContain = false;
-        String[] sSplit = str.split("[\\\\.,s!;?:\"]+");
+        String[] sSplit = str.split("[\\\\.,s!;?:\"\\s]+");
         for (String s : offensive_words) {
             for (String split_s : sSplit) {
                 if (split_s.equals(s)) {
-                    log.info(split_s);
                     isContain = true;
                     break;
                 }

@@ -32,7 +32,8 @@ public class PaymentController {
     @PostMapping("/authors/create-payment")
     public ResponseEntity<?> createPayment(@RequestBody BillRequest billRequest) throws UnsupportedEncodingException, ParseException {
 
-        BillEntity bill = billService.create(billRequest, false);
+//        BillEntity bill = billService.create(billRequest, false);
+        boolean bill = billService.create(billRequest);
 
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
@@ -101,7 +102,7 @@ public class PaymentController {
         paymentResponse.setStatus("OK");
         paymentResponse.setMessage("Successfully");
         paymentResponse.setURL(paymentUrl);
-        paymentResponse.setBillId(bill.getId().toString());
+//        paymentResponse.setBillId(bill.getId().toString());
 
         return ResponseEntity.status(HttpStatus.OK).body(paymentResponse);
     }

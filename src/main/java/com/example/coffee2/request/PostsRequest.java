@@ -21,7 +21,7 @@ public class PostsRequest {
     private int sortLikeUp;
     private int sortCommentDown;
     private int sortCommentUp;
-    private int rating;
+    private float rating;
 
     private String reasonDeline;
     private int pageIndex;
