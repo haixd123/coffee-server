@@ -109,6 +109,7 @@ public class BillServiceImpl implements BillService {
             applyVoucher(request.getVoucherIds(), obj);
             BillEntity savedBill = respository.save(obj);
             savedBill.setDetails(createBillDetail(request.getBillDetails(), savedBill));
+            respository.save(savedBill);
             return true;
         } catch (Exception e) {
             log.error("error: " + e.getMessage());
