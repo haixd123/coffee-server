@@ -2,6 +2,7 @@ package com.example.coffee2.service.bill.impl;
 
 import com.example.coffee2.entity.*;
 import com.example.coffee2.enums.VoucherType;
+import com.example.coffee2.pusher.BillPusher;
 import com.example.coffee2.reponsitory.*;
 import com.example.coffee2.reponsitory.Customer.BillCustomer;
 import com.example.coffee2.request.BillDetailRequest;
@@ -9,6 +10,7 @@ import com.example.coffee2.request.BillRequest;
 import com.example.coffee2.response.BillResponse;
 import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.bill.BillService;
+import com.example.coffee2.utils.Constants;
 import com.example.coffee2.utils.DateProc;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +42,8 @@ public class BillServiceImpl implements BillService {
     @Autowired
     private BillCustomer billCustomer;
 
+    @Autowired
+    private BillPusher billPusher;
     @Autowired
     private UserRespository userRespository;
 
@@ -189,6 +193,9 @@ public class BillServiceImpl implements BillService {
         BillEntity bill = respository.findById(billId).orElseThrow(() -> new RuntimeException("Not found bill"));
         bill.setStatus(status);
         respository.save(bill);
+        if (status == Constants.BILL_STATUS_CANCEL) {
+            billPusher.pushBillCancelEvent(bill.getEmail());
+        }
         return ApiBaseResponse.done("Success", new HashMap<>());
     }
 

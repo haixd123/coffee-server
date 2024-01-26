@@ -5,6 +5,9 @@ public interface Constants {
     String PHONE_PREFIX = "0";
     String START_TIME = " 00:00:00";
     String END_TIME = " 23:59:59";
+
+    Integer NOTIFICATION_BILL_CANCEL = 212313;
+    Integer BILL_STATUS_CANCEL = -1;
     String DATE_FORMAT_DDMMYYYYhh24miss = "dd/MM/yyyy hh24:mi:ss";
     String API_THIRD_PARTNER_SIG_NAME = "X-VPayEvent-Signature";
     String CALL_API_CODE_SUCCESS = "00";
