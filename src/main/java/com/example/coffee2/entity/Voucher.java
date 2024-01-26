@@ -29,4 +29,6 @@ public class Voucher {
 
     private int percentDiscount;
     private int voucherType;
+    private Long maxDiscount;
+
 }

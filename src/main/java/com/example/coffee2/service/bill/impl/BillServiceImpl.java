@@ -134,7 +134,8 @@ public class BillServiceImpl implements BillService {
                         return;
                     }
                     discountAllBillVoucher++;
-                    bill.setTotal(bill.getTotal() - ((bill.getTotal() / 100) * voucher.getPercentDiscount()));
+                    Long discountPrice = ((bill.getTotal() / 100) * voucher.getPercentDiscount()) <= voucher.getMaxDiscount() ? ((bill.getTotal() / 100) * voucher.getPercentDiscount()) : voucher.getMaxDiscount();
+                    bill.setTotal(bill.getTotal() - discountPrice);
                     bill.addVoucher(voucher);
                     user.deleteVoucher(voucher);
                 }

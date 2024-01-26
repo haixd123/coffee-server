@@ -11,5 +11,6 @@ public class VoucherRequest {
     private int percentDiscount;
     private String description;
 
+    private Long maxDiscount;
     private int voucherType;
 }
