@@ -109,6 +109,25 @@ public class BillController {
         return apiBaseResponse;
     }
 
+
+    @PostMapping("/authors/bill/delete")
+    public ApiBaseResponse delete(@RequestBody ChangeStatusBillRequest request) {
+        ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
+        boolean rs = billService.delete(request);
+        if(!rs) {
+            apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
+            apiBaseResponse.setErrorDescription("Không tìm thấy hóa đơn");
+            apiBaseResponse.setData(request);
+            apiBaseResponse.setOptional(1L);
+            return apiBaseResponse;
+        }
+        apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_SUCCESS);
+        apiBaseResponse.setErrorDescription("Xóa hóa đơn thành cng");
+        apiBaseResponse.setData(request);
+        apiBaseResponse.setOptional(1L);
+        return apiBaseResponse;
+    }
+
     @PostMapping("/authors/bill/export")
     public void export(HttpServletResponse response, @RequestBody BillRequest request) throws Exception {
         List<BillResponse> listResult = billService.getListBill(request);

@@ -215,14 +215,6 @@ public class PostsController {
     public ApiBaseResponse updatePosts(@RequestBody PostsRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
         if (checkOffisentive(request, apiBaseResponse)) return apiBaseResponse;
-//        List<String> list = repository.findByTitle(request.getTitle());
-//        if (list.size() > 0) {
-//            apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
-//            apiBaseResponse.setOptional(1l);
-//            apiBaseResponse.setErrorDescription("Bài viết đã tồn tại trong hệ thống");
-//            apiBaseResponse.setData(request);
-//            return apiBaseResponse;
-//        }
         boolean rs = postsService.update(request);
         if (!rs) {
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);

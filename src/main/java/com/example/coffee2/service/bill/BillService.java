@@ -29,10 +29,11 @@ public interface BillService {
 
     boolean create(BillRequest request);
 
+    boolean delete(ChangeStatusBillRequest request);
+
     BillEntity create(BillRequest request, boolean payed) throws ParseException;
 
     void updateBillPayed(Long id);
-    boolean delete(ChangeStatusBillRequest request);
 
     ResponseEntity<?> updateBillStatus(Integer status, Long billId);
 
