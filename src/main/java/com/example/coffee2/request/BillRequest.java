@@ -12,12 +12,11 @@ public class BillRequest {
     private String email;
     private String phone;
     private String address;
-    private String detail;
     private String createDate;
     private Long total;
 
     private int pageIndex;
     private int pageSize;
-
+    private Set<String> voucherIds = new HashSet<>();
     private Set<BillDetailRequest> billDetails = new HashSet<>();
 }

@@ -35,6 +35,13 @@ public class BillEntity {
     @OneToMany(mappedBy = "bill")
     private Set<BillDetail> details = new HashSet<>();
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "bill_vouchers", joinColumns = @JoinColumn(name = "bill_id"), inverseJoinColumns = @JoinColumn(name = "voucher_id"))
+    private Set<Voucher> vouchers = new HashSet<>();
     @Column(name = "total")
     private Long total;
+
+    public void addVoucher(Voucher voucher) {
+        this.vouchers.add(voucher);
+    }
 }

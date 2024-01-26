@@ -51,6 +51,14 @@ public class UserEntity {
             inverseJoinColumns = @JoinColumn(name = "voucher_id")
     )
     private Set<Voucher> vouchers = new HashSet<>();
+
+    public void addVoucher(Voucher voucher) {
+        this.vouchers.add(voucher);
+    }
+
+    public void deleteVoucher(Voucher voucher) {
+        this.vouchers.remove(voucher);
+    }
 //
 //    @Column(name = "image_data")
 //    @Lob

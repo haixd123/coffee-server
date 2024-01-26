@@ -19,6 +19,7 @@ public interface UserService extends UserDetailsService {
 
     List<UserResponse> getListUser(UserRequest request);
 
+    ResponseEntity<?> getById(Long id);
     Long getCountListUser(UserRequest request);
 
     boolean create(UserRequest request);

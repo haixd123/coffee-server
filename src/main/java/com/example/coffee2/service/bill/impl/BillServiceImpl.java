@@ -1,12 +1,9 @@
 package com.example.coffee2.service.bill.impl;
 
-import com.example.coffee2.entity.BillDetail;
-import com.example.coffee2.entity.BillEntity;
-import com.example.coffee2.entity.ProductEntity;
-import com.example.coffee2.reponsitory.BillDetailRepository;
-import com.example.coffee2.reponsitory.BillRepository;
+import com.example.coffee2.entity.*;
+import com.example.coffee2.enums.VoucherType;
+import com.example.coffee2.reponsitory.*;
 import com.example.coffee2.reponsitory.Customer.BillCustomer;
-import com.example.coffee2.reponsitory.ProductRepository;
 import com.example.coffee2.request.BillDetailRequest;
 import com.example.coffee2.request.BillRequest;
 import com.example.coffee2.response.BillResponse;
@@ -43,6 +40,11 @@ public class BillServiceImpl implements BillService {
     @Autowired
     private BillCustomer billCustomer;
 
+    @Autowired
+    private UserRespository userRespository;
+
+    @Autowired
+    VoucherRepository voucherRepository;
     @Autowired
     private ProductRepository productRepository;
 
@@ -84,9 +86,14 @@ public class BillServiceImpl implements BillService {
         return billCustomer.getCountListBill(request);
     }
 
+
     @Override
     public boolean create(BillRequest request) {
         try {
+            UserEntity user = userRespository.findByEmail(request.getEmail()).orElse(null);
+            if (user == null) {
+                return false;
+            }
             BillEntity obj = new BillEntity();
             obj.setName(request.getName());
             obj.setEmail(request.getEmail());
@@ -94,6 +101,7 @@ public class BillServiceImpl implements BillService {
             obj.setAddress(request.getAddress());
             obj.setCreateDate(DateProc.stringToDateDDMMYYYY(request.getCreateDate()));
             obj.setTotal(request.getTotal());
+            applyVoucher(request.getVoucherIds(), obj);
             BillEntity savedBill = respository.save(obj);
             savedBill.setDetails(createBillDetail(request.getBillDetails(), savedBill));
             return true;
@@ -101,6 +109,38 @@ public class BillServiceImpl implements BillService {
             log.error("error: " + e.getMessage());
             return false;
         }
+    }
+
+    public void applyVoucher(Set<String> voucherId, BillEntity bill) {
+        if (voucherId.isEmpty()) {
+            return;
+        }
+        int discountAllBillVoucher = 0;
+        // get all user voucher and delete
+        UserEntity user = userRespository.findByEmail(bill.getEmail()).orElse(null);
+        if (user == null) {
+            return;
+        }
+        for (String s : voucherId) {
+            Voucher voucher = voucherRepository.findById(s).orElse(null);
+            if (voucher != null) {
+                if (voucher.getVoucherType() == VoucherType.DISCOUNT_ALL_BILL.getValue()) {
+                    if (discountAllBillVoucher >= 1) {
+                        // toi da duoc dung 1 voucher giam gia tong thoi
+                        return;
+                    }
+                    if (voucher.getExpiredAt().before(new Date())) {
+                        // voucher het han
+                        return;
+                    }
+                    discountAllBillVoucher++;
+                    bill.setTotal(bill.getTotal() - ((bill.getTotal() / 100) * voucher.getPercentDiscount()));
+                    bill.addVoucher(voucher);
+                    user.deleteVoucher(voucher);
+                }
+            }
+        }
+        userRespository.save(user);
     }
 
     public Set<BillDetail> createBillDetail(Set<BillDetailRequest> requests, BillEntity bill) {
@@ -114,7 +154,7 @@ public class BillServiceImpl implements BillService {
             billDetail.setQuantity(billDetailRequest.getQuantity());
             billDetail.setProduct(productEntity);
             billDetail.setBill(bill);
-            billDetails.add(billDetail);
+            billDetails.add(billDetailRepository.save(billDetail));
         }
         return billDetails;
     }

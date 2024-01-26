@@ -67,6 +67,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ResponseEntity<?> getById(Long id) {
+        return ApiBaseResponse.done("Success", respository.findById(id));
+    }
+
+    @Override
     public Long getCountListUser(UserRequest request) {
         return userCustomer.getCountListUser(request);
     }

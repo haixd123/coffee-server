@@ -17,10 +17,10 @@ public class PostsEntity {
     private Long id;
 
     @Column(name = "total_like")
-    private Long like1;
+    private Long like1 = 0L;
 
     @Column(name = "total_comment")
-    private Long comment;
+    private Long comment = 0L;
 
     @Column(name = "title")
     private String title;
@@ -49,7 +49,7 @@ public class PostsEntity {
     @Column(name = "category")
     private String category;
 
-    private Float rating;
+    private Float rating = 0F;
     @Column(nullable = true)
     private String reason_deline;
 

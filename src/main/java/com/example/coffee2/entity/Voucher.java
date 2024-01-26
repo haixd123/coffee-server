@@ -1,9 +1,12 @@
 package com.example.coffee2.entity;
 
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Data
@@ -11,12 +14,19 @@ import java.time.LocalDateTime;
 public class Voucher {
 
     @javax.persistence.Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long Id;
+    private String Id;
 
-    private LocalDateTime expiredAt;
+    public Voucher() {
+        this.Id = UUID.randomUUID().toString().substring(0, 6).toUpperCase();
+    }
+
+    private String description;
+
+    private Date expiredAt;
+
+    @CreationTimestamp
+    private Date createdAt;
 
     private int percentDiscount;
     private int voucherType;
-
 }

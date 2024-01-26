@@ -60,6 +60,15 @@ public class UserController {
         return apiBaseResponse;
     }
 
+    @GetMapping("api/authors/user/{userId}")
+    public ResponseEntity<?> getById(@PathVariable(name = "userId") Long userId) {
+        try {
+            return userService.getById(userId);
+        } catch (Exception e) {
+            return ApiBaseResponse.fail(e.getMessage());
+        }
+    }
+
     @GetMapping("api/authors/user/getPostInfo/{userId}")
     public ResponseEntity<?> getUserPostInfo(@PathVariable(name = "userId") Long userId) {
         try {
