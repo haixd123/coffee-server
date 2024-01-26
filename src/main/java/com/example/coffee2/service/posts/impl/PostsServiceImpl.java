@@ -157,9 +157,9 @@ public class PostsServiceImpl implements PostsService {
                 } else {
                     obj.setStatus(-1L);
                     repository.save(obj);
-                    List<Report> reports = reportRepository.findAllByDataReportIdAndReportType(request.getId(), Constants.REPORT_TYPE_POST);
-                    reportRepository.deleteAll(reports);
                 }
+                List<Report> reports = reportRepository.findAllByDataReportIdAndReportType(request.getId(), Constants.REPORT_TYPE_POST);
+                reportRepository.deleteAll(reports);
             }
             return true;
         } catch (Exception e) {
@@ -180,10 +180,10 @@ public class PostsServiceImpl implements PostsService {
                 PostHideEvent.PostHideReq postHideReq = new PostHideEvent.PostHideReq();
                 postHideReq.setPostId(obj.getId());
                 postPusher.postHideEvent(postHideReq);
+                List<Report> reports = reportRepository.findAllByDataReportIdAndReportType(postId, Constants.REPORT_TYPE_POST);
+                reportRepository.deleteAll(reports);
             }
             repository.save(obj);
-            List<Report> reports = reportRepository.findAllByDataReportIdAndReportType(postId, Constants.REPORT_TYPE_POST);
-            reportRepository.deleteAll(reports);
             return true;
         } catch (Exception e) {
             log.error("error: " + e.getMessage());

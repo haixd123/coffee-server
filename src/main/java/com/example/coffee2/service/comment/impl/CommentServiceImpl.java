@@ -129,9 +129,9 @@ public class CommentServiceImpl implements CommentService {
                 } else {
                     obj.setStatus(-1L);
                     commentRepository.save(obj);
-                    List<Report> reports = reportRepository.findAllByDataReportIdAndReportType(request.getId(), Constants.REPORT_TYPE_COMMENT);
-                    reportRepository.deleteAll(reports);
                 }
+                List<Report> reports = reportRepository.findAllByDataReportIdAndReportType(request.getId(), Constants.REPORT_TYPE_COMMENT);
+                reportRepository.deleteAll(reports);
             }
 
             return true;

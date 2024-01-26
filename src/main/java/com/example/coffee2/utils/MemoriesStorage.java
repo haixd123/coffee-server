@@ -15,6 +15,7 @@ public class MemoriesStorage {
         for (String s : offensive_words) {
             for (String split_s : sSplit) {
                 if (split_s.equals(s)) {
+                    log.info(split_s);
                     isContain = true;
                     break;
                 }
