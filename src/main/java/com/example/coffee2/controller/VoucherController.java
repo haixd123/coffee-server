@@ -61,6 +61,15 @@ public class VoucherController {
         }
     }
 
+    @GetMapping("/by-not-user/{userId}")
+    public ResponseEntity<?> getNotByUser(@PathVariable(name = "userId") Long userId, Pageable pageable) {
+        try {
+            return voucherService.getNotByUser(userId, pageable);
+        } catch (Exception e) {
+            return ApiBaseResponse.fail(e.getMessage());
+        }
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<?> getById(@PathVariable(name = "id") String id) {
         try {

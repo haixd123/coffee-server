@@ -18,10 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -78,6 +75,22 @@ public class VoucherServiceIpm implements VoucherService {
     }
 
     @Override
+    public ResponseEntity<?> getNotByUser(Long userId, Pageable pageable) {
+        List<Voucher> vouchers = voucherRepository.findAll();
+        UserEntity user = userRespository.findById(userId).orElse(null);
+        List<Voucher> notByUser = new ArrayList<>();
+        if (user != null) {
+            vouchers.forEach((v) -> {
+                if (!user.getVouchers().contains(v)) {
+                    notByUser.add(v);
+                }
+            });
+        }
+        notByUser.sort(Comparator.comparingInt(Voucher::getPercentDiscount));
+        return ApiBaseResponse.done("Success", new PageImpl<>(notByUser, pageable, notByUser.size()));
+    }
+
+    @Override
     public ResponseEntity<?> getById(String id) {
         return ApiBaseResponse.done("Success", voucherRepository.findById(id));
     }
@@ -89,7 +102,7 @@ public class VoucherServiceIpm implements VoucherService {
 
     @Override
     public ResponseEntity<?> sortByDiscount(Pageable pageable) {
-        return getResponseEntity(pageable, Comparator.comparing(Voucher::getPercentDiscount));
+        return getResponseEntity(pageable, Comparator.comparingInt(Voucher::getPercentDiscount));
     }
 
     @Override

@@ -15,6 +15,8 @@ public interface VoucherService {
 
     ResponseEntity<?> getAll(Pageable pageable);
 
+    ResponseEntity<?> getNotByUser(Long userId, Pageable pageable);
+
     ResponseEntity<?> getById(String id);
 
     ResponseEntity<?> sortByCreatedAt(Pageable pageable);
