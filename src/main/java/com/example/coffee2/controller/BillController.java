@@ -54,7 +54,6 @@ public class BillController {
             return ApiBaseResponse.fail(e.getMessage());
         }
     }
-
     @GetMapping("/authors/bill/by-user")
     public ResponseEntity<?> getAllByUser(@RequestParam(name = "name", defaultValue = "") String name, Pageable pageable) {
         try {
@@ -82,7 +81,6 @@ public class BillController {
             return ApiBaseResponse.fail(e.getMessage());
         }
     }
-
     @PostMapping("/authors/bill/change-status")
     public ResponseEntity<?> changeStatus(@RequestBody ChangeStatusBillRequest request) {
         try {
@@ -92,8 +90,6 @@ public class BillController {
         }
     }
 
-
-    @PostMapping("/authors/bill/create")
     public ApiBaseResponse create(@RequestBody BillRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
         boolean rs = billService.create(request);

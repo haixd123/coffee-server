@@ -22,7 +22,6 @@ public interface BillService {
     ResponseEntity<?> getByUser(Pageable pageable,String name);
     ResponseEntity<?> getByUserEmail(Pageable pageable,String email);
 
-
     ResponseEntity<?> sortByPriceOrDate(Pageable pageable, boolean isPrice);
 
     Long getCountListBill(BillRequest request);

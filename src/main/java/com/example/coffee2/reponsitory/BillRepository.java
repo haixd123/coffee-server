@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BillRepository extends JpaRepository<BillEntity, Long> {
     Page<BillEntity> findAllByNameContaining(Pageable pageable, String name);
+<<<<<<< Updated upstream
     Page<BillEntity> findAllByEmail(Pageable pageable,String email);
 
+=======
+>>>>>>> Stashed changes
 }
