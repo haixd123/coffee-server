@@ -1,5 +1,6 @@
 package com.example.coffee2.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -19,9 +20,4 @@ public class BillDetail {
     private Long quantity;
 
     private Long amount;
-
-    @ManyToOne
-    @JsonIgnore
-    private BillEntity bill;
-
 }

@@ -5,12 +5,14 @@ import com.example.coffee2.request.VoucherRequest;
 import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.voucher.VoucherService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 @RequestMapping("api/authors/voucher")
 public class VoucherController {
 
@@ -89,6 +91,7 @@ public class VoucherController {
                     return voucherService.sortByCreatedAt(pageable);
             }
         } catch (Exception e) {
+            log.info(e.getMessage());
             return ApiBaseResponse.fail(e.getMessage());
         }
     }

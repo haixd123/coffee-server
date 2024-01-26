@@ -161,10 +161,9 @@ public class BillServiceImpl implements BillService {
             }
             billDetail.setQuantity(billDetailRequest.getQuantity());
             billDetail.setProduct(productEntity);
-            billDetail.setBill(bill);
             billDetails.add(billDetailRepository.save(billDetail));
         }
-        return new HashSet<>(billDetailRepository.saveAll(billDetails));
+        return billDetails;
     }
 
     @Override
@@ -195,7 +194,13 @@ public class BillServiceImpl implements BillService {
     public boolean delete(ChangeStatusBillRequest request) {
         BillEntity bill = respository.findById(request.getBillId()).orElse(null);
         if (bill != null) {
-            billDetailRepository.deleteAllByBill(bill);
+//            billDetailRepository.deleteAllByBill(bill);
+            Set<BillDetail> billDetails = bill.getDetails();
+            bill.clearDetails();
+            bill.clearVouchers();
+            respository.save(bill);
+            billDetailRepository.deleteAll(billDetails);
+
             respository.delete(bill);
             return true;
         }

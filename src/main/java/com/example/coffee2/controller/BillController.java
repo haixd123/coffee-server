@@ -92,6 +92,7 @@ public class BillController {
         }
     }
 
+    @PostMapping("/authors/bill/create")
     public ApiBaseResponse create(@RequestBody BillRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
         boolean rs = billService.create(request);
@@ -114,7 +115,7 @@ public class BillController {
     public ApiBaseResponse delete(@RequestBody ChangeStatusBillRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
         boolean rs = billService.delete(request);
-        if(!rs) {
+        if (!rs) {
             apiBaseResponse.setErrorCode(Constants.CALL_API_CODE_FAIL);
             apiBaseResponse.setErrorDescription("Không tìm thấy hóa đơn");
             apiBaseResponse.setData(request);

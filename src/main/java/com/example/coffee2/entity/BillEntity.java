@@ -1,5 +1,6 @@
 package com.example.coffee2.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -32,7 +33,8 @@ public class BillEntity {
 
     private Integer status;
 
-    @OneToMany(mappedBy = "bill")
+    @OneToMany
+    @JoinTable(name = "bills_details", joinColumns = @JoinColumn(name = "bill_id"), inverseJoinColumns = @JoinColumn(name = "detail_id"))
     private Set<BillDetail> details = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -43,5 +45,13 @@ public class BillEntity {
 
     public void addVoucher(Voucher voucher) {
         this.vouchers.add(voucher);
+    }
+
+    public void clearDetails() {
+        this.details.clear();
+    }
+
+    public void clearVouchers() {
+        this.vouchers.clear();
     }
 }

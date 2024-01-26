@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -102,7 +103,14 @@ public class VoucherServiceIpm implements VoucherService {
 
     @Override
     public ResponseEntity<?> sortByDiscount(Pageable pageable) {
-        return getResponseEntity(pageable, Comparator.comparingInt(Voucher::getPercentDiscount));
+        return getResponseEntity(pageable, Comparator.comparing(Voucher::getPercentDiscount));
+    }
+
+    private ResponseEntity<?> getResponseEntity(Pageable pageable, Comparator<Voucher> comparing) {
+        Page<Voucher> vouchers = voucherRepository.findAll(pageable);
+        List<Voucher> list = vouchers.getContent();
+        list = list.stream().sorted(comparing.reversed()).collect(Collectors.toList());
+        return ApiBaseResponse.done("Success", new PageImpl<>(list, pageable, vouchers.getTotalElements()));
     }
 
     @Override
@@ -114,10 +122,5 @@ public class VoucherServiceIpm implements VoucherService {
         return ApiBaseResponse.done("Success", new PageImpl<>(Arrays.asList(user.getVouchers().toArray()), pageable, user.getVouchers().size()));
     }
 
-    private ResponseEntity<?> getResponseEntity(Pageable pageable, Comparator<Voucher> comparing) {
-        Page<Voucher> vouchers = voucherRepository.findAll(pageable);
-        List<Voucher> list = vouchers.getContent();
-        list.sort(comparing);
-        return ApiBaseResponse.done("Success", new PageImpl<>(list, pageable, vouchers.getTotalElements()));
-    }
+
 }

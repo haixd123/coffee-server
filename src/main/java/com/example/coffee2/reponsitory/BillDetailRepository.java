@@ -9,5 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface BillDetailRepository extends JpaRepository<BillDetail, Long> {
-    void deleteAllByBill(BillEntity bill);
+//    void deleteAllByBill(BillEntity bill);
 }
