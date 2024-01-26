@@ -31,6 +31,7 @@ import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -163,7 +164,7 @@ public class BillServiceImpl implements BillService {
             billDetail.setBill(bill);
             billDetails.add(billDetailRepository.save(billDetail));
         }
-        return billDetails;
+        return new HashSet<>(billDetailRepository.saveAll(billDetails));
     }
 
     @Override
