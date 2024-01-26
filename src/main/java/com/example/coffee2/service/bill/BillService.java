@@ -2,6 +2,7 @@ package com.example.coffee2.service.bill;
 
 import com.example.coffee2.entity.BillEntity;
 import com.example.coffee2.request.BillRequest;
+import com.example.coffee2.request.ChangeStatusBillRequest;
 import com.example.coffee2.response.BillResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ public interface BillService {
     BillEntity create(BillRequest request, boolean payed) throws ParseException;
 
     void updateBillPayed(Long id);
+    boolean delete(ChangeStatusBillRequest request);
 
     ResponseEntity<?> updateBillStatus(Integer status, Long billId);
 

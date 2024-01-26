@@ -7,6 +7,7 @@ import com.example.coffee2.reponsitory.*;
 import com.example.coffee2.reponsitory.Customer.BillCustomer;
 import com.example.coffee2.request.BillDetailRequest;
 import com.example.coffee2.request.BillRequest;
+import com.example.coffee2.request.ChangeStatusBillRequest;
 import com.example.coffee2.response.BillResponse;
 import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.bill.BillService;
@@ -186,6 +187,17 @@ public class BillServiceImpl implements BillService {
         log.info(id);
         log.info(bill);
         respository.save(bill);
+    }
+
+    @Override
+    public boolean delete(ChangeStatusBillRequest request) {
+        BillEntity bill = respository.findById(request.getBillId()).orElse(null);
+        if (bill != null) {
+            billDetailRepository.deleteAllByBill(bill);
+            respository.delete(bill);
+            return true;
+        }
+        return false;
     }
 
     @Override
