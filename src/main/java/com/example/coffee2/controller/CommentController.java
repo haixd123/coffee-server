@@ -1,16 +1,22 @@
 package com.example.coffee2.controller;
 
 import com.example.coffee2.entity.CommentEntity;
+import com.example.coffee2.entity.UserEntity;
 import com.example.coffee2.pusher.UserCommentPusher;
 import com.example.coffee2.request.*;
+import com.example.coffee2.response.CommentPostResponse;
 import com.example.coffee2.response.CommentResponse;
 import com.example.coffee2.response.base.ApiBaseResponse;
+import com.example.coffee2.service.author.JwtService;
 import com.example.coffee2.service.comment.CommentService;
+import com.example.coffee2.service.user.UserService;
 import com.example.coffee2.utils.Constants;
 import com.example.coffee2.utils.MemoriesStorage;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +30,12 @@ import java.util.List;
 public class CommentController {
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private UserCommentPusher userCommentPusher;
@@ -45,6 +57,16 @@ public class CommentController {
         apiBaseResponse.setData(listResult);
         apiBaseResponse.setOptional(count);
         return apiBaseResponse;
+    }
+
+    @PostMapping("/authors/post/comment")
+    public ResponseEntity<List<CommentPostResponse>> getCommentOfPost(@RequestBody CommentRequest commentRequest){
+        return ResponseEntity.ok(commentService.getAllCommentPost(commentRequest));
+    }
+
+    @PostMapping("/authors/likeComment/update")
+    public boolean updateLikeComment(@RequestBody CommentRequest commentRequest){
+        return commentService.updateLikeComment(commentRequest);
     }
 
     @PreAuthorize("hasRole('USER')")

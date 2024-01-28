@@ -80,7 +80,7 @@ public class PostsCustomerImpl implements PostsRespositoryCustomer {
 //                query.setFirstResult((request.getPageIndex() - 1) * request.getPageSize());
 //                query.setMaxResults(request.getPageSize());
 //            }
-            Long count = ((Integer) query.getSingleResult()).longValue();
+            Long count = ((BigInteger) query.getSingleResult()).longValue();
             return count;
         } catch (Exception e) {
             log.error("error2: " + e.getMessage());
@@ -176,7 +176,7 @@ public class PostsCustomerImpl implements PostsRespositoryCustomer {
                 });
             }
 
-            Long count = ((Integer) query.getSingleResult()).longValue();
+            Long count = ((BigInteger) query.getSingleResult()).longValue();
             return count;
         } catch (Exception e) {
             log.error("error2: " + e.getMessage());
@@ -230,7 +230,7 @@ public class PostsCustomerImpl implements PostsRespositoryCustomer {
 //                query.setFirstResult((request.getPageIndex() - 1) * request.getPageSize());
 //                query.setMaxResults(request.getPageSize());
 //            }
-            Long count = ((Integer) query.getSingleResult()).longValue();
+            Long count = ((BigInteger) query.getSingleResult()).longValue();
             return count;
         } catch (Exception e) {
             log.error("error2: " + e.getMessage());

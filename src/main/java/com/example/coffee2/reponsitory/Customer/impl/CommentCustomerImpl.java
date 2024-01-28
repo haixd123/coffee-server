@@ -13,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class CommentCustomerImpl implements CommentCustomer {
                 });
             }
 
-            Long count = ((Integer) query.getSingleResult()).longValue();
+            Long count = ((BigInteger) query.getSingleResult()).longValue();
             return count;
         } catch (Exception e) {
             log.error("error2: " + e.getMessage());
@@ -121,7 +122,7 @@ public class CommentCustomerImpl implements CommentCustomer {
                 });
             }
 
-            Long count = ((Integer) query.getSingleResult()).longValue();
+            Long count = ((BigInteger) query.getSingleResult()).longValue();
             return count;
         } catch (Exception e) {
             log.error("error2: " + e.getMessage());
