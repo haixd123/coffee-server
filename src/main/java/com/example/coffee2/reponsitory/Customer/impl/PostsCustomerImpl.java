@@ -134,7 +134,7 @@ public class PostsCustomerImpl implements PostsRespositoryCustomer {
         }
         if (request.getTitle() != null) {
             sql.append(" and f.title like :title ");
-            params.put("title", "%"+request.getTitle()+"%");
+            params.put("title", "%" + request.getTitle() + "%");
 //            params.put("title", "%" +  request.getTitle() + "%");
         }
 //        if (request.getUserId() != null) {

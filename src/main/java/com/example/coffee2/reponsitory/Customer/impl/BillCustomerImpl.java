@@ -86,7 +86,7 @@ public class BillCustomerImpl implements BillCustomer {
             sql.append("f.email, \n");
             sql.append("f.phone, \n");
             sql.append("f.address, \n");
-            sql.append("f.detail, \n");
+            sql.append("f.details, \n");
             sql.append("f.create_date, \n");
             sql.append("f.total \n");
         }
@@ -98,6 +98,8 @@ public class BillCustomerImpl implements BillCustomer {
             params.put("name", request.getName());
 //            params.put("name", "%" + request.getName() + "%");
         }
-        sql.append("order by f.create_date asc");
+        if (!isCount) {
+            sql.append("order by f.create_date asc");
+        }
     }
 }

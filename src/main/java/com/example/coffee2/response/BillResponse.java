@@ -9,7 +9,7 @@ public class BillResponse {
     private String email;
     private String phone;
     private String address;
-    private String detail;
+    private String details;
     private String createDate;
     private String total;
 

@@ -20,4 +20,15 @@ public class BillDetail {
     private Long quantity;
 
     private Long amount;
+
+    @Override
+    public String toString() {
+//        return "BillDetail{" +
+        return "{" +
+                "Id=" + Id +
+                ", product=" + product +
+                ", quantity=" + quantity +
+                ", amount=" + amount +
+                '}';
+    }
 }
