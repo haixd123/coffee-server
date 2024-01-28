@@ -27,13 +27,13 @@ public interface PostsRepository extends JpaRepository<PostsEntity, Long> {
 
     Page<PostsEntity> findAllByStatus(Pageable pageable,Long status);
     @Query(
-            value = "SELECT * FROM posts ORDER BY total_like DESC LIMIT 5",
+            value = "SELECT TOP 5 * FROM posts ORDER BY total_like DESC",
             nativeQuery = true
     )
     List<PostsEntity> findLikePost();
 
     @Query(
-            value = "SELECT * FROM posts ORDER BY total_comment DESC LIMIT 5",
+            value = "SELECT TOP 5 * FROM posts ORDER BY total_comment DESC",
             nativeQuery = true
     )
     List<PostsEntity> findCommentPost();

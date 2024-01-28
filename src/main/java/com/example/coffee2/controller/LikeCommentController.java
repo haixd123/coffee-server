@@ -1,15 +1,10 @@
 package com.example.coffee2.controller;
 
 
-import com.example.coffee2.reponsitory.EquipmentRespository;
-import com.example.coffee2.reponsitory.LikeCommentRepository;
-import com.example.coffee2.request.EquipmentRequest;
 import com.example.coffee2.request.LikeCommentRequest;
-import com.example.coffee2.response.EquipmentResponse;
 import com.example.coffee2.response.LikeCommentResponse;
 import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.LikeComment.LikeCommentService;
-import com.example.coffee2.service.equipment.EquipmentService;
 import com.example.coffee2.utils.Constants;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +23,9 @@ public class LikeCommentController {
     @Autowired
     private LikeCommentService likeCommentService;
 
-    @PostMapping("/authors/likeComment/findTotalLikeCommentByPost")
+    @PostMapping("/authors/likeComment/findAllTableComment")
     public ApiBaseResponse getListEquipment(@RequestBody LikeCommentRequest request) {
-        List<LikeCommentResponse> listResult = likeCommentService.getListLikeComment(request);
+        List<LikeCommentResponse> listResult = likeCommentService.getTableLikeCommentListLikeComment(request);
 //        Long count = equipmentService.getCountListEquipment(request);
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
         apiBaseResponse.setData(listResult);
@@ -39,7 +34,7 @@ public class LikeCommentController {
     }
 
 //    @PreAuthorize("hasRole('USER')")
-    @PostMapping("/authors/likeComment/update")
+    @PostMapping("/authors/likeComment/update1")
     public ApiBaseResponse update(@RequestBody LikeCommentRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
         boolean rs = likeCommentService.update(request);

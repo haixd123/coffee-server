@@ -5,8 +5,10 @@ import com.example.coffee2.pusher.CommentPusher;
 import com.example.coffee2.reponsitory.*;
 import com.example.coffee2.reponsitory.Customer.CommentCustomer;
 import com.example.coffee2.request.CommentRequest;
+import com.example.coffee2.request.LikeCommentRequest;
 import com.example.coffee2.response.CommentPostResponse;
 import com.example.coffee2.response.CommentResponse;
+import com.example.coffee2.response.LikeCommentResponse;
 import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.comment.CommentService;
 import com.example.coffee2.utils.Constants;
@@ -42,6 +44,12 @@ public class CommentServiceImpl implements CommentService {
     private ReportRepository reportRepository;
     @Autowired
     private LikeCommentRepo likeCommentRepo;
+
+    @Override
+    public List<LikeCommentResponse> getListLikeComment(LikeCommentRequest request) {
+        return commentCustomer.getListLikeComment(request);
+    }
+
 
     @Override
     public List<CommentResponse> getListComment(CommentRequest request) {

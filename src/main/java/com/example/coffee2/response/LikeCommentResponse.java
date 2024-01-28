@@ -4,11 +4,15 @@ import lombok.Data;
 
 @Data
 public class LikeCommentResponse {
-    private Long lcCommentId;
-    private Long lcUserId;
-    private Long commentId;
-    private Long userId;
-    private Long postId;
+    private String lcCommentId;
+    private String LcUserId;
+//    private String commentId;
+    private String userId;
+    private String postId;
     private String contentText;
     private String createAt;
+    private String likeComment;
+    private String name;
+    private String userName;
+    private String image;
 }

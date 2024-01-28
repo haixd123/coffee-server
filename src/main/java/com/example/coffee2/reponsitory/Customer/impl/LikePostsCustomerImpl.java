@@ -1,11 +1,7 @@
 package com.example.coffee2.reponsitory.Customer.impl;
 
 import com.example.coffee2.reponsitory.Customer.LikePostsCustomer;
-import com.example.coffee2.reponsitory.LikePostsRepository;
-import com.example.coffee2.request.CoffeeBeanRequest;
-import com.example.coffee2.request.CommentRequest;
 import com.example.coffee2.request.LikePostsRequest;
-import com.example.coffee2.response.CoffeeBeanResponse;
 import com.example.coffee2.response.LikePostsResponse;
 import com.example.coffee2.utils.FunctionUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,7 +58,7 @@ public class LikePostsCustomerImpl implements LikePostsCustomer {
                 });
             }
 
-            Long count = ((BigInteger) query.getSingleResult()).longValue();
+            Long count = ((Integer) query.getSingleResult()).longValue();
             return count;
         } catch (Exception e) {
             log.error("error2: " + e.getMessage());
@@ -106,7 +101,7 @@ public class LikePostsCustomerImpl implements LikePostsCustomer {
                 });
             }
 
-            Long count = ((BigInteger) query.getSingleResult()).longValue();
+            Long count = ((Integer) query.getSingleResult()).longValue();
             return count;
         } catch (Exception e) {
             log.error("error2: " + e.getMessage());

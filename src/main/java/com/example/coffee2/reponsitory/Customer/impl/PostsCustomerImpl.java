@@ -1,10 +1,9 @@
 package com.example.coffee2.reponsitory.Customer.impl;
 
 
-import com.example.coffee2.request.CommentRequest;
+import com.example.coffee2.reponsitory.Customer.PostsRespositoryCustomer;
 import com.example.coffee2.request.PostsRequest;
 import com.example.coffee2.response.PostsResponse;
-import com.example.coffee2.reponsitory.Customer.PostsRespositoryCustomer;
 import com.example.coffee2.utils.FunctionUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +77,7 @@ public class PostsCustomerImpl implements PostsRespositoryCustomer {
 //                query.setFirstResult((request.getPageIndex() - 1) * request.getPageSize());
 //                query.setMaxResults(request.getPageSize());
 //            }
-            Long count = ((BigInteger) query.getSingleResult()).longValue();
+            Long count = ((Long) query.getSingleResult()).longValue();
             return count;
         } catch (Exception e) {
             log.error("error2: " + e.getMessage());
@@ -176,7 +173,7 @@ public class PostsCustomerImpl implements PostsRespositoryCustomer {
                 });
             }
 
-            Long count = ((BigInteger) query.getSingleResult()).longValue();
+            Long count = ((Long) query.getSingleResult()).longValue();
             return count;
         } catch (Exception e) {
             log.error("error2: " + e.getMessage());
@@ -230,7 +227,7 @@ public class PostsCustomerImpl implements PostsRespositoryCustomer {
 //                query.setFirstResult((request.getPageIndex() - 1) * request.getPageSize());
 //                query.setMaxResults(request.getPageSize());
 //            }
-            Long count = ((BigInteger) query.getSingleResult()).longValue();
+            Long count = ((Long) query.getSingleResult()).longValue();
             return count;
         } catch (Exception e) {
             log.error("error2: " + e.getMessage());

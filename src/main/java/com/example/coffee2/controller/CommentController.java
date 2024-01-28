@@ -6,6 +6,7 @@ import com.example.coffee2.pusher.UserCommentPusher;
 import com.example.coffee2.request.*;
 import com.example.coffee2.response.CommentPostResponse;
 import com.example.coffee2.response.CommentResponse;
+import com.example.coffee2.response.LikeCommentResponse;
 import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.author.JwtService;
 import com.example.coffee2.service.comment.CommentService;
@@ -40,6 +41,17 @@ public class CommentController {
     @Autowired
     private UserCommentPusher userCommentPusher;
 
+
+    @PostMapping("/authors/comment/findTotalLikeCommentByPost1")
+    public ApiBaseResponse getListEquipment(@RequestBody LikeCommentRequest request) {
+        List<LikeCommentResponse> listResult = commentService.getListLikeComment(request);
+//        Long count = equipmentService.getCountListEquipment(request);
+        ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
+        apiBaseResponse.setData(listResult);
+//        apiBaseResponse.setOptional(count);
+        return apiBaseResponse;
+    }
+
     @PostMapping("/authors/comment/searchTotalCommentPost")
     public ApiBaseResponse getTotalLikePost(@RequestBody CommentRequest request) {
         Long count = commentService.getTotalCommentPosts(request);
@@ -60,12 +72,12 @@ public class CommentController {
     }
 
     @PostMapping("/authors/post/comment")
-    public ResponseEntity<List<CommentPostResponse>> getCommentOfPost(@RequestBody CommentRequest commentRequest){
+    public ResponseEntity<List<CommentPostResponse>> getCommentOfPost(@RequestBody CommentRequest commentRequest) {
         return ResponseEntity.ok(commentService.getAllCommentPost(commentRequest));
     }
 
     @PostMapping("/authors/likeComment/update")
-    public boolean updateLikeComment(@RequestBody CommentRequest commentRequest){
+    public boolean updateLikeComment(@RequestBody CommentRequest commentRequest) {
         return commentService.updateLikeComment(commentRequest);
     }
 
@@ -139,7 +151,7 @@ public class CommentController {
         return apiBaseResponse;
     }
 
-//    @PreAuthorize("hasRole('USER')")
+    //    @PreAuthorize("hasRole('USER')")
     @PostMapping("/comment/delete")
     public ApiBaseResponse delete(@RequestBody CommentRequest request) {
         ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
@@ -163,7 +175,7 @@ public class CommentController {
         return commentService.changeStatus(commentId, status);
     }
 
-//    @PreAuthorize("hasRole('USER')")
+    //    @PreAuthorize("hasRole('USER')")
     @GetMapping("/authors/comment/by-status/{status}")
     public ResponseEntity<?> getAllCommentByStatus(@PathVariable(name = "status") long status, Pageable pageable) {
         try {
@@ -173,7 +185,7 @@ public class CommentController {
         }
     }
 
-//    @PreAuthorize("hasRole('USER')")
+    //    @PreAuthorize("hasRole('USER')")
     @GetMapping("/authors/comment/by-post/{postId}")
     public ResponseEntity<?> getAllCommentByPost(@PathVariable(name = "postId") long postId, @RequestParam(name = "status", defaultValue = "1") String status, Pageable pageable) {
         try {
@@ -183,7 +195,7 @@ public class CommentController {
         }
     }
 
-//    @PreAuthorize("hasRole('USER')")
+    //    @PreAuthorize("hasRole('USER')")
     @GetMapping("/authors/comment/by-content")
     public ResponseEntity<?> getAllCommentByPost(@RequestParam(name = "text", defaultValue = "") String text, Pageable pageable) {
         try {
@@ -193,7 +205,7 @@ public class CommentController {
         }
     }
 
-//    @PreAuthorize("hasRole('USER')")
+    //    @PreAuthorize("hasRole('USER')")
     @GetMapping("/authors/comment/by-user/{userId}")
     public ResponseEntity<?> getAllCommentByUser(@PathVariable(name = "userId") long userId, @RequestParam(name = "status", defaultValue = "1") String status, Pageable pageable) {
         try {

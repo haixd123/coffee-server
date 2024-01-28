@@ -2,9 +2,11 @@ package com.example.coffee2.reponsitory.Customer.impl;
 
 import com.example.coffee2.reponsitory.Customer.CommentCustomer;
 import com.example.coffee2.request.CommentRequest;
+import com.example.coffee2.request.LikeCommentRequest;
 import com.example.coffee2.request.LikePostsRequest;
 import com.example.coffee2.response.CommentPostResponse;
 import com.example.coffee2.response.CommentResponse;
+import com.example.coffee2.response.LikeCommentResponse;
 import com.example.coffee2.response.LikePostsResponse;
 import com.example.coffee2.utils.FunctionUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +29,44 @@ public class CommentCustomerImpl implements CommentCustomer {
 
     public CommentCustomerImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+
+    public List<LikeCommentResponse> getListLikeComment(LikeCommentRequest request) {
+        try {
+            StringBuilder sql = new StringBuilder();
+            Map<String, Object> params = new HashMap<>();
+            createSqlGetListLikeComment(request, sql, params, false);
+            Query query = entityManager.createNativeQuery(sql.toString());
+            if (params.size() > 0) {
+                params.forEach((key, value) -> {
+                    query.setParameter(key, value);
+                });
+            }
+            return FunctionUtils.mapping(query.getResultList(), LikeCommentResponse.class);
+        } catch (Exception e) {
+            log.error("error1: " + e.getMessage());
+        }
+        return null;
+    }
+
+    private void createSqlGetListLikeComment(LikeCommentRequest request, StringBuilder sql, Map<String, Object> params, boolean isCount) {
+//        if (!isCount) {
+        sql.append(" select lc.comment_id as lcCommentId, lc.user_id, c.user_id as lcUserId, \n" +
+                " c.post_id, c.comment_text, \n" +
+                "c.create_at, c.like_comment, u.name, u.user_name, u.image \n" +
+                "from comment c \n" +
+                "left join user1 u \n" +
+                "on c.user_id = u.id \n" +
+                "right join like_comments lc on c.id = lc.comment_id \n" +
+                "where 1 = 1 and c.status != -1 \n");
+        if (request.getPostId() != null) {
+            sql.append(" and c.post_id = :postId \n");
+            params.put("postId", request.getPostId());
+        }
+
+        sql.append(" order by c.create_at desc ");
+//        }
     }
 
     @Override
@@ -65,8 +105,8 @@ public class CommentCustomerImpl implements CommentCustomer {
                 });
             }
 
-            Long count = ((BigInteger) query.getSingleResult()).longValue();
-            return count;
+            return ((BigInteger) query.getSingleResult()).longValue();
+
         } catch (Exception e) {
             log.error("error2: " + e.getMessage());
         }
@@ -122,8 +162,7 @@ public class CommentCustomerImpl implements CommentCustomer {
                 });
             }
 
-            Long count = ((BigInteger) query.getSingleResult()).longValue();
-            return count;
+            return ((Long) query.getSingleResult()).longValue();
         } catch (Exception e) {
             log.error("error2: " + e.getMessage());
         }
@@ -165,7 +204,7 @@ public class CommentCustomerImpl implements CommentCustomer {
     }
 
     private void createSqlGetCommentPost(CommentRequest request, StringBuilder sql, Map<String, Object> params) {
-        sql.append("SELECT c.id AS commentId,c.comment_text AS commentText,u.user_name AS username,u.image AS avatarUser,(CASE WHEN lc.user_id = :userId AND lc.is_like_comment = 1 THEN 1 ELSE 0 END) AS userLiked,c.create_at AS createAt,c.update_at AS updateAt,c.like_comment AS amountLike,c.status AS status FROM comment c LEFT JOIN like_comments lc ON c.id = lc.comment_id LEFT JOIN user1 u ON c.user_id = u.id WHERE c.post_id = :postId AND c.status = 1");
+        sql.append("SELECT c.id AS commentId,c.comment_text AS commentText,u.user_name AS username,u.image AS avatarUser,COALESCE(lc.userLiked,0) AS userLiked,c.create_atAS createAt,c.update_at AS updateAt,c.like_comment AS amountLike,c.status AS status FROM comment c LEFT JOIN (SELECT comment_id,MAX(CASE WHEN user_id = :userId AND is_like_comment = 1 THEN 1 ELSE 0 END) AS userLiked FROM like_comments GROUP BY comment_id) lc ON c.id = lc.comment_id LEFT JOIN user1 u ON c.user_id = u.id WHERE c.post_id = :postId AND c.status != -1");
         params.put("postId", request.getPostId());
         params.put("userId", request.getUserId());
     }

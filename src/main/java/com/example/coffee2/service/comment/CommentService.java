@@ -2,8 +2,10 @@ package com.example.coffee2.service.comment;
 
 import com.example.coffee2.entity.CommentEntity;
 import com.example.coffee2.request.CommentRequest;
+import com.example.coffee2.request.LikeCommentRequest;
 import com.example.coffee2.response.CommentPostResponse;
 import com.example.coffee2.response.CommentResponse;
+import com.example.coffee2.response.LikeCommentResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface CommentService {
+
+    List<LikeCommentResponse> getListLikeComment(LikeCommentRequest request);
+
     List<CommentResponse> getListComment(CommentRequest request);
 
     Long getCountListComment(CommentRequest request);
