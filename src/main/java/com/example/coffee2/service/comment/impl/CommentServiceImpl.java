@@ -1,14 +1,11 @@
 package com.example.coffee2.service.comment.impl;
 
-import com.example.coffee2.entity.CommentEntity;
-import com.example.coffee2.entity.PostsEntity;
-import com.example.coffee2.entity.Report;
+import com.example.coffee2.entity.*;
 import com.example.coffee2.pusher.CommentPusher;
-import com.example.coffee2.reponsitory.CommentRepository;
+import com.example.coffee2.reponsitory.*;
 import com.example.coffee2.reponsitory.Customer.CommentCustomer;
-import com.example.coffee2.reponsitory.PostsRepository;
-import com.example.coffee2.reponsitory.ReportRepository;
 import com.example.coffee2.request.CommentRequest;
+import com.example.coffee2.response.CommentPostResponse;
 import com.example.coffee2.response.CommentResponse;
 import com.example.coffee2.response.base.ApiBaseResponse;
 import com.example.coffee2.service.comment.CommentService;
@@ -25,6 +22,7 @@ import org.springframework.stereotype.Service;
 import javax.xml.stream.events.Comment;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +40,8 @@ public class CommentServiceImpl implements CommentService {
     private PostsRepository postsRepository;
     @Autowired
     private ReportRepository reportRepository;
+    @Autowired
+    private LikeCommentRepo likeCommentRepo;
 
     @Override
     public List<CommentResponse> getListComment(CommentRequest request) {
@@ -70,7 +70,7 @@ public class CommentServiceImpl implements CommentService {
             obj.setCommentText(request.getCommentText());
             obj.setCreateAt(request.getCreateAt());
             obj.setUpdateAt(request.getUpdateAt());
-            obj.setLikeComment(request.getLikeComment());
+            obj.setLikeComment(request.getLikeComment() == null ? 0 : request.getLikeComment());
             obj.setStatus(1L);
             commentRepository.save(obj);
             PostsEntity postsEntity = postsRepository.findById(request.getPostId()).orElse(null);
@@ -141,6 +141,43 @@ public class CommentServiceImpl implements CommentService {
         }
 
 
+    }
+
+    @Override
+    public List<CommentPostResponse> getAllCommentPost(CommentRequest commentRequest) {
+
+        return commentCustomer.getCommentPost(commentRequest);
+    }
+
+    @Override
+    public boolean updateLikeComment(CommentRequest commentRequest) {
+        Optional<CommentEntity> commentEntity = commentRepository.findById(commentRequest.getCommentId());
+        Optional<LikeCommentEntity> likeCommentEntity = likeCommentRepo.findByPostIdAndCommentIdAndUserId(commentRequest.getPostId(),commentRequest.getCommentId(),commentRequest.getUserId());
+        if(likeCommentEntity.isPresent() && commentEntity.isPresent()){
+            LikeCommentEntity record = likeCommentEntity.get();
+            CommentEntity commentRecord = commentEntity.get();
+            if(record.getIsLikeComment() == 0){
+                record.setIsLikeComment(1L);
+                commentRecord.setLikeComment(commentRecord.getLikeComment() + 1);
+            }else{
+                record.setIsLikeComment(0L);
+                commentRecord.setLikeComment(commentRecord.getLikeComment() - 1);
+            }
+            likeCommentRepo.save(record);
+            commentRepository.save(commentRecord);
+            return true;
+        }else{
+            LikeCommentEntity entity = new LikeCommentEntity();
+            entity.setPostId(commentRequest.getPostId());
+            entity.setCommentId(commentRequest.getCommentId());
+            entity.setUserId(commentRequest.getUserId());
+            entity.setIsLikeComment(1L);
+            CommentEntity commentRecord = commentEntity.get();
+            commentRecord.setLikeComment(commentRecord.getLikeComment() + 1);
+            commentRepository.save(commentRecord);
+            likeCommentRepo.save(entity);
+            return true;
+        }
     }
 
     @Override

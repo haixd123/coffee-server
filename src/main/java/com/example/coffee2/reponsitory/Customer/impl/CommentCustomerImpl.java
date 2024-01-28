@@ -3,6 +3,7 @@ package com.example.coffee2.reponsitory.Customer.impl;
 import com.example.coffee2.reponsitory.Customer.CommentCustomer;
 import com.example.coffee2.request.CommentRequest;
 import com.example.coffee2.request.LikePostsRequest;
+import com.example.coffee2.response.CommentPostResponse;
 import com.example.coffee2.response.CommentResponse;
 import com.example.coffee2.response.LikePostsResponse;
 import com.example.coffee2.utils.FunctionUtils;
@@ -128,6 +129,29 @@ public class CommentCustomerImpl implements CommentCustomer {
         return null;
     }
 
+    @Override
+    public List<CommentPostResponse> getCommentPost(CommentRequest request) {
+        try {
+            StringBuilder sql = new StringBuilder();
+            Map<String, Object> params = new HashMap<>();
+            createSqlGetCommentPost(request, sql, params);
+            Query query = entityManager.createNativeQuery(sql.toString());
+            if (params.size() > 0) {
+                params.forEach((key, value) -> {
+                    query.setParameter(key, value);
+                });
+            }
+            if (request.getPageIndex() != 0 && request.getPageSize() != 0) {
+                query.setFirstResult((request.getPageIndex() - 1) * request.getPageSize());
+                query.setMaxResults(request.getPageSize());
+            }
+            return FunctionUtils.mapping(query.getResultList(), CommentPostResponse.class);
+        } catch (Exception e) {
+            log.error("error1: " + e.getMessage());
+        }
+        return null;
+    }
+
     private void createSqlGetTotalCommentPosts(CommentRequest request, StringBuilder sql, Map<String, Object> params) {
         sql.append("select count(*) " +
                 " from comment c " +
@@ -136,6 +160,12 @@ public class CommentCustomerImpl implements CommentCustomer {
                 " where 1=1 and p.user_id = :userId  \n");
 //        sql.append("where 1 = 1 \n");
 //        sql.append("and user_id = :userId \n");
+        params.put("userId", request.getUserId());
+    }
+
+    private void createSqlGetCommentPost(CommentRequest request, StringBuilder sql, Map<String, Object> params) {
+        sql.append("SELECT c.id AS commentId,c.comment_text AS commentText,u.user_name AS username,u.image AS avatarUser,(CASE WHEN lc.user_id = :userId AND lc.is_like_comment = 1 THEN 1 ELSE 0 END) AS userLiked,c.create_at AS createAt,c.update_at AS updateAt,c.like_comment AS amountLike,c.status AS status FROM comment c LEFT JOIN like_comments lc ON c.id = lc.comment_id LEFT JOIN user1 u ON c.user_id = u.id WHERE c.post_id = :postId AND c.status = 1");
+        params.put("postId", request.getPostId());
         params.put("userId", request.getUserId());
     }
 }

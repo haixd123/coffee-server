@@ -2,7 +2,9 @@ package com.example.coffee2.service.comment;
 
 import com.example.coffee2.entity.CommentEntity;
 import com.example.coffee2.request.CommentRequest;
+import com.example.coffee2.response.CommentPostResponse;
 import com.example.coffee2.response.CommentResponse;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 
@@ -20,6 +22,10 @@ public interface CommentService {
     boolean update(CommentRequest request);
 
     boolean delete(CommentRequest request);
+
+    List<CommentPostResponse> getAllCommentPost(CommentRequest commentRequest);
+
+    boolean updateLikeComment(CommentRequest commentRequest);
 
     boolean changeStatus(Long id,Long status);
     CommentEntity getById(Long commentId);
