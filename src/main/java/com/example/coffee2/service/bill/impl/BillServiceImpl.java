@@ -257,7 +257,7 @@ public class BillServiceImpl implements BillService {
             ExcelUtil.createCell(sheetTheND, rowNum, columNum++, item.getEmail(), normalAlignmentCenterBorder);
             ExcelUtil.createCell(sheetTheND, rowNum, columNum++, item.getPhone(), normalAlignmentCenterBorder);
             ExcelUtil.createCell(sheetTheND, rowNum, columNum++, item.getAddress(), normalAlignmentCenterBorder);
-            ExcelUtil.createCell(sheetTheND, rowNum, columNum++, item.getDetail(), normalAlignmentCenterBorder);
+            ExcelUtil.createCell(sheetTheND, rowNum, columNum++, item.getDetails(), normalAlignmentCenterBorder);
             ExcelUtil.createCell(sheetTheND, rowNum, columNum++, item.getCreateDate(), normalAlignmentCenterBorder);
             ExcelUtil.createCell(sheetTheND, rowNum, columNum++, item.getTotal(), normalAlignmentCenterBorder);
             log.info("Du lieu: " + item);
