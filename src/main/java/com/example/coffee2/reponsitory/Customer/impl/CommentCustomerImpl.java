@@ -204,8 +204,14 @@ public class CommentCustomerImpl implements CommentCustomer {
     }
 
     private void createSqlGetCommentPost(CommentRequest request, StringBuilder sql, Map<String, Object> params) {
-        sql.append("SELECT c.id AS commentId,c.comment_text AS commentText,u.user_name AS username,u.image AS avatarUser,COALESCE(lc.userLiked,0) AS userLiked,c.create_atAS createAt,c.update_at AS updateAt,c.like_comment AS amountLike,c.status AS status FROM comment c LEFT JOIN (SELECT comment_id,MAX(CASE WHEN user_id = :userId AND is_like_comment = 1 THEN 1 ELSE 0 END) AS userLiked FROM like_comments GROUP BY comment_id) lc ON c.id = lc.comment_id LEFT JOIN user1 u ON c.user_id = u.id WHERE c.post_id = :postId AND c.status != -1");
+        sql.append("select c.id, c.user_id, c.post_id, c.comment_text, c.create_at, u.name, u.image from comment c left join user1 u on u.id = c.user_id\n" +
+                "where c.status != -1");
+        if(request.getPostId() != null) {
+        sql.append(" and c.post_id = :postId \n");
         params.put("postId", request.getPostId());
-        params.put("userId", request.getUserId());
+
+        }
+//        params.put("postId", request.getPostId());
+//        params.put("userId", request.getUserId());
     }
 }

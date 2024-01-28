@@ -153,7 +153,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<CommentPostResponse> getAllCommentPost(CommentRequest commentRequest) {
-
         return commentCustomer.getCommentPost(commentRequest);
     }
 

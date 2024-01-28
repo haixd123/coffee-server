@@ -30,4 +30,7 @@ public class CommentEntity {
     private Long likeComment;
     @Column(name = "status")
     private Long status;
+
+    @Column(name = "reply_comment")
+    private Long replyComment;
 }
