@@ -14,6 +14,7 @@ import com.example.coffee2.service.bill.BillService;
 import com.example.coffee2.utils.Constants;
 import com.example.coffee2.utils.DateProc;
 import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -220,7 +221,10 @@ public class BillServiceImpl implements BillService {
 
 
     @Override
-    public void exprot(HttpServletResponse response, List<BillResponse> listResponse, BillRequest request) throws IOException {
+//    public void exprot(HttpServletResponse response,  listResponse, BillRequest request) throws IOException {
+    public void exprot(HttpServletResponse response, BillRequest request) throws IOException {
+        List<BillResponse> list = respository.findAll().stream().map((b) -> new ModelMapper().map(b, BillResponse.class)).collect(Collectors.toList());
+
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheetTheND = workbook.createSheet("Công cụ khai báo tài khoản truy cập hệ thống api MYVNPT");
         //????
@@ -248,7 +252,7 @@ public class BillServiceImpl implements BillService {
         int index = 1;
         log.info("Bat dau export du lieu ra file: " + System.currentTimeMillis());
 
-        for (BillResponse item : listResponse) {
+        for (BillResponse item : list) {
             columNum = 0;
             rowNum++;
             ExcelUtil.createLongCell(sheetTheND, rowNum, columNum++, index++, boldAlignmentCenterBorder12);

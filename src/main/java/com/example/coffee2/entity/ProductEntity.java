@@ -42,4 +42,15 @@ public class ProductEntity {
 
     @Column(name = "detail")
     private String detail;
+
+    @Override
+    public String toString() {
+//        return "ProductEntity{" +
+        return "{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", category='" + category + '\'' +
+                '}';
+    }
 }

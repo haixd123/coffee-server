@@ -37,7 +37,7 @@ public class CommentController {
         return apiBaseResponse;
     }
 
-    @PostMapping("/authors/comment/search")
+    @PostMapping("/authors/comment/search") // cái này dc goi là endpoint
     public ApiBaseResponse getListLikePosts(@RequestBody CommentRequest request) {
         List<CommentResponse> listResult = commentService.getListComment(request);
         Long count = commentService.getCountListComment(request);

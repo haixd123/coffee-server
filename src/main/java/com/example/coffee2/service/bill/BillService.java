@@ -20,8 +20,9 @@ public interface BillService {
 
     ResponseEntity<?> getById(Long id);
 
-    ResponseEntity<?> getByUser(Pageable pageable,String name);
-    ResponseEntity<?> getByUserEmail(Pageable pageable,String email);
+    ResponseEntity<?> getByUser(Pageable pageable, String name);
+
+    ResponseEntity<?> getByUserEmail(Pageable pageable, String email);
 
     ResponseEntity<?> sortByPriceOrDate(Pageable pageable, boolean isPrice);
 
@@ -37,6 +38,7 @@ public interface BillService {
 
     ResponseEntity<?> updateBillStatus(Integer status, Long billId);
 
-    void exprot(HttpServletResponse response, List<BillResponse> listResponse, BillRequest request) throws IOException;
+    //    void exprot(HttpServletResponse response, List<BillResponse> listResponse, BillRequest request) throws IOException;
+    void exprot(HttpServletResponse response, BillRequest request) throws IOException;
 
 }

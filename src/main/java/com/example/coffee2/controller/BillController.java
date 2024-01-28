@@ -1,6 +1,7 @@
 package com.example.coffee2.controller;
 
 
+import com.example.coffee2.entity.BillEntity;
 import com.example.coffee2.request.BillRequest;
 import com.example.coffee2.request.ChangeStatusBillRequest;
 import com.example.coffee2.request.CoffeeBeanRequest;
@@ -11,6 +12,7 @@ import com.example.coffee2.service.bill.BillService;
 import com.example.coffee2.utils.Constants;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -130,9 +132,10 @@ public class BillController {
     }
 
     @PostMapping("/authors/bill/export")
-    public void export(HttpServletResponse response, @RequestBody BillRequest request) throws Exception {
-        List<BillResponse> listResult = billService.getListBill(request);
-        billService.exprot(response, listResult, request);
+    public void export(HttpServletResponse response, @RequestBody BillRequest request, Pageable pageable) throws Exception {
+//        List<BillResponse> listResult = billService.getListBill(request);
+
+        billService.exprot(response, request);
 //        log.info("listResult: " + listResult);
 //        Long count = billService.getCountListBill(request);
 //        ApiBaseResponse apiBaseResponse = new ApiBaseResponse();
