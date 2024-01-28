@@ -81,9 +81,10 @@ public class UserCustomerImpl implements UserCustomer {
             sql.append("f.role, \n");
             sql.append("f.phone_number, \n");
             sql.append("f.date_of_birth, \n");
-            sql.append("case when f.sex = 1 then 'nam'" +
-                    " when f.sex = 2 then 'nữ'" +
-                    "when f.sex = 3 then 'khác' end sex, \n");
+            sql.append("f.sex, \n");
+//            sql.append("case when f.sex = 1 then 'nam'" +
+//                    " when f.sex = 2 then 'nữ'" +
+//                    "when f.sex = 3 then 'khác' end sex, \n");
             sql.append("f.create_date, \n");
             sql.append("f.status, \n");
             sql.append("f.image \n");
