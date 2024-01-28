@@ -11,6 +11,7 @@ public class CommentPostResponse {
     private String createAt;
     private String name;
     private String image;
+    private String replyCommentId;
 
 
 

@@ -107,7 +107,7 @@ public class CommentController {
         apiBaseResponse.setOptional(count);
         // push notification
         if (request.getReplyCommentId() != null) {
-            CommentEntity comment = commentService.getById(request.getReplyCommentId());
+            CommentEntity comment = commentService.getById(request);
             if (comment != null) {
                 pushUserCommentNotification(request.getPostId(), request.getUserId(), comment.getUserId());
             }

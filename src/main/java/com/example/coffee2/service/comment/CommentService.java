@@ -33,7 +33,7 @@ public interface CommentService {
     boolean updateLikeComment(CommentRequest commentRequest);
 
     boolean changeStatus(Long id,Long status);
-    CommentEntity getById(Long commentId);
+    CommentEntity getById(CommentRequest request);
 
     ResponseEntity<?> getCommentByStatus(Pageable pageable, long status);
 

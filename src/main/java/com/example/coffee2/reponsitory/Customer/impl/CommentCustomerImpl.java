@@ -204,7 +204,7 @@ public class CommentCustomerImpl implements CommentCustomer {
     }
 
     private void createSqlGetCommentPost(CommentRequest request, StringBuilder sql, Map<String, Object> params) {
-        sql.append("select c.id, c.user_id, c.post_id, c.comment_text, c.create_at, u.name, u.image from comment c left join user1 u on u.id = c.user_id\n" +
+        sql.append("select c.id, c.user_id, c.post_id, c.comment_text, c.create_at, u.name, u.image, c.reply_comment as replyCommentId from comment c left join user1 u on u.id = c.user_id\n" +
                 "where c.status != -1");
         if(request.getPostId() != null) {
         sql.append(" and c.post_id = :postId \n");

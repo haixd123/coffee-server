@@ -2,10 +2,12 @@ package com.example.coffee2.service.comment.impl;
 
 import com.example.coffee2.entity.*;
 import com.example.coffee2.pusher.CommentPusher;
+import com.example.coffee2.pusher.UserCommentPusher;
 import com.example.coffee2.reponsitory.*;
 import com.example.coffee2.reponsitory.Customer.CommentCustomer;
 import com.example.coffee2.request.CommentRequest;
 import com.example.coffee2.request.LikeCommentRequest;
+import com.example.coffee2.request.UserCommentEventRequest;
 import com.example.coffee2.response.CommentPostResponse;
 import com.example.coffee2.response.CommentResponse;
 import com.example.coffee2.response.LikeCommentResponse;
@@ -45,6 +47,9 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private LikeCommentRepo likeCommentRepo;
 
+    @Autowired
+    private UserCommentPusher userCommentPusher;
+
     @Override
     public List<LikeCommentResponse> getListLikeComment(LikeCommentRequest request) {
         return commentCustomer.getListLikeComment(request);
@@ -72,25 +77,43 @@ public class CommentServiceImpl implements CommentService {
         Date now = new Date();
         try {
             CommentEntity obj = new CommentEntity();
-            obj.setCommentId(request.getCommentId());
+//            obj.setCommentId(request.getCommentId());
             obj.setUserId(request.getUserId());
             obj.setPostId(request.getPostId());
             obj.setCommentText(request.getCommentText());
             obj.setCreateAt(request.getCreateAt());
             obj.setUpdateAt(request.getUpdateAt());
             obj.setLikeComment(request.getLikeComment() == null ? 0 : request.getLikeComment());
+            obj.setReplyComment(request.getReplyCommentId());
             obj.setStatus(1L);
-            commentRepository.save(obj);
+            Long a = commentRepository.save(obj).getId();
             PostsEntity postsEntity = postsRepository.findById(request.getPostId()).orElse(null);
             if (postsEntity != null) {
                 postsEntity.setComment(postsEntity.getComment() + 1);
                 postsRepository.save(postsEntity);
+            }
+
+            if (request.getReplyCommentId() != null) {
+                CommentEntity comment = commentRepository.findByIdAndReplyComment(a, request.getReplyCommentId());
+                if (comment != null) {
+                    pushUserCommentNotification(request.getPostId(), request.getUserId(), comment.getUserId());
+                }
+            } else {
+                pushUserCommentNotification(request.getPostId(), request.getUserId(), null);
             }
             return true;
         } catch (Exception e) {
             log.error("error: " + e.getMessage());
             return false;
         }
+    }
+
+    public void pushUserCommentNotification(Long postId, Long fromUserId, Long replyFrom) {
+        UserCommentEventRequest userCommentEventRequest = new UserCommentEventRequest();
+        userCommentEventRequest.setFromUser(fromUserId);
+        userCommentEventRequest.setReplyUser(replyFrom);
+        userCommentEventRequest.setPostId(postId);
+        userCommentPusher.pushCommentNotificationForUser(userCommentEventRequest);
     }
 
 
@@ -209,8 +232,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public CommentEntity getById(Long commentId) {
-        return commentRepository.findById(commentId).orElse(null);
+    public CommentEntity getById(CommentRequest request) {
+        return commentRepository.findByIdAndReplyComment(request.getId(), request.getReplyCommentId());
     }
 
     @Override
